@@ -17,9 +17,7 @@ package org.lecture.unit.compilationreport.assembler;
 
 import static org.junit.Assert.assertEquals;
 
-import org.lecture.assembler.CompilationReportAssembler;
 import org.lecture.model.CompilationReport;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;

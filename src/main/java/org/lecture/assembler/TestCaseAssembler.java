@@ -18,8 +18,8 @@ package org.lecture.assembler;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 
 import org.lecture.model.TestCase;
-import org.lecture.controller.TestController;
-import org.lecture.resource.TestResource;
+import org.lecture.controller.TestCaseController;
+import org.lecture.resource.TestCaseResource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.EntityLinks;
 import org.springframework.hateoas.mvc.ResourceAssemblerSupport;
@@ -30,14 +30,14 @@ import org.springframework.stereotype.Component;
  * @author Rene Richter
  */
 @Component
-public class TestAssembler extends BaseAssembler<TestCase, TestResource> {
+public class TestCaseAssembler extends BaseAssembler<TestCase, TestCaseResource> {
 
   /**
    * Creates a new {@link ResourceAssemblerSupport}
    * using the given controller class and resource type.
    */
-  public TestAssembler() {
-    super(TestController.class, TestResource.class);
+  public TestCaseAssembler() {
+    super(TestCaseController.class, TestCaseResource.class);
   }
 
 
@@ -46,8 +46,8 @@ public class TestAssembler extends BaseAssembler<TestCase, TestResource> {
 
 
   @Override
-  public TestResource toResource(TestCase entity) {
-    TestResource resource = createResource(entity);
+  public TestCaseResource toResource(TestCase entity) {
+    TestCaseResource resource = createResource(entity);
 
     //TODO add links
 

@@ -15,6 +15,7 @@ package org.lecture.resource;
 * Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301  USA
 */
 
+import org.lecture.model.CompilationReport;
 import org.lecture.model.TestCase;
 import org.springframework.hateoas.ResourceSupport;
 
@@ -22,51 +23,74 @@ import org.springframework.hateoas.ResourceSupport;
  * A TestCase-resource.
  * @author Rene Richter
  */
-public class TestResource extends ResourceSupport {
+public class TestCaseResource extends ResourceSupport {
   
   private long exerciseId;
   
   private String testCode;
-  
-  private Class<?> testClass;
+
+  private boolean active;
+
+  private String username;
+
+  private CompilationReport compilationReport;
   
 
   /**
    * Reads all attributes from entity that should get serialized.
    */
-  public  TestResource( TestCase entity) {
+  public TestCaseResource(TestCase entity) {
     
-    this.exerciseId = entity.getExerciseid();
+    this.exerciseId = entity.getExerciseId();
     
-    this.testCode = entity.getTestcode();
-    
-    this.testClass = entity.getTestclass();
-    
+    this.testCode = entity.getTestCode();
+
+    this.active = entity.isActive();
+
+    this.username = entity.getUsername();
+
+    this.compilationReport = entity.getCompilationReport();
+
   }
 
-  
-  public void setExerciseid(long exerciseId) {
+  public long getExerciseId() {
+    return exerciseId;
+  }
+
+  public void setExerciseId(long exerciseId) {
     this.exerciseId = exerciseId;
   }
 
-  public long getExerciseid() {
-    return this.exerciseId;
+  public String getTestCode() {
+    return testCode;
   }
-  
-  public void setTestcode(String testCode) {
+
+  public void setTestCode(String testCode) {
     this.testCode = testCode;
   }
 
-  public String getTestcode() {
-    return this.testCode;
-  }
-  
-  public void setTestclass(Class<?> testClass) {
-    this.testClass = testClass;
+  public boolean isActive() {
+    return active;
   }
 
-  public Class<?> getTestclass() {
-    return this.testClass;
+  public void setActive(boolean active) {
+    this.active = active;
   }
-  
+
+  public String getUsername() {
+    return username;
+  }
+
+  public void setUsername(String username) {
+    this.username = username;
+  }
+
+  public CompilationReport getCompilationReport() {
+    return compilationReport;
+  }
+
+  public void setCompilationReport(CompilationReport compilationReport) {
+    this.compilationReport = compilationReport;
+  }
+
 }

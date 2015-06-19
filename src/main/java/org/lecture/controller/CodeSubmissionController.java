@@ -19,6 +19,7 @@ import org.lecture.assembler.CodeSubmissionAssembler;
 import org.lecture.model.CodeSubmission;
 import org.lecture.resource.CodeSubmissionResource;
 import org.lecture.repository.CodeSubmissionRepository;
+import org.lecture.service.CompilerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -32,6 +33,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.security.Principal;
 
 
 /**
@@ -48,6 +51,9 @@ public class CodeSubmissionController extends BaseController {
 
   @Autowired
   CodeSubmissionRepository codesubmissionRepository;
+
+  @Autowired
+  CompilerService compilerService;
 
 
   /**
@@ -73,7 +79,9 @@ public class CodeSubmissionController extends BaseController {
    * @return A respoonse containing a link to the new resource.
    */
   @RequestMapping(method = RequestMethod.POST)
-  public ResponseEntity<?> create(@RequestBody CodeSubmission entity) {
+  public ResponseEntity<?> create(@RequestBody CodeSubmission entity,Principal principal) {
+    entity.setUsername(principal.getName());
+
     return super.createEntity(this.codesubmissionRepository.save(entity));
   }
 

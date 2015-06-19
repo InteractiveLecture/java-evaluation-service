@@ -73,32 +73,30 @@ public class CompilerServiceImpl implements CompilerService {
   }
 
   @Override
-  public CompilationReport compileTestSource(String source, String className,
-                                             String username, long exerciseId) {
+  public TestCase compileTestCase(TestCase testCase) {
 
     //TODO in aspket umwandeln.
-    boolean hasPermission = aclClient.hasWritePermission(username,exerciseId,"exercise");
+    boolean hasPermission = aclClient.hasWritePermission(
+        testCase.getUsername(),testCase.getExerciseId(),"exercise");
 
     if(!hasPermission) {
-      throw new RuntimeException(username
-          + " has no permissions to write tests for exercise with id "+exerciseId);
+      throw new RuntimeException(testCase.getUsername()
+          + " has no permissions to write tests for exercise with id "+testCase.getExerciseId());
     }
 
     StringCompiler compiler = new StringCompiler();
 
-    compiler.addCompilationTask(className,source);
+    compiler.addCompilationTask(testCase.getClassname(),testCase.getTestCode());
 
     CompilationResult compilationResult = compiler.startCompilation();
 
     CompilationReport report = createCompilationReport(
-        compilationResult,username,exerciseId);
-
-    if(!compilationResult.hasErrors()) {
-      Class<?> testClass = compilationResult.getCompiledClasses().get(className);
-      TestCase testCase = new TestCase(exerciseId,className,source,testClass,username);
-      testCaseRepository.save(testCase);
-    }
-    return report;
+        compilationResult,testCase.getUsername(),testCase.getExerciseId());
+    testCase.setCompilationReport(report);
+    testCase.setTestClass(
+        compilationResult.getCompiledClasses().get(testCase.getClassname()));
+    testCase.setActive(!compilationResult.hasErrors());
+    return testCaseRepository.save(testCase);
   }
 
 

@@ -17,7 +17,7 @@ package org.lecture.unit.test.assembler;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.lecture.assembler.TestAssembler;
+import org.lecture.assembler.TestCaseAssembler;
 import org.lecture.model.TestCase;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.ResourceSupport;
@@ -38,7 +38,7 @@ public class TestAssemblerUnitTest {
 
 
   @Autowired
-  private TestAssembler testInstance;
+  private TestCaseAssembler testInstance;
 
 
   @Test

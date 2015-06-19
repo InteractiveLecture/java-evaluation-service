@@ -18,11 +18,11 @@ package org.lecture.unit.test.controller;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.lecture.assembler.TestAssembler;
-import org.lecture.controller.TestController;
+import org.lecture.assembler.TestCaseAssembler;
+import org.lecture.controller.TestCaseController;
 import org.lecture.model.TestCase;
 import org.lecture.repository.TestCaseRepository;
-import org.lecture.resource.TestResource;
+import org.lecture.resource.TestCaseResource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -54,13 +54,13 @@ public class TestControllerUnitTest {
   private TestCaseRepository testRepository;
 
   @Autowired
-  private TestAssembler testAssembler;
+  private TestCaseAssembler testAssembler;
 
   @Autowired
   private PagedResourcesAssembler pagedResourcesAssembler;
 
   @Autowired
-  private TestController testInstance;
+  private TestCaseController testInstance;
 
 
   /**
@@ -100,7 +100,7 @@ public class TestControllerUnitTest {
   public void getOneShouldReturnResponseContainingTheDataOfOneTestAsJson() throws Exception {
     TestCase instance = new TestCase();
     instance.setId("1");
-    TestResource testResource = new TestResource(instance);
+    TestCaseResource testResource = new TestCaseResource(instance);
     when(testRepository.findOne("1")).thenReturn(instance);
     when(testAssembler.toResource(instance)).thenReturn(testResource);
     ResponseEntity response = testInstance.getOne("1");

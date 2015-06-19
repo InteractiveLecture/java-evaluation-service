@@ -15,9 +15,9 @@ package org.lecture.unit.test.controller;
 * Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301  USA
 */
 
-import org.lecture.assembler.TestAssembler;
+import org.lecture.assembler.TestCaseAssembler;
 import org.lecture.repository.TestCaseRepository;
-import org.lecture.controller.TestController;
+import org.lecture.controller.TestCaseController;
 import org.mockito.Mockito;
 import org.springframework.cloud.client.loadbalancer.LoadBalancerClient;
 import org.springframework.context.annotation.Bean;
@@ -35,8 +35,8 @@ public class TestControllerUnitTestConfig {
 
 
   @Bean
-  public TestController testController() {
-    return new TestController();
+  public TestCaseController testController() {
+    return new TestCaseController();
   }
 
   @Bean
@@ -50,8 +50,8 @@ public class TestControllerUnitTestConfig {
   }
 
   @Bean
-  public TestAssembler testAssembler() {
-    return Mockito.mock(TestAssembler.class);
+  public TestCaseAssembler testAssembler() {
+    return Mockito.mock(TestCaseAssembler.class);
   }
 
   @Bean

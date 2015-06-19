@@ -15,9 +15,6 @@ package org.lecture.unit.compilationreport.controller;
 * Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301  USA
 */
 
-import org.lecture.assembler.CompilationReportAssembler;
-import org.lecture.repository.CompilationReportRepository;
-import org.lecture.controller.CompilationReportController;
 import org.mockito.Mockito;
 import org.springframework.cloud.client.loadbalancer.LoadBalancerClient;
 import org.springframework.context.annotation.Bean;

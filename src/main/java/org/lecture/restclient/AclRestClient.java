@@ -28,17 +28,20 @@ import org.springframework.web.bind.annotation.RequestParam;
 public interface AclRestClient {
 
   //TODO anpassen an den tatsächlichen acl-client.
-  @RequestMapping(method = RequestMethod.GET, value = "/permissions/{classname}/{oid}/write")
+  @RequestMapping(
+      method = RequestMethod.GET, value = "/permissions/{classname}/{oid}/write")
   boolean hasWritePermission(@RequestParam("sid") String email,
                              @PathVariable("oid") long id,
                              @PathVariable("classname") String className);
 
-  @RequestMapping(method = RequestMethod.GET, value = "/permissions/{classname}/{oid}/read")
+  @RequestMapping(
+      method = RequestMethod.GET, value = "/permissions/{classname}/{oid}/read")
   boolean hasReadPermission(@RequestParam("sid") String email,
                             @PathVariable("oid") long id,
                             @PathVariable("classname") String className);
 
-  @RequestMapping(method = RequestMethod.GET, value = "/permissions/{classname}/{oid}/delete")
+  @RequestMapping(
+      method = RequestMethod.GET, value = "/permissions/{classname}/{oid}/delete")
   boolean hasDeletePermission(@RequestParam("sid") String email,
                               @PathVariable("oid") long id,
                               @PathVariable("classname") String className);

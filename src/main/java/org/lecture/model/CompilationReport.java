@@ -22,7 +22,7 @@ import java.util.List;
  * Entity that represents CompilationReports.
  * @author Rene Richter
  */
-public class CompilationReport extends BaseEntity {
+public class CompilationReport {
 
   private LocalDateTime date;
   private List<CompilationDiagnostic> errors;

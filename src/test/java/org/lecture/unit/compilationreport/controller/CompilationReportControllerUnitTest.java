@@ -18,15 +18,11 @@ package org.lecture.unit.compilationreport.controller;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
-import org.lecture.assembler.CompilationReportAssembler;
-import org.lecture.controller.CompilationReportController;
-import org.lecture.repository.CompilationReportRepository;
 import org.lecture.resource.CompilationReportResource;
 import org.lecture.model.CompilationReport;
 import org.junit.Before;
@@ -42,7 +38,6 @@ import org.springframework.hateoas.PagedResources;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.ArrayList;
 import java.util.List;

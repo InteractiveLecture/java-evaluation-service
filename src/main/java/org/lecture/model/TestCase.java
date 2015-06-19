@@ -30,6 +30,7 @@ public class TestCase extends BaseEntity {
   private String classname;
   private String username;
   private CompilationReport compilationReport;
+  private boolean active;
   
 
   public TestCase(){}
@@ -46,6 +47,22 @@ public class TestCase extends BaseEntity {
     this.classname = classname;
     this.username = username;
     
+  }
+
+  public boolean isActive() {
+    return active;
+  }
+
+  public void setActive(boolean active) {
+    this.active = active;
+  }
+
+  public CompilationReport getCompilationReport() {
+    return compilationReport;
+  }
+
+  public void setCompilationReport(CompilationReport compilationReport) {
+    this.compilationReport = compilationReport;
   }
 
   public String getUsername() {

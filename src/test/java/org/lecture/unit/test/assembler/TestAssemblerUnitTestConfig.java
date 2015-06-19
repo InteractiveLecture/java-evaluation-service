@@ -15,7 +15,7 @@ package org.lecture.unit.test.assembler;
 * Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301  USA
 */
 
-import org.lecture.assembler.TestAssembler;
+import org.lecture.assembler.TestCaseAssembler;
 import org.mockito.Mockito;
 import org.springframework.cloud.client.loadbalancer.LoadBalancerClient;
 import org.springframework.context.annotation.Bean;
@@ -36,7 +36,7 @@ public class TestAssemblerUnitTestConfig {
   }
 
   @Bean
-  public TestAssembler testAssembler() {
-    return new TestAssembler();
+  public TestCaseAssembler testAssembler() {
+    return new TestCaseAssembler();
   }
 }
