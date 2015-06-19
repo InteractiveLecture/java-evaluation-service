@@ -1,0 +1,4 @@
+service_name: java-evaluation-service
+repository_technique: mongodb
+group_id: org.lecture
+artifact_id: java-evaluation-service
