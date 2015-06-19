@@ -33,7 +33,12 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
  * @author Rene Richter
  */
 @Configuration
-@ComponentScan(basePackages = {"org.lecture.repository","org.lecture.integration"})
+@ComponentScan(basePackages = {"org.lecture.repository",
+    "org.lecture.controller",
+    "org.lecture.assembler",
+    "org.lecture.resource",
+    "org.lecture.integration"})
+
 @EnableHypermediaSupport(type = {EnableHypermediaSupport.HypermediaType.HAL})
 @EnableSpringDataWebSupport
 @EnableWebMvc

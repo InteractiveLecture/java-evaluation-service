@@ -29,6 +29,7 @@ public class TestCase extends BaseEntity {
   private Class<?> testClass;
   private String classname;
   private String username;
+  private CompilationReport compilationReport;
   
 
   public TestCase(){}
