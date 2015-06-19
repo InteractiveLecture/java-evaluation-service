@@ -46,16 +46,16 @@ public class CompilerServiceImpl implements CompilerService {
 
 
   @Override
-  public CompilationReport compileUserSource(String source, String className,
-                                             String username, long exerciseId) {
+  public CompilationReport compileUserSource(CodeSubmission submission) {
+    //String source, String className,
+     //   String username, long exerciseId
+    CodeSubmission previousSubmission = codeSubmissionRepository
+        .findOneByUsernameAndExerciseIdOrderBySubmissionDate(
+            submission.getUsername(),submission.getExerciseId());
 
-    CodeSubmission submission = codeSubmissionRepository
-        .findOneByUsernameAndExerciseIdOrderBySubmissionDate(username,exerciseId);
-
-    if(submission == null) {
-      submission = new CodeSubmission(username,className,source,exerciseId);
-    } else {
-      submission.addSubmission(className, source);
+    if(previousSubmission != null) {
+      submission.getSources().forEach(previousSubmission::addSubmission);
+      submission = previousSubmission;
     }
 
     StringCompiler compiler = new StringCompiler();
@@ -64,7 +64,9 @@ public class CompilerServiceImpl implements CompilerService {
     CompilationResult compilationResult = compiler.startCompilation();
 
     CompilationReport report = createCompilationReport(
-        compilationResult,username,exerciseId);
+        compilationResult,submission.getUsername(),submission.getExerciseId());
+
+    
 
     //TODO if performance issues, make call async.
     codeSubmissionRepository.save(submission);

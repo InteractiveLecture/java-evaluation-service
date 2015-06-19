@@ -81,7 +81,6 @@ public class CodeSubmissionController extends BaseController {
   @RequestMapping(method = RequestMethod.POST)
   public ResponseEntity<?> create(@RequestBody CodeSubmission entity,Principal principal) {
     entity.setUsername(principal.getName());
-
     return super.createEntity(this.codesubmissionRepository.save(entity));
   }
 
