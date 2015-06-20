@@ -15,14 +15,14 @@ package org.lecture.repository;
 * Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301  USA
 */
 
-import org.lecture.model.TestCaseContainer;
+import org.lecture.model.SourceContainer;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
 
 /**
-* A repository for tests
+* A repository for codesubmissions
 * @author Rene Richter
 */
-public interface TestCaseRepository extends MongoRepository<TestCaseContainer,String> {
+public interface SourceContainerRepository extends MongoRepository<SourceContainer,String> {
 
 }

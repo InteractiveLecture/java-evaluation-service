@@ -16,17 +16,13 @@ package org.lecture.controller;
 */
 
 import org.lecture.assembler.CodeSubmissionAssembler;
-import org.lecture.model.CodeSubmission;
-import org.lecture.resource.CodeSubmissionResource;
-import org.lecture.repository.CodeSubmissionRepository;
+import org.lecture.model.CompilationReport;
+import org.lecture.model.SourceContainer;
+import org.lecture.repository.SourceContainerRepository;
+import org.lecture.resource.SourceContainerResource;
 import org.lecture.service.CompilerService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PageableDefault;
-import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.ExposesResourceFor;
-import org.springframework.hateoas.PagedResources;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -38,61 +34,44 @@ import java.security.Principal;
 
 
 /**
- * A controller for CodeSubmission Routes.
+ * A controller for SourceContainer Routes.
  * @author Rene Richter
  */
 @RestController
 @RequestMapping("/codesubmissions")
-@ExposesResourceFor(CodeSubmission.class)
+@ExposesResourceFor(SourceContainer.class)
 public class CodeSubmissionController extends BaseController {
 
   @Autowired
   CodeSubmissionAssembler codesubmissionAssembler;
 
   @Autowired
-  CodeSubmissionRepository codesubmissionRepository;
+  SourceContainerRepository codesubmissionRepository;
 
   @Autowired
   CompilerService compilerService;
 
-
   /**
-   * Returns a list of codesubmissions.
-   *
-   * @param pageable  The number of items, gotten through the url
-   * @param assembler the assembler injected by spring.
-   * @return a Resource representing the page.
-   */
-  @RequestMapping(method = RequestMethod.GET)
-  public PagedResources<CodeSubmission> getAll(@PageableDefault(size = 20, page = 0)
-                                         Pageable pageable,
-                                         PagedResourcesAssembler assembler) {
-
-    Page<CodeSubmission> pageResult = this.codesubmissionRepository.findAll(pageable);
-    return assembler.toResource(pageResult, codesubmissionAssembler);
-  }
-
-  /**
-   * Creates a new CodeSubmission
+   * Creates a new SourceContainer
    * @param entity the codesubmission from the post-request. This codesubmission is deserialized by
    *              jackson.
    * @return A respoonse containing a link to the new resource.
    */
   @RequestMapping(method = RequestMethod.POST)
-  public ResponseEntity<?> create(@RequestBody CodeSubmission entity,Principal principal) {
+  public ResponseEntity<?> create(@RequestBody SourceContainer entity,Principal principal) {
     entity.setUsername(principal.getName());
     return super.createEntity(this.codesubmissionRepository.save(entity));
   }
 
   /**
-   * Returns one CodeSubmission.
+   * Returns one SourceContainer.
    *
    * @param id the id of the  codesubmission to return.
    * @return a response.
    */
   @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-  public ResponseEntity<CodeSubmissionResource> getOne(@PathVariable String id) {
-    CodeSubmissionResource result
+  public ResponseEntity<SourceContainerResource> getOne(@PathVariable String id) {
+    SourceContainerResource result
         = codesubmissionAssembler.toResource(codesubmissionRepository.findOne(id));
     return ResponseEntity.ok().body(result);
   }
@@ -103,11 +82,13 @@ public class CodeSubmissionController extends BaseController {
     return ResponseEntity.noContent().build();
   }
 
-  @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
+  @RequestMapping(value = "/{id}", method = RequestMethod.PATCH)
   public ResponseEntity<?> update(@PathVariable String id,
-                                  @RequestBody CodeSubmission newValues) {
-    newValues.setId(id);
-    codesubmissionRepository.save(newValues);
+                                  @RequestBody String rawPatch) {
+
+    String [] patchParts = rawPatch.split("\\+\\+\\+\n");
+    CompilationReport report = compilerService.patchAndCompileUserSource(id, patchParts);
+
     return ResponseEntity.noContent().build();
   }
 

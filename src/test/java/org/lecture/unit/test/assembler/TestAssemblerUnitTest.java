@@ -18,7 +18,7 @@ package org.lecture.unit.test.assembler;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.lecture.assembler.TestCaseAssembler;
-import org.lecture.model.TestCase;
+import org.lecture.model.TestCaseContainer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.ResourceSupport;
 import org.springframework.test.context.ContextConfiguration;
@@ -28,7 +28,7 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import static org.junit.Assert.assertEquals;
 
 /**
- * Unit test for TestCase assemblers.
+ * Unit test for TestCaseContainer assemblers.
  * @author Rene Richter
  */
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -43,7 +43,7 @@ public class TestAssemblerUnitTest {
 
   @Test
   public void testToResource() throws Exception {
-    TestCase instance = new TestCase();
+    TestCaseContainer instance = new TestCaseContainer();
     instance.setId("1");
     ResourceSupport resourceSupport = testInstance.toResource(instance);
     assertEquals("self",resourceSupport.getId().getRel());

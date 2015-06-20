@@ -31,7 +31,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 
-import org.lecture.model.CodeSubmission;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -97,7 +96,7 @@ public class CodeSubmissionIntegrationTest {
   public void testCreateCodeSubmission() throws Exception {
     mockMvc.perform(post("/codesubmissions")
         .contentType(TestUtil.APPLICATION_JSON_UTF8)
-        .content(toJson(new CodeSubmission(timeStamp))))
+        .content(toJson(new UserSourceContainer(timeStamp))))
         .andExpect(status().isCreated());
   }
 }

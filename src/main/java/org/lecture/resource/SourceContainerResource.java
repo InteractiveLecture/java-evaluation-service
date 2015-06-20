@@ -15,16 +15,18 @@ package org.lecture.resource;
 * Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301  USA
 */
 
-import org.lecture.model.CodeSubmission;
+import org.lecture.model.SourceContainer;
 import org.springframework.hateoas.ResourceSupport;
 
+import java.util.Map;
+
 /**
- * A CodeSubmission-resource.
+ * A SourceContainer-resource.
  * @author Rene Richter
  */
-public class CodeSubmissionResource extends ResourceSupport {
+public class SourceContainerResource extends ResourceSupport {
   
-  private String code;
+  private Map<String,String> sources;
   
   private String classname;
   
@@ -36,15 +38,13 @@ public class CodeSubmissionResource extends ResourceSupport {
   /**
    * Reads all attributes from entity that should get serialized.
    */
-  public  CodeSubmissionResource( CodeSubmission entity) {
+  public SourceContainerResource(SourceContainer entity) {
     
-    this.code = entity.getCode();
-    
-    this.classname = entity.getClassname();
-    
+    this.sources = entity.getSources();
+
     this.username = entity.getUsername();
     
-    this.exerciseId = entity.getExerciseid();
+    this.exerciseId = entity.getExerciseId();
     
   }
 

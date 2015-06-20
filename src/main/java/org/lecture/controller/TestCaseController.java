@@ -19,10 +19,9 @@ import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 
 import org.lecture.assembler.TestCaseAssembler;
 import org.lecture.model.CompilationReport;
-import org.lecture.model.TestCase;
+import org.lecture.model.TestCaseContainer;
 import org.lecture.repository.TestCaseRepository;
 import org.lecture.resource.TestCaseResource;
-import org.lecture.service.CompilerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -41,12 +40,12 @@ import java.security.Principal;
 
 
 /**
- * A controller for TestCase Routes.
+ * A controller for TestCaseContainer Routes.
  * @author Rene Richter
  */
 @RestController
 @RequestMapping("/tests")
-@ExposesResourceFor(TestCase.class)
+@ExposesResourceFor(TestCaseContainer.class)
 public class TestCaseController extends BaseController {
 
   @Autowired
@@ -67,32 +66,32 @@ public class TestCaseController extends BaseController {
    * @return a Resource representing the page.
    */
   @RequestMapping(method = RequestMethod.GET)
-  public PagedResources<TestCase> getAll(@PageableDefault(size = 20, page = 0)
+  public PagedResources<TestCaseContainer> getAll(@PageableDefault(size = 20, page = 0)
                                          Pageable pageable,
                                          PagedResourcesAssembler assembler) {
 
-    Page<TestCase> pageResult = this.testRepository.findAll(pageable);
+    Page<TestCaseContainer> pageResult = this.testRepository.findAll(pageable);
     return assembler.toResource(pageResult, testAssembler);
   }
 
   /**
-   * Creates a new TestCase
+   * Creates a new TestCaseContainer
    * @param entity the test from the post-request. This test is deserialized by
    *              jackson.
    * @return A respoonse containing a compilation-report.
    */
   @RequestMapping(method = RequestMethod.POST)
-  public ResponseEntity<CompilationReport> create(@RequestBody TestCase entity,
+  public ResponseEntity<CompilationReport> create(@RequestBody TestCaseContainer entity,
                                                   Principal principal) {
     entity.setUsername(principal.getName());
-    TestCase testCase = compilerService.compileTestCase(entity);
+    TestCaseContainer testCase = compilerService.compileTestCase(entity);
     return ResponseEntity.created(
         linkTo(TestCaseController.class).slash(testCase.getId()).toUri())
         .body(testCase.getCompilationReport());
   }
 
   /**
-   * Returns one TestCase.
+   * Returns one TestCaseContainer.
    *
    * @param id the id of the  test to return.
    * @return a response.
@@ -112,9 +111,9 @@ public class TestCaseController extends BaseController {
 
   @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
   public ResponseEntity<CompilationReport> update(@PathVariable String id,
-                                  @RequestBody TestCase newValues) {
+                                  @RequestBody TestCaseContainer newValues) {
     newValues.setId(id);
-    TestCase testCase = compilerService.compileTestCase(newValues);
+    TestCaseContainer testCase = compilerService.compileTestCase(newValues);
     return ResponseEntity.ok().body(testCase.getCompilationReport());
   }
 

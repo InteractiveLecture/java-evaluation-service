@@ -16,15 +16,12 @@ package org.lecture.service;
  */
 
 import org.lecture.model.CompilationReport;
-import org.lecture.model.TestCase;
 
 /**
- * Created by rene on 19.06.15.
+ * Created by rene on 21.06.15.
  */
 public interface CompilerService {
+  CompilationReport patchAndCompileUserSource(String id, String[] patches);
 
-  CompilationReport compileUserSource(String source, String className,
-                                      String username, long exerciseId);
-
-  TestCase compileTestCase(TestCase testCase);
+  CompilationReport patchAndCompileTestSource(String id, String[] patches);
 }

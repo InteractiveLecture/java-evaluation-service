@@ -15,7 +15,6 @@ package org.lecture.integration.codesubmission;
 * Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301  USA
 */
 
-import org.lecture.model.CodeSubmission;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.stereotype.Component;
@@ -31,13 +30,13 @@ public class CodeSubmissionSampleData {
   public void seed() {
 
     for (int i = 0; i < 10; i++) {
-      CodeSubmission b = new CodeSubmission(timeStamp);
+      UserSourceContainer b = new UserSourceContainer(timeStamp);
       b.setId(String.valueOf(i));
       mongoOperations.save(b);
     }
   }
 
   public void destroy() {
-    mongoOperations.dropCollection("CodeSubmission");
+    mongoOperations.dropCollection("SourceContainer");
   }
 }

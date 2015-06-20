@@ -28,8 +28,6 @@ public class CompilationReport {
   private List<CompilationDiagnostic> errors;
   private List<CompilationDiagnostic> warnings;
 
-  private String username;
-  private long exerciseId;
   
 
   public CompilationReport(){}
@@ -44,22 +42,6 @@ public class CompilationReport {
     this.errors = errors;
     this.warnings = warnings;
     
-  }
-
-  public String getUsername() {
-    return username;
-  }
-
-  public void setUsername(String username) {
-    this.username = username;
-  }
-
-  public long getExerciseId() {
-    return exerciseId;
-  }
-
-  public void setExerciseId(long exerciseId) {
-    this.exerciseId = exerciseId;
   }
 
   public LocalDateTime getDate() {

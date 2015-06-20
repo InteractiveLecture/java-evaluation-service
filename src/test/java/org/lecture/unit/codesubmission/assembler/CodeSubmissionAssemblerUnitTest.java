@@ -18,7 +18,6 @@ package org.lecture.unit.codesubmission.assembler;
 import static org.junit.Assert.assertEquals;
 
 import org.lecture.assembler.CodeSubmissionAssembler;
-import org.lecture.model.CodeSubmission;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +27,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
 /**
- * Unit test for CodeSubmission assemblers.
+ * Unit test for SourceContainer assemblers.
  * @author Rene Richter
  */
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -43,7 +42,7 @@ public class CodeSubmissionAssemblerUnitTest {
 
   @Test
   public void testToResource() throws Exception {
-    CodeSubmission instance = new CodeSubmission(timeStamp);
+    UserSourceContainer instance = new UserSourceContainer(timeStamp);
     instance.setId(String.valueOf(1));
     ResourceSupport resourceSupport = testInstance.toResource(instance);
     assertEquals("self",resourceSupport.getId().getRel());

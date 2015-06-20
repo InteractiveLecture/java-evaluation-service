@@ -18,7 +18,7 @@ package org.lecture.integration.test;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.lecture.model.TestCase;
+import org.lecture.model.TestCaseContainer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.MediaTypes;
 import org.springframework.test.context.ContextConfiguration;
@@ -83,7 +83,7 @@ public class TestIntegrationTest {
   public void testCreateTest() throws Exception {
     mockMvc.perform(post("/tests")
         .contentType(TestUtil.APPLICATION_JSON_UTF8)
-        .content(toJson(new TestCase())))
+        .content(toJson(new TestCaseContainer())))
         .andExpect(status().isCreated());
   }
 }

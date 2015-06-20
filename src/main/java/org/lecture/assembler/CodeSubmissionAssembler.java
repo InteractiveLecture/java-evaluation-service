@@ -16,29 +16,27 @@ package org.lecture.assembler;
 */
 
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
-import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 
-import org.lecture.model.CodeSubmission;
 import org.lecture.controller.CodeSubmissionController;
-import org.lecture.resource.CodeSubmissionResource;
+import org.lecture.resource.SourceContainerResource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.EntityLinks;
 import org.springframework.hateoas.mvc.ResourceAssemblerSupport;
 import org.springframework.stereotype.Component;
 
 /**
- * Assembler to create CodeSubmission resources.
+ * Assembler to create SourceContainer resources.
  * @author Rene Richter
  */
 @Component
-public class CodeSubmissionAssembler extends BaseAssembler<CodeSubmission, CodeSubmissionResource> {
+public class CodeSubmissionAssembler extends BaseAssembler<UserSourceContainer, SourceContainerResource> {
 
   /**
    * Creates a new {@link ResourceAssemblerSupport}
    * using the given controller class and resource type.
    */
   public CodeSubmissionAssembler() {
-    super(CodeSubmissionController.class, CodeSubmissionResource.class);
+    super(CodeSubmissionController.class, SourceContainerResource.class);
   }
 
 
@@ -47,8 +45,8 @@ public class CodeSubmissionAssembler extends BaseAssembler<CodeSubmission, CodeS
 
 
   @Override
-  public CodeSubmissionResource toResource(CodeSubmission entity) {
-    CodeSubmissionResource resource = createResource(entity);
+  public SourceContainerResource toResource(UserSourceContainer entity) {
+    SourceContainerResource resource = createResource(entity);
 
     //TODO add links
 

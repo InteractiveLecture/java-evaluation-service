@@ -16,11 +16,11 @@ package org.lecture.resource;
 */
 
 import org.lecture.model.CompilationReport;
-import org.lecture.model.TestCase;
+import org.lecture.model.TestCaseContainer;
 import org.springframework.hateoas.ResourceSupport;
 
 /**
- * A TestCase-resource.
+ * A TestCaseContainer-resource.
  * @author Rene Richter
  */
 public class TestCaseResource extends ResourceSupport {
@@ -39,7 +39,7 @@ public class TestCaseResource extends ResourceSupport {
   /**
    * Reads all attributes from entity that should get serialized.
    */
-  public TestCaseResource(TestCase entity) {
+  public TestCaseResource(TestCaseContainer entity) {
     
     this.exerciseId = entity.getExerciseId();
     

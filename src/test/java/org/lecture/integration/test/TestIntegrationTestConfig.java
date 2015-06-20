@@ -55,6 +55,6 @@ public class TestIntegrationTestConfig extends WebMvcConfigurerAdapter {
     
   @Bean
   public MongoTemplate mongoTemplate() {
-    return new MongoTemplate(mongo(),"TestCase");
+    return new MongoTemplate(mongo(),"TestCaseContainer");
   }
 }

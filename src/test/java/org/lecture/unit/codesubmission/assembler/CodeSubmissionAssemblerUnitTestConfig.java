@@ -24,7 +24,7 @@ import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.config.EnableHypermediaSupport;
 
 /**
-* Configuration class for CodeSubmission unit tests.
+* Configuration class for SourceContainer unit tests.
 * @author Rene Richter
 */
 @Configuration

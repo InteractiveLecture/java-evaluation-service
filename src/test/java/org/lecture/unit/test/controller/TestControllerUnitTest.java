@@ -20,7 +20,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.lecture.assembler.TestCaseAssembler;
 import org.lecture.controller.TestCaseController;
-import org.lecture.model.TestCase;
+import org.lecture.model.TestCaseContainer;
 import org.lecture.repository.TestCaseRepository;
 import org.lecture.resource.TestCaseResource;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,7 +43,7 @@ import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.*;
 
 /**
-* Unit test for TestCase controllers.
+* Unit test for TestCaseContainer controllers.
 * @author Rene Richter
 */
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -75,13 +75,13 @@ public class TestControllerUnitTest {
   @Test
   public void getAllShouldReturnAPageOfTest() throws Exception {
 
-    List<TestCase> sampleData = new ArrayList<>();
+    List<TestCaseContainer> sampleData = new ArrayList<>();
     for (int i = 0; i < 10; i++) {
-      TestCase instance = new TestCase();
+      TestCaseContainer instance = new TestCaseContainer();
       instance.setId(""+i);
       sampleData.add(instance);
     }
-    Page<TestCase> page = new PageImpl<>(sampleData);
+    Page<TestCaseContainer> page = new PageImpl<>(sampleData);
     when(testRepository.findAll(any(Pageable.class))).thenReturn(page);
     when(pagedResourcesAssembler.toResource(page,testAssembler))
       .thenReturn(new PagedResources(sampleData,null));
@@ -98,7 +98,7 @@ public class TestControllerUnitTest {
 
   @Test
   public void getOneShouldReturnResponseContainingTheDataOfOneTestAsJson() throws Exception {
-    TestCase instance = new TestCase();
+    TestCaseContainer instance = new TestCaseContainer();
     instance.setId("1");
     TestCaseResource testResource = new TestCaseResource(instance);
     when(testRepository.findOne("1")).thenReturn(instance);

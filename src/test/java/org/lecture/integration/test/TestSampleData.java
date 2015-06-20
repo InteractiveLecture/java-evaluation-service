@@ -15,7 +15,7 @@ package org.lecture.integration.test;
 * Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301  USA
 */
 
-import org.lecture.model.TestCase;
+import org.lecture.model.TestCaseContainer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.stereotype.Component;
@@ -31,13 +31,13 @@ public class TestSampleData {
   public void seed() {
 
     for (int i = 0; i < 10; i++) {
-      TestCase b = new TestCase();
+      TestCaseContainer b = new TestCaseContainer();
       b.setId(String.valueOf(i));
       mongoOperations.save(b);
     }
   }
 
   public void destroy() {
-    mongoOperations.dropCollection("TestCase");
+    mongoOperations.dropCollection("TestCaseContainer");
   }
 }

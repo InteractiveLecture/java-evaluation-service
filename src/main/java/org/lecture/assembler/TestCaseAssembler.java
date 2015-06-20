@@ -17,7 +17,7 @@ package org.lecture.assembler;
 
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 
-import org.lecture.model.TestCase;
+import org.lecture.model.TestCaseContainer;
 import org.lecture.controller.TestCaseController;
 import org.lecture.resource.TestCaseResource;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,11 +26,11 @@ import org.springframework.hateoas.mvc.ResourceAssemblerSupport;
 import org.springframework.stereotype.Component;
 
 /**
- * Assembler to create TestCase resources.
+ * Assembler to create TestCaseContainer resources.
  * @author Rene Richter
  */
 @Component
-public class TestCaseAssembler extends BaseAssembler<TestCase, TestCaseResource> {
+public class TestCaseAssembler extends BaseAssembler<TestCaseContainer, TestCaseResource> {
 
   /**
    * Creates a new {@link ResourceAssemblerSupport}
@@ -46,7 +46,7 @@ public class TestCaseAssembler extends BaseAssembler<TestCase, TestCaseResource>
 
 
   @Override
-  public TestCaseResource toResource(TestCase entity) {
+  public TestCaseResource toResource(TestCaseContainer entity) {
     TestCaseResource resource = createResource(entity);
 
     //TODO add links

@@ -16,7 +16,7 @@ package org.lecture.unit.codesubmission.controller;
 */
 
 import org.lecture.assembler.CodeSubmissionAssembler;
-import org.lecture.repository.CodeSubmissionRepository;
+import org.lecture.repository.SourceContainerRepository;
 import org.lecture.controller.CodeSubmissionController;
 import org.mockito.Mockito;
 import org.springframework.cloud.client.loadbalancer.LoadBalancerClient;
@@ -26,7 +26,7 @@ import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.config.EnableHypermediaSupport;
 
 /**
-* Configuration for CodeSubmission controller unit tests.
+* Configuration for SourceContainer controller unit tests.
 * @author Rene Richter
 */
 @Configuration
@@ -45,8 +45,8 @@ public class CodeSubmissionControllerUnitTestConfig {
   }
 
   @Bean
-  public CodeSubmissionRepository codesubmissionRepository() {
-    return Mockito.mock(CodeSubmissionRepository.class);
+  public SourceContainerRepository codesubmissionRepository() {
+    return Mockito.mock(SourceContainerRepository.class);
   }
 
   @Bean

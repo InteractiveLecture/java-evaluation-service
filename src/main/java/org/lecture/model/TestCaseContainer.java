@@ -1,7 +1,7 @@
-package org.lecture.repository;
+package org.lecture.model;
 
 /*
-* Copyright (c) 2015 .
+* Copyright (c) 2015 Rene Richter.
 * This program is free software; you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
 * the Free Software Foundation; either version 3 of the License, or
@@ -15,16 +15,35 @@ package org.lecture.repository;
 * Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301  USA
 */
 
-import org.lecture.model.CodeSubmission;
-import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.Map;
 
 /**
-* A repository for codesubmissions
-* @author Rene Richter
-*/
-public interface CodeSubmissionRepository extends MongoRepository<CodeSubmission,String> {
+ * Entity that represents Tests.
+ * @author Rene Richter
+ */
+@Document
+public class TestCaseContainer extends SourceContainer {
 
-  CodeSubmission findOneByUsernameAndExerciseIdOrderBySubmissionDate(String username,long exerciseId);
 
+  private Map<String,Class<?>> testClasses;
+  private boolean active;
+
+
+  public boolean isActive() {
+    return active;
+  }
+
+  public void setActive(boolean active) {
+    this.active = active;
+  }
+
+  public Map<String, Class<?>> getTestClasses() {
+    return testClasses;
+  }
+
+  public void setTestClasses(Map<String, Class<?>> testClasses) {
+    this.testClasses = testClasses;
+  }
 }

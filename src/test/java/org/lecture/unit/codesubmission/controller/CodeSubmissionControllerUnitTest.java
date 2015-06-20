@@ -26,9 +26,8 @@ import static org.mockito.Mockito.when;
 
 import org.lecture.assembler.CodeSubmissionAssembler;
 import org.lecture.controller.CodeSubmissionController;
-import org.lecture.repository.CodeSubmissionRepository;
-import org.lecture.resource.CodeSubmissionResource;
-import org.lecture.model.CodeSubmission;
+import org.lecture.repository.SourceContainerRepository;
+import org.lecture.resource.SourceContainerResource;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -47,7 +46,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
-* Unit test for CodeSubmission controllers.
+* Unit test for SourceContainer controllers.
 * @author Rene Richter
 */
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -55,7 +54,7 @@ import java.util.List;
 public class CodeSubmissionControllerUnitTest {
 
   @Autowired
-  private CodeSubmissionRepository codesubmissionRepository;
+  private SourceContainerRepository codesubmissionRepository;
 
   @Autowired
   private CodeSubmissionAssembler codesubmissionAssembler;
@@ -79,13 +78,13 @@ public class CodeSubmissionControllerUnitTest {
   @Test
   public void getAllShouldReturnAPageOfCodeSubmission() throws Exception {
 
-    List<CodeSubmission> sampleData = new ArrayList<>();
+    List<UserSourceContainer> sampleData = new ArrayList<>();
     for (int i = 0; i < 10; i++) {
-      CodeSubmission instance = new CodeSubmission(timeStamp);
+      UserSourceContainer instance = new UserSourceContainer(timeStamp);
       instance.setId(String.valueOf(i));
       sampleData.add(instance);
     }
-    Page<CodeSubmission> page = new PageImpl<>(sampleData);
+    Page<UserSourceContainer> page = new PageImpl<>(sampleData);
     when(codesubmissionRepository.findAll(any(Pageable.class))).thenReturn(page);
     when(pagedResourcesAssembler.toResource(page,codesubmissionAssembler))
       .thenReturn(new PagedResources(sampleData,null));
@@ -102,9 +101,9 @@ public class CodeSubmissionControllerUnitTest {
 
   @Test
   public void getOneShouldReturnResponseContainingTheDataOfOneCodeSubmissionAsJson() throws Exception {
-    CodeSubmission instance = new CodeSubmission(timeStamp);
+    UserSourceContainer instance = new UserSourceContainer(timeStamp);
     instance.setId(String.valueOf(1));
-    CodeSubmissionResource testResource = new CodeSubmissionResource(instance);
+    SourceContainerResource testResource = new SourceContainerResource(instance);
     when(codesubmissionRepository.findOne(String.valueOf(1))).thenReturn(instance);
     when(codesubmissionAssembler.toResource(instance)).thenReturn(testResource);
     ResponseEntity response = testInstance.getOne(String.valueOf(1));

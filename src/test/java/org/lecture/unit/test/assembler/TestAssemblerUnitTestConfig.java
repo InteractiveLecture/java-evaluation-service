@@ -23,7 +23,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.hateoas.config.EnableHypermediaSupport;
 
 /**
-* Configuration class for TestCase unit tests.
+* Configuration class for TestCaseContainer unit tests.
 * @author Rene Richter
 */
 @Configuration

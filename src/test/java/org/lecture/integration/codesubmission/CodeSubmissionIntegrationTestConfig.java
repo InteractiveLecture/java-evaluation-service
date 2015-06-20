@@ -55,6 +55,6 @@ public class CodeSubmissionIntegrationTestConfig extends WebMvcConfigurerAdapter
     
   @Bean
   public MongoTemplate mongoTemplate() {
-    return new MongoTemplate(mongo(),"CodeSubmission");
+    return new MongoTemplate(mongo(),"SourceContainer");
   }
 }

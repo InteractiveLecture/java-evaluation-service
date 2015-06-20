@@ -26,7 +26,7 @@ import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.config.EnableHypermediaSupport;
 
 /**
-* Configuration for TestCase controller unit tests.
+* Configuration for TestCaseContainer controller unit tests.
 * @author Rene Richter
 */
 @Configuration

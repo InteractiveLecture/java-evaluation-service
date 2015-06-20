@@ -17,15 +17,19 @@ package org.lecture.service;
 
 import org.lecture.compiler.compiler.CompilationResult;
 import org.lecture.compiler.compiler.StringCompiler;
-import org.lecture.model.CodeSubmission;
 import org.lecture.model.CompilationDiagnostic;
 import org.lecture.model.CompilationReport;
-import org.lecture.model.TestCase;
-import org.lecture.repository.CodeSubmissionRepository;
+import org.lecture.model.SourceContainer;
+import org.lecture.model.TestCaseContainer;
+import org.lecture.repository.SourceContainerRepository;
 import org.lecture.repository.TestCaseRepository;
 import org.lecture.restclient.AclRestClient;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.StringReader;
 import java.time.LocalDateTime;
 import java.util.stream.Collectors;
 
@@ -36,75 +40,50 @@ import java.util.stream.Collectors;
 public class CompilerServiceImpl implements CompilerService {
 
   @Autowired
-  private CodeSubmissionRepository codeSubmissionRepository;
+  private SourceContainerRepository codeSubmissionRepository;
 
   @Autowired
   private TestCaseRepository testCaseRepository;
 
   @Autowired
+  private PatchService patchService;
+
+  @Autowired
   private AclRestClient aclClient;
 
-
   @Override
-  public CompilationReport compileUserSource(CodeSubmission submission) {
-    //String source, String className,
-     //   String username, long exerciseId
-    CodeSubmission previousSubmission = codeSubmissionRepository
-        .findOneByUsernameAndExerciseIdOrderBySubmissionDate(
-            submission.getUsername(),submission.getExerciseId());
-
-    if(previousSubmission != null) {
-      submission.getSources().forEach(previousSubmission::addSubmission);
-      submission = previousSubmission;
-    }
-
-    StringCompiler compiler = new StringCompiler();
-    submission.getSources().forEach(compiler::addCompilationTask);
-
-    CompilationResult compilationResult = compiler.startCompilation();
-
-    CompilationReport report = createCompilationReport(
-        compilationResult,submission.getUsername(),submission.getExerciseId());
-
-    
-
-    //TODO if performance issues, make call async.
-    codeSubmissionRepository.save(submission);
-
-    return report;
+  public CompilationReport patchAndCompileUserSource(String id, String[] patches) {
+    SourceContainer submission = codeSubmissionRepository.findOne(id);
+    CompilationResult compilationResult = patchAndCompile(patches,submission);
+    CompilationReport report = createCompilationReport(compilationResult);
+    submission.setCompilationReport(report);
+    saveAsync(submission);
+    return submission.getCompilationReport();
   }
 
   @Override
-  public TestCase compileTestCase(TestCase testCase) {
-
-    //TODO in aspket umwandeln.
-    boolean hasPermission = aclClient.hasWritePermission(
-        testCase.getUsername(),testCase.getExerciseId(),"exercise");
-
-    if(!hasPermission) {
-      throw new RuntimeException(testCase.getUsername()
-          + " has no permissions to write tests for exercise with id "+testCase.getExerciseId());
-    }
-
-    StringCompiler compiler = new StringCompiler();
-
-    compiler.addCompilationTask(testCase.getClassname(),testCase.getTestCode());
-
-    CompilationResult compilationResult = compiler.startCompilation();
-
-    CompilationReport report = createCompilationReport(
-        compilationResult,testCase.getUsername(),testCase.getExerciseId());
-    testCase.setCompilationReport(report);
-    testCase.setTestClass(
-        compilationResult.getCompiledClasses().get(testCase.getClassname()));
-    testCase.setActive(!compilationResult.hasErrors());
-    return testCaseRepository.save(testCase);
+  public CompilationReport patchAndCompileTestSource(String id, String[] patches) {
+    TestCaseContainer testContainer = testCaseRepository.findOne(id);
+    CompilationResult compilationResult = patchAndCompile(patches,testContainer);
+    testContainer.setTestClasses(compilationResult.getCompiledClasses());
+    saveAsync(testContainer);
+    return testContainer.getCompilationReport();
   }
 
+  private <T extends SourceContainer> CompilationResult patchAndCompile(String[] patches,T entity) {
+    for (String patch : patches) {
+      String[] parsedPatch = parsePatch(patch);
+      String oldSource = entity.getSources().get(parsedPatch[0]);
+      String newSource = patchService.patch(oldSource,parsedPatch[1]);
+      entity.addSource(parsedPatch[0], newSource);
+    }
+    StringCompiler compiler = new StringCompiler();
+    entity.getSources().forEach(compiler::addCompilationTask);
+    return compiler.startCompilation();
 
-  private CompilationReport createCompilationReport(CompilationResult result,
-                                                    String username,
-                                                    long exerciseId) {
+  }
+
+  private CompilationReport createCompilationReport(CompilationResult result) {
 
     CompilationReport compilationReport = new CompilationReport();
     compilationReport.setDate(LocalDateTime.now());
@@ -116,12 +95,36 @@ public class CompilerServiceImpl implements CompilerService {
         .stream()
         .map(CompilationDiagnostic::new)
         .collect(Collectors.toList()));
-    compilationReport.setUsername(username);
-    compilationReport.setExerciseId(exerciseId);
 
     return compilationReport;
 
   }
+
+  // 0 = classname, 1 = patch
+  private String[] parsePatch(String patch) {
+    BufferedReader br = new BufferedReader(new StringReader(patch));
+    String[] parsedPatch = new String[2];
+    try {
+      parsedPatch[0] = br.readLine();
+      parsedPatch[1] = br.lines().collect(Collectors.joining());
+    } catch (IOException e) {
+      throw new RuntimeException(
+          "Well... you are the first person who got an IOException from a "
+              + "StringReader. Congratulations!");
+    }
+    return parsedPatch;
+  }
+
+  @Async
+  private void saveAsync(SourceContainer submission) {
+    codeSubmissionRepository.save(submission);
+  }
+
+  @Async
+  private void saveAsync(TestCaseContainer testCase) {
+    testCaseRepository.save(testCase);
+  }
+
 
 
 
