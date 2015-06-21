@@ -1,9 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-package org.lecture.compiler.service.api;
+package org.lecture.service;
 
 /*
  * Copyright (c) 2015 Rene Richter
@@ -20,15 +15,14 @@ package org.lecture.compiler.service.api;
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301  USA
  */
 
+import org.lecture.model.SourceContainer;
+import org.lecture.model.TestReport;
+import org.springframework.stereotype.Service;
+
 /**
- *
- * @author rene
+ * Created by rene on 21.06.15.
  */
-public interface SourceContainer 
-{
-    public int getId();
-
-    public String getSource() ;
-
-    public String getClassName();
+@Service
+public interface TestService {
+  TestReport runTests(SourceContainer sourceContainer);
 }

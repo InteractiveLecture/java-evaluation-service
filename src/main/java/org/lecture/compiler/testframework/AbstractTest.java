@@ -23,7 +23,6 @@ package org.lecture.compiler.testframework;
 import org.junit.Rule;
 import org.junit.rules.Timeout;
 import org.lecture.compiler.service.api.ExerciseContainer;
-import org.lecture.compiler.service.api.ExerciseContainerDiscoveryService;
 
 
 /**

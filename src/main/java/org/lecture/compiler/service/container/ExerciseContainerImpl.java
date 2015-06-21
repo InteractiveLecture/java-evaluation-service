@@ -22,7 +22,7 @@ package org.lecture.compiler.service.container;
 
 
 import org.lecture.compiler.service.api.ExerciseContainer;
-import org.lecture.compiler.service.api.SourceContainer;
+import org.lecture.model.SourceContainer;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -34,7 +34,7 @@ import java.util.Map;
  *
  * @author rene
  */
-public class AppContainerImpl implements ExerciseContainer
+public class ExerciseContainerImpl implements ExerciseContainer
 {
     private Map<String,Class<?>> excerciseClasses;
     private Map<String,Class<?>> testClasses;
@@ -95,7 +95,8 @@ public class AppContainerImpl implements ExerciseContainer
                     .getMethod(methodName,(Class<?>[])getParameterTypes(parameters))
                     .invoke(object, parameters);
         } 
-        catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+        catch (NoSuchMethodException | SecurityException | IllegalAccessException
+            | IllegalArgumentException | InvocationTargetException e) {
             throw new RuntimeException(e);
         }
     }
@@ -105,30 +106,6 @@ public class AppContainerImpl implements ExerciseContainer
     private Class<?>[] getParameterTypes(Object[] parameters)
     {
         if(parameters.length== 0) return new Class<?>[0];
-        return Arrays.stream(parameters).map(param-> param.getClass()).toArray(Class<?>[]::new);       
-    }
-
-    @Override
-    public Map<Integer, SourceContainer> getUserSources() 
-    {
-        return this.exerciseSource;
-    }
-
-    @Override
-    public Map<Integer, SourceContainer> getTestSources() 
-    {
-        return this.exerciseSource;
-    }
-    
-    @Override
-    public void addTestSource(int id, SourceContainer container)
-    {
-        this.testSource.put(id, container);
-    }
-    
-    @Override
-    public void addExerciseSource(int id, SourceContainer container)
-    {
-        this.testSource.put(id, container);
+        return Arrays.stream(parameters).map(param-> param.getClass()).toArray(Class<?>[]::new);
     }
 }

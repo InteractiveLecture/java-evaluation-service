@@ -28,17 +28,10 @@ import java.util.Map;
  */
 public interface ExerciseContainer
 {
-    
-    public Object createObject(String className, Object... params);
-    public Object executeMethod(Object object, String methodName, Object... parameters);
-    public Map<String, Class<?>> getTestClasses();
-    public Map<String, Class<?>> getUserClasses();
-    public Map<Integer,SourceContainer> getUserSources();
-    public Map<Integer,SourceContainer> getTestSources();
-    public void setTestClasses(Map<String, Class<?>> classes);
-    public void setExerciseClasses(Map<String, Class<?>> exerciseClasses);
-
-    public void addTestSource(int id, SourceContainer container);
-
-    public void addExerciseSource(int id, SourceContainer container);
+  Object createObject(String className, Object... params);
+  Object executeMethod(Object object, String methodName, Object... parameters);
+  Map<String, Class<?>> getTestClasses();
+  Map<String, Class<?>> getUserClasses();
+  void setTestClasses(Map<String,Class<?>> classes);
+  void setExerciseClasses(Map<String,Class<?>> exerciseClasses);
 }

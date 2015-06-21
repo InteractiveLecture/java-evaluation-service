@@ -16,17 +16,16 @@ package org.lecture.service;
  */
 
 import org.junit.runner.JUnitCore;
-import org.junit.runner.Result;
 import org.junit.runner.Runner;
-import org.junit.runner.notification.Failure;
 import org.junit.runners.model.InitializationError;
 import org.lecture.compiler.compiler.StringCompiler;
 import org.lecture.compiler.service.api.ExerciseContainer;
-import org.lecture.compiler.service.container.AppContainerImpl;
+import org.lecture.compiler.service.container.ExerciseContainerImpl;
 import org.lecture.compiler.testframework.LectureRunner;
 import org.lecture.model.SourceContainer;
 import org.lecture.model.TestCaseContainer;
 import org.lecture.model.TestReport;
+import org.lecture.model.TestResult;
 import org.lecture.repository.TestCaseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -38,17 +37,18 @@ import java.util.stream.Collectors;
  *
  * @author Rene Richter
  */
-public class TestServiceImpl {
+public class TestServiceImpl implements TestService {
 
   @Autowired
   TestCaseRepository testCaseRepository;
 
 
+  @Override
   public TestReport runTests(SourceContainer sourceContainer) {
     TestCaseContainer testCaseContainer =
         testCaseRepository.findByExerciseId(sourceContainer.getExerciseId());
 
-    ExerciseContainer exerciseContainer = new AppContainerImpl();
+    ExerciseContainer exerciseContainer = new ExerciseContainerImpl();
 
     exerciseContainer.setTestClasses(testCaseContainer.getTestClasses());
 
@@ -62,20 +62,12 @@ public class TestServiceImpl {
         .map(clazz -> instanciateRunner(clazz,exerciseContainer))
         .collect(Collectors.toList());
 
-    List<Result> results = runners.stream()
+    List<TestResult> results = runners.stream()
         .map(jc::run)
+        .map(TestResult::new)
         .collect(Collectors.toList());
 
-
-
-
-
-    Result result = jc.run((Class<?>[])testCaseContainer.getTestClasses().values().toArray());
-    Failure[] failures = new Failure[result.getFailureCount()];
-    if(!result.wasSuccessful())
-      failures = result.getFailures().toArray(new Failure[result.getFailureCount()]);
-
-
+    return new TestReport(results);
   }
 
   private LectureRunner instanciateRunner(Class<?> clazz, ExerciseContainer container) {

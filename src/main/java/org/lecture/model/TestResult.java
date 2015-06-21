@@ -1,9 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-package org.lecture.compiler.service.container;
+package org.lecture.model;
 
 /*
  * Copyright (c) 2015 Rene Richter
@@ -20,20 +15,40 @@ package org.lecture.compiler.service.container;
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301  USA
  */
 
+import org.junit.runner.Result;
+import org.junit.runner.notification.Failure;
 
-import org.lecture.compiler.service.api.ExerciseContainer;
-import org.lecture.compiler.service.api.ExerciseContainerDiscoveryService;
+import java.util.List;
 
 /**
- *
- * @author rene
+ * Created by rene on 21.06.15.
  */
-public class AppContainerDiscoveryServiceImpl implements ExerciseContainerDiscoveryService
-{
-    @Override
-    public ExerciseContainer find(String exerciseId)
-    {
-        return ContainerRegistry.getInstance().getContainer(exerciseId);
-    }
-    
+public class TestResult {
+
+  List<Failure> failures;
+  private boolean successful;
+
+
+  public TestResult() {}
+
+  public TestResult(Result result) {
+    this.failures = result.getFailures();
+    this.successful = result.wasSuccessful();
+  }
+
+  public List<Failure> getFailures() {
+    return failures;
+  }
+
+  public void setFailures(List<Failure> failures) {
+    this.failures = failures;
+  }
+
+  public boolean isSuccessful() {
+    return successful;
+  }
+
+  public void setSuccessful(boolean successful) {
+    this.successful = successful;
+  }
 }

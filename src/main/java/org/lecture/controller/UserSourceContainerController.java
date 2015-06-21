@@ -18,9 +18,11 @@ package org.lecture.controller;
 import org.lecture.assembler.SourceContainerAssembler;
 import org.lecture.model.CompilationReport;
 import org.lecture.model.SourceContainer;
+import org.lecture.model.TestReport;
 import org.lecture.repository.SourceContainerRepository;
 import org.lecture.resource.SourceContainerResource;
 import org.lecture.service.CompilerService;
+import org.lecture.service.TestService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.ExposesResourceFor;
 import org.springframework.http.ResponseEntity;
@@ -28,6 +30,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.security.Principal;
@@ -50,6 +53,28 @@ public class UserSourceContainerController extends BaseController {
 
   @Autowired
   CompilerService compilerService;
+
+  @Autowired
+  TestService testService;
+
+  /**
+   * Returns a single source container by exercise id.
+   *
+   * @param exerciseId  The id of the exercise the source container belongs to.
+   * @return a Resource representing the source container.
+   */
+  @RequestMapping(method = RequestMethod.GET)
+  public ResponseEntity<SourceContainerResource> getAll(
+      @RequestParam("exerciseId")long exerciseId, Principal principal) {
+
+    String username = principal.getName();
+    SourceContainer result =
+        this.codesubmissionRepository.findOneByUsernameAndExerciseId(username,exerciseId);
+
+    return ResponseEntity.ok()
+        .header("Accept-Patch", "text/mdmp")
+        .body(codesubmissionAssembler.toResource(result));
+  }
 
   /**
    * Creates a new SourceContainer
@@ -93,10 +118,9 @@ public class UserSourceContainerController extends BaseController {
   }
 
   @RequestMapping(value = "/{id}/test-report", method = RequestMethod.GET)
-  public ResponseEntity<SourceContainerResource> getTestReport(@PathVariable String id) {
+  public ResponseEntity<TestReport> getTestReport(@PathVariable String id) {
     SourceContainer container = codesubmissionRepository.findOne(id);
-
-    return ResponseEntity.ok().body(result);
+    return ResponseEntity.ok().body(testService.runTests(container));
   }
 
 

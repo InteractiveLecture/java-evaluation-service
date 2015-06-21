@@ -15,12 +15,41 @@ package org.lecture.model;
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301  USA
  */
 
+import java.util.List;
+
 /**
  * Created by rene on 21.06.15.
  *
- * @author rene
- * @version 0.0.1
+ * @author Rene Richter
  */
 public class TestReport {
 
+  private List<TestResult> testResults;
+  private boolean allPassed;
+
+  public TestReport(){}
+
+  public TestReport(List<TestResult> testResults) {
+    this.testResults = testResults;
+    this.allPassed = !testResults.stream()
+        .filter(testResult -> !testResult.isSuccessful())
+        .findAny()
+        .isPresent();
+  }
+
+  public List<TestResult> getTestResults() {
+    return testResults;
+  }
+
+  public void setTestResults(List<TestResult> testResults) {
+    this.testResults = testResults;
+  }
+
+  public boolean isAllPassed() {
+    return allPassed;
+  }
+
+  public void setAllPassed(boolean allPassed) {
+    this.allPassed = allPassed;
+  }
 }
