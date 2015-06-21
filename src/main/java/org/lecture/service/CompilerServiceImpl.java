@@ -15,6 +15,9 @@ package org.lecture.service;
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301  USA
  */
 
+import org.junit.runner.Runner;
+import org.junit.runners.BlockJUnit4ClassRunner;
+import org.junit.runners.model.InitializationError;
 import org.lecture.compiler.compiler.CompilationResult;
 import org.lecture.compiler.compiler.StringCompiler;
 import org.lecture.model.CompilationDiagnostic;
@@ -66,6 +69,7 @@ public class CompilerServiceImpl implements CompilerService {
     TestCaseContainer testContainer = testCaseRepository.findOne(id);
     CompilationResult compilationResult = patchAndCompile(patches,testContainer);
     testContainer.setTestClasses(compilationResult.getCompiledClasses());
+    checkTestValidity(testContainer);
     saveAsync(testContainer);
     return testContainer.getCompilationReport();
   }
@@ -113,6 +117,20 @@ public class CompilerServiceImpl implements CompilerService {
               + "StringReader. Congratulations!");
     }
     return parsedPatch;
+  }
+
+  private void checkTestValidity(TestCaseContainer container) {
+    container.getTestClasses().forEach((k, v) -> {
+      try {
+        Runner runner = new BlockJUnit4ClassRunner(v);
+      } catch (InitializationError initializationError) {
+        CompilationDiagnostic malformedError = new CompilationDiagnostic();
+        malformedError.setClassname(k);
+        malformedError.setMessage("Not a valid JUnit test.");
+        container.getCompilationReport().addError(malformedError);
+      }
+    });
+
   }
 
   @Async

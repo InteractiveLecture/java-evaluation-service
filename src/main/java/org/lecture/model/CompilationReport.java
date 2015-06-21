@@ -44,6 +44,10 @@ public class CompilationReport {
     
   }
 
+  public void addError(CompilationDiagnostic error) {
+    this.errors.add(error);
+  }
+
   public LocalDateTime getDate() {
     return date;
   }

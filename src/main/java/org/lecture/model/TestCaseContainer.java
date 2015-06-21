@@ -30,7 +30,6 @@ public class TestCaseContainer extends SourceContainer {
   private Map<String,Class<?>> testClasses;
   private boolean active;
 
-
   public boolean isActive() {
     return active;
   }

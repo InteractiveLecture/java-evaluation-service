@@ -35,6 +35,8 @@ public class CompilationDiagnostic {
   private long position;
   private boolean noPosition;
 
+  public CompilationDiagnostic(){}
+
   public CompilationDiagnostic(Diagnostic diagnostic) {
     this.classname = ((StringJavaFileObject)diagnostic.getSource()).className;
     this.code = diagnostic.getCode();
