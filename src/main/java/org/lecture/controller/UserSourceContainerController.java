@@ -15,7 +15,7 @@ package org.lecture.controller;
 * Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301  USA
 */
 
-import org.lecture.assembler.CodeSubmissionAssembler;
+import org.lecture.assembler.SourceContainerAssembler;
 import org.lecture.model.CompilationReport;
 import org.lecture.model.SourceContainer;
 import org.lecture.repository.SourceContainerRepository;
@@ -40,10 +40,10 @@ import java.security.Principal;
 @RestController
 @RequestMapping("/codesubmissions")
 @ExposesResourceFor(SourceContainer.class)
-public class CodeSubmissionController extends BaseController {
+public class UserSourceContainerController extends BaseController {
 
   @Autowired
-  CodeSubmissionAssembler codesubmissionAssembler;
+  SourceContainerAssembler codesubmissionAssembler;
 
   @Autowired
   SourceContainerRepository codesubmissionRepository;
@@ -91,6 +91,15 @@ public class CodeSubmissionController extends BaseController {
 
     return ResponseEntity.noContent().build();
   }
+
+  @RequestMapping(value = "/{id}/test-report", method = RequestMethod.GET)
+  public ResponseEntity<SourceContainerResource> getTestReport(@PathVariable String id) {
+    SourceContainer container = codesubmissionRepository.findOne(id);
+
+    return ResponseEntity.ok().body(result);
+  }
+
+
 
 
 }

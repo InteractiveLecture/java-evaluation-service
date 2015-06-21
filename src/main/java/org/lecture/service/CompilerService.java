@@ -16,10 +16,12 @@ package org.lecture.service;
  */
 
 import org.lecture.model.CompilationReport;
+import org.springframework.stereotype.Service;
 
 /**
  * Created by rene on 21.06.15.
  */
+@Service
 public interface CompilerService {
   CompilationReport patchAndCompileUserSource(String id, String[] patches);
 

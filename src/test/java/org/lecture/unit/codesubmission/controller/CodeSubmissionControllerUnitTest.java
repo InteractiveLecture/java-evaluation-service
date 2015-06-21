@@ -24,8 +24,8 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
-import org.lecture.assembler.CodeSubmissionAssembler;
-import org.lecture.controller.CodeSubmissionController;
+import org.lecture.assembler.SourceContainerAssembler;
+import org.lecture.controller.UserSourceContainerController;
 import org.lecture.repository.SourceContainerRepository;
 import org.lecture.resource.SourceContainerResource;
 import org.junit.Before;
@@ -57,13 +57,13 @@ public class CodeSubmissionControllerUnitTest {
   private SourceContainerRepository codesubmissionRepository;
 
   @Autowired
-  private CodeSubmissionAssembler codesubmissionAssembler;
+  private SourceContainerAssembler codesubmissionAssembler;
 
   @Autowired
   private PagedResourcesAssembler pagedResourcesAssembler;
 
   @Autowired
-  private CodeSubmissionController testInstance;
+  private UserSourceContainerController testInstance;
 
 
   /**

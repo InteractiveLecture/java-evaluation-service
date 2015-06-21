@@ -17,7 +17,7 @@ package org.lecture.unit.codesubmission.assembler;
 
 import static org.junit.Assert.assertEquals;
 
-import org.lecture.assembler.CodeSubmissionAssembler;
+import org.lecture.assembler.SourceContainerAssembler;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,7 +37,7 @@ public class CodeSubmissionAssemblerUnitTest {
 
 
   @Autowired
-  private CodeSubmissionAssembler testInstance;
+  private SourceContainerAssembler testInstance;
 
 
   @Test

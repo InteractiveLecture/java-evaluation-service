@@ -33,7 +33,6 @@ import org.lecture.compiler.service.api.ExerciseContainerDiscoveryService;
 // TODO anpassungen an neuerungen
 public abstract class AbstractTest 
 {
-    static ExerciseContainerDiscoveryService acds;
     private ExerciseContainer tcc;
     
     /**
@@ -44,15 +43,19 @@ public abstract class AbstractTest
     
     /**
      * Parameterloser Konstruktor für JUnit 4. 
-     * Ruft die abstrakte Methode {@link #getExcerciseName()} auf um den entsprechenden
+     * Ruft die abstrakte Methode {@link #getExerciseName()} auf um den entsprechenden
      * Appcontainer zu erhalten.
      * @see com.masterarbeit.app.AppContainer
      */
     public AbstractTest()
     {
-        String exercise = getExcerciseName();
-        this.tcc = acds.find(exercise);
+        String exercise = getExerciseName();
     }
+
+
+  public void setExerciseContainer(ExerciseContainer exerciseContainer) {
+    this.tcc = exerciseContainer;
+  }
     
     /**
      * Creates an object of a submitted exercise-class.
@@ -127,11 +130,11 @@ public abstract class AbstractTest
      * context identifier. The constructor uses this method to lookup the corresponding appcontainer.
      * <p> <strong> example </strong></p>
      * imagine you write a testclass for the Excercise "Objectoriented Programming - getter and setter methods".
-     * This testclass would override {@code getExcerciseName()} as follows
+     * This testclass would override {@code getExerciseName()} as follows
      * <pre>
         <code>
        {@literal @}Override
-        public String getExcerciseName() 
+        public String getExerciseName()
         {
             return "Objectoriented Programming - getter and setter methods";
         }
@@ -139,6 +142,6 @@ public abstract class AbstractTest
         </pre>
      * @return Name of the exercise.
      */
-    public abstract String getExcerciseName();
+    public abstract String getExerciseName();
     
 }

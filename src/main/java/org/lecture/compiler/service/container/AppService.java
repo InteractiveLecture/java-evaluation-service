@@ -30,7 +30,6 @@ import org.lecture.compiler.compiler.StringJavaFileObject;
 import org.lecture.compiler.service.api.ExerciseContainer;
 import org.lecture.compiler.service.api.SourceContainer;
 import org.lecture.compiler.service.utils.Utils;
-import org.lecture.compiler.testframework.JUnitCoreProxy;
 
 import javax.tools.Diagnostic;
 import javax.tools.Diagnostic.Kind;

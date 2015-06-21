@@ -15,10 +15,12 @@ package org.lecture.controller;
 * Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301  USA
 */
 
+import org.apache.commons.lang3.ArrayUtils;
 import org.lecture.model.BaseEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.hateoas.EntityLinks;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
@@ -42,10 +44,15 @@ public abstract class BaseController {
   * @param <T>       Type of the entity that should get created
   * @return The formal Response for the childcontroller.
   */
-  public <T extends BaseEntity> ResponseEntity<?> createEntity(T newEntity) {
-
-    return ResponseEntity
-        .created(entityLinks.linkForSingleResource(newEntity).toUri()).build();
+  public <T extends BaseEntity> ResponseEntity<?> createEntity(T newEntity,String... headers) {
+    ResponseEntity.BodyBuilder responseEntityBuilder = ResponseEntity
+        .created(entityLinks.linkForSingleResource(newEntity).toUri());
+    if(headers.length > 0) {
+      for(int i = 0; i < headers.length; i = i+2) {
+        responseEntityBuilder.header(headers[i], headers[i + 1]);
+      }
+    }
+    return responseEntityBuilder.build();
   }
 
 

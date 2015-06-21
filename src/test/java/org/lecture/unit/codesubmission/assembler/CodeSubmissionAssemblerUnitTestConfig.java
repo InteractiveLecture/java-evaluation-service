@@ -15,12 +15,11 @@ package org.lecture.unit.codesubmission.assembler;
 * Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301  USA
 */
 
-import org.lecture.assembler.CodeSubmissionAssembler;
+import org.lecture.assembler.SourceContainerAssembler;
 import org.mockito.Mockito;
 import org.springframework.cloud.client.loadbalancer.LoadBalancerClient;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.config.EnableHypermediaSupport;
 
 /**
@@ -37,7 +36,7 @@ public class CodeSubmissionAssemblerUnitTestConfig {
   }
 
   @Bean
-  public CodeSubmissionAssembler codesubmissionAssembler() {
-    return new CodeSubmissionAssembler();
+  public SourceContainerAssembler codesubmissionAssembler() {
+    return new SourceContainerAssembler();
   }
 }

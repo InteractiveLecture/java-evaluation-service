@@ -15,9 +15,9 @@ package org.lecture.unit.codesubmission.controller;
 * Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301  USA
 */
 
-import org.lecture.assembler.CodeSubmissionAssembler;
+import org.lecture.assembler.SourceContainerAssembler;
 import org.lecture.repository.SourceContainerRepository;
-import org.lecture.controller.CodeSubmissionController;
+import org.lecture.controller.UserSourceContainerController;
 import org.mockito.Mockito;
 import org.springframework.cloud.client.loadbalancer.LoadBalancerClient;
 import org.springframework.context.annotation.Bean;
@@ -35,8 +35,8 @@ public class CodeSubmissionControllerUnitTestConfig {
 
 
   @Bean
-  public CodeSubmissionController codesubmissionController() {
-    return new CodeSubmissionController();
+  public UserSourceContainerController codesubmissionController() {
+    return new UserSourceContainerController();
   }
 
   @Bean
@@ -50,8 +50,8 @@ public class CodeSubmissionControllerUnitTestConfig {
   }
 
   @Bean
-  public CodeSubmissionAssembler codesubmissionAssembler() {
-    return Mockito.mock(CodeSubmissionAssembler.class);
+  public SourceContainerAssembler codesubmissionAssembler() {
+    return Mockito.mock(SourceContainerAssembler.class);
   }
 
   @Bean

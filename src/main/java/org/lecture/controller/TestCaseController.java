@@ -15,25 +15,21 @@ package org.lecture.controller;
 * Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301  USA
 */
 
-import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 
 import org.lecture.assembler.TestCaseAssembler;
 import org.lecture.model.CompilationReport;
 import org.lecture.model.TestCaseContainer;
 import org.lecture.repository.TestCaseRepository;
 import org.lecture.resource.TestCaseResource;
+import org.lecture.service.CompilerService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PageableDefault;
-import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.ExposesResourceFor;
-import org.springframework.hateoas.PagedResources;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.security.Principal;
@@ -59,35 +55,37 @@ public class TestCaseController extends BaseController {
 
 
   /**
-   * Returns a list of tests.
+   * Returns a single testcase container by exercise id.
    *
-   * @param pageable  The number of items, gotten through the url
-   * @param assembler the assembler injected by spring.
-   * @return a Resource representing the page.
+   * @param exerciseId  The id of the exercise the testcase container belongs to.
+   * @return a Resource representing the testcase container.
    */
   @RequestMapping(method = RequestMethod.GET)
-  public PagedResources<TestCaseContainer> getAll(@PageableDefault(size = 20, page = 0)
-                                         Pageable pageable,
-                                         PagedResourcesAssembler assembler) {
+  public ResponseEntity<TestCaseResource> getAll(
+      @RequestParam("exerciseId")long exerciseId) {
 
-    Page<TestCaseContainer> pageResult = this.testRepository.findAll(pageable);
-    return assembler.toResource(pageResult, testAssembler);
+    TestCaseContainer result =
+        this.testRepository.findByExerciseId(exerciseId);
+
+    return ResponseEntity.ok()
+        .header("Accept-Patch", "text/mdmp")
+        .body(testAssembler.toResource(result));
   }
 
   /**
-   * Creates a new TestCaseContainer
+   * Creates a new TestCaseContainer. This method should get called before the
+   * code submission gets send.
    * @param entity the test from the post-request. This test is deserialized by
    *              jackson.
    * @return A respoonse containing a compilation-report.
    */
   @RequestMapping(method = RequestMethod.POST)
-  public ResponseEntity<CompilationReport> create(@RequestBody TestCaseContainer entity,
-                                                  Principal principal) {
+  public ResponseEntity<?> create(
+      @RequestBody TestCaseContainer entity, Principal principal) {
+
     entity.setUsername(principal.getName());
-    TestCaseContainer testCase = compilerService.compileTestCase(entity);
-    return ResponseEntity.created(
-        linkTo(TestCaseController.class).slash(testCase.getId()).toUri())
-        .body(testCase.getCompilationReport());
+    entity = testRepository.save(entity);
+    return super.createEntity(entity,"Accept-Patch", "application/mdmp");
   }
 
   /**
@@ -98,23 +96,47 @@ public class TestCaseController extends BaseController {
    */
   @RequestMapping(value = "/{id}", method = RequestMethod.GET)
   public ResponseEntity<TestCaseResource> getOne(@PathVariable String id) {
+
     TestCaseResource result
         = testAssembler.toResource(testRepository.findOne(id));
-    return ResponseEntity.ok().body(result);
+    return ResponseEntity.ok()
+        .header("Accept-Patch", "application/mdmp")
+        .body(result);
   }
 
   @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
   public ResponseEntity<?> delete(@PathVariable String id) {
+
     testRepository.delete(id);
     return ResponseEntity.noContent().build();
   }
 
-  @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-  public ResponseEntity<CompilationReport> update(@PathVariable String id,
-                                  @RequestBody TestCaseContainer newValues) {
-    newValues.setId(id);
-    TestCaseContainer testCase = compilerService.compileTestCase(newValues);
-    return ResponseEntity.ok().body(testCase.getCompilationReport());
+  @RequestMapping(value = "/{id}", method = RequestMethod.PATCH)
+  public ResponseEntity<CompilationReport> update(
+      @PathVariable String id, @RequestBody String rawPatch) {
+
+    String [] patchParts = rawPatch.split("\\+\\+\\+\n");
+    CompilationReport report =
+        compilerService.patchAndCompileTestSource(id, patchParts);
+
+    return ResponseEntity.ok().body(report);
+  }
+
+
+  @RequestMapping(value = "/{id}/active", method = RequestMethod.GET)
+  public ResponseEntity<Boolean> isActive(String id) {
+
+    TestCaseContainer container = this.testRepository.findOne(id);
+    return ResponseEntity.ok(container.isActive());
+  }
+
+  @RequestMapping(value = "/{id}/active", method = RequestMethod.PUT)
+  public ResponseEntity<?> setActive(String id,@RequestBody boolean active) {
+
+    TestCaseContainer container = this.testRepository.findOne(id);
+    container.setActive(active);
+    this.testRepository.save(container);
+    return ResponseEntity.noContent().build();
   }
 
 

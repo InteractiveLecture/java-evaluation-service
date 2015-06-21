@@ -1,12 +1,7 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-package org.lecture.compiler.testframework;
+package org.lecture.model;
 
 /*
- * Copyright (c) 2015 Rene Richter
+ * Copyright (c) 2015 Rene Richter.
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 3 of the License, or
@@ -20,18 +15,12 @@ package org.lecture.compiler.testframework;
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301  USA
  */
 
-import org.junit.runner.JUnitCore;
-import org.lecture.compiler.service.api.ExerciseContainerDiscoveryService;
-
 /**
+ * Created by rene on 21.06.15.
  *
  * @author rene
+ * @version 0.0.1
  */
-public class JUnitCoreProxy extends JUnitCore
-{
+public class TestReport {
 
-    public JUnitCoreProxy(ExerciseContainerDiscoveryService acds)
-    {
-        AbstractTest.acds=acds;
-    }  
 }

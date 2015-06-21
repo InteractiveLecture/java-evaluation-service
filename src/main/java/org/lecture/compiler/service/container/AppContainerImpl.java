@@ -65,10 +65,11 @@ public class AppContainerImpl implements ExerciseContainer
         {
             Constructor c = this.excerciseClasses.get(className).getConstructor(getParameterTypes(params));
             return c.newInstance(params);
-        } catch (NoSuchMethodException | SecurityException ex) {
+        } catch (NoSuchMethodException | SecurityException
+            | InstantiationException | IllegalAccessException
+            | IllegalArgumentException | InvocationTargetException ex) {
+
            throw new RuntimeException(ex);
-        } catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
-            throw new RuntimeException(ex);
         }
     }
 
