@@ -19,8 +19,8 @@ import org.junit.runner.JUnitCore;
 import org.junit.runner.Runner;
 import org.junit.runners.model.InitializationError;
 import org.lecture.compiler.compiler.StringCompiler;
-import org.lecture.compiler.service.api.ExerciseContainer;
-import org.lecture.compiler.service.container.ExerciseContainerImpl;
+import org.lecture.compiler.service.api.ExerciseContext;
+import org.lecture.compiler.service.container.ExerciseContextImpl;
 import org.lecture.compiler.testframework.LectureRunner;
 import org.lecture.model.SourceContainer;
 import org.lecture.model.TestCaseContainer;
@@ -48,18 +48,18 @@ public class TestServiceImpl implements TestService {
     TestCaseContainer testCaseContainer =
         testCaseRepository.findByExerciseId(sourceContainer.getExerciseId());
 
-    ExerciseContainer exerciseContainer = new ExerciseContainerImpl();
+    ExerciseContext exerciseContext = new ExerciseContextImpl();
 
-    exerciseContainer.setTestClasses(testCaseContainer.getTestClasses());
+    exerciseContext.setTestClasses(testCaseContainer.getTestClasses());
 
     StringCompiler compiler = new StringCompiler();
     sourceContainer.getSources().forEach(compiler::addCompilationTask);
-    exerciseContainer.setExerciseClasses(compiler.startCompilation().getCompiledClasses());
+    exerciseContext.setExerciseClasses(compiler.startCompilation().getCompiledClasses());
 
     JUnitCore jc = new JUnitCore();
     List<Runner> runners = testCaseContainer.getTestClasses().values()
         .stream()
-        .map(clazz -> instanciateRunner(clazz,exerciseContainer))
+        .map(clazz -> instanciateRunner(clazz, exerciseContext))
         .collect(Collectors.toList());
 
     List<TestResult> results = runners.stream()
@@ -70,7 +70,7 @@ public class TestServiceImpl implements TestService {
     return new TestReport(results);
   }
 
-  private LectureRunner instanciateRunner(Class<?> clazz, ExerciseContainer container) {
+  private LectureRunner instanciateRunner(Class<?> clazz, ExerciseContext container) {
     try {
       return new LectureRunner(clazz, container);
     } catch (InitializationError initializationError) {

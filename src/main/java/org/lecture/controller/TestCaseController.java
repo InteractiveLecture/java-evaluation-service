@@ -77,6 +77,7 @@ public class TestCaseController extends BaseController {
    * code submission gets send.
    * @param entity the test from the post-request. This test is deserialized by
    *              jackson.
+   * @param principal The current user injected by spring.
    * @return A respoonse containing a compilation-report.
    */
   @RequestMapping(method = RequestMethod.POST)

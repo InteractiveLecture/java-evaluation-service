@@ -19,6 +19,8 @@ import org.lecture.model.CompilationReport;
 import org.lecture.model.TestCaseContainer;
 import org.springframework.hateoas.ResourceSupport;
 
+import java.util.Map;
+
 /**
  * A TestCaseContainer-resource.
  * @author Rene Richter
@@ -26,8 +28,8 @@ import org.springframework.hateoas.ResourceSupport;
 public class TestCaseResource extends ResourceSupport {
   
   private long exerciseId;
-  
-  private String testCode;
+
+  Map<String,String> sources;
 
   private boolean active;
 
@@ -36,14 +38,14 @@ public class TestCaseResource extends ResourceSupport {
   private CompilationReport compilationReport;
   
 
-  /**
+  /*
    * Reads all attributes from entity that should get serialized.
    */
   public TestCaseResource(TestCaseContainer entity) {
     
     this.exerciseId = entity.getExerciseId();
-    
-    this.testCode = entity.getTestCode();
+
+    this.sources = entity.getSources();
 
     this.active = entity.isActive();
 
@@ -61,13 +63,6 @@ public class TestCaseResource extends ResourceSupport {
     this.exerciseId = exerciseId;
   }
 
-  public String getTestCode() {
-    return testCode;
-  }
-
-  public void setTestCode(String testCode) {
-    this.testCode = testCode;
-  }
 
   public boolean isActive() {
     return active;

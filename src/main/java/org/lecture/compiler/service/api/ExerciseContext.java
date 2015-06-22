@@ -26,7 +26,7 @@ import java.util.Map;
  *
  * @author rene
  */
-public interface ExerciseContainer
+public interface ExerciseContext
 {
   Object createObject(String className, Object... params);
   Object executeMethod(Object object, String methodName, Object... parameters);

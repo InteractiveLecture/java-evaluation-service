@@ -61,6 +61,7 @@ public class UserSourceContainerController extends BaseController {
    * Returns a single source container by exercise id.
    *
    * @param exerciseId  The id of the exercise the source container belongs to.
+   * @param principal  the logged in user injected by spring.
    * @return a Resource representing the source container.
    */
   @RequestMapping(method = RequestMethod.GET)
@@ -80,6 +81,7 @@ public class UserSourceContainerController extends BaseController {
    * Creates a new SourceContainer
    * @param entity the codesubmission from the post-request. This codesubmission is deserialized by
    *              jackson.
+   * @param principal the logged in user injected by spring.
    * @return A respoonse containing a link to the new resource.
    */
   @RequestMapping(method = RequestMethod.POST)

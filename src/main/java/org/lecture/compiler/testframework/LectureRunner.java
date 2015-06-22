@@ -17,7 +17,7 @@ package org.lecture.compiler.testframework;
 
 import org.junit.runners.BlockJUnit4ClassRunner;
 import org.junit.runners.model.InitializationError;
-import org.lecture.compiler.service.api.ExerciseContainer;
+import org.lecture.compiler.service.api.ExerciseContext;
 
 /**
  *
@@ -25,19 +25,20 @@ import org.lecture.compiler.service.api.ExerciseContainer;
  */
 public class LectureRunner extends BlockJUnit4ClassRunner {
 
-  private ExerciseContainer container;
+  private ExerciseContext context;
 
   /**
    * Creates a BlockJUnit4ClassRunner to run {@code klass}
    *
    * @param klass The class containing test-cases.
+   * @param context The exercise context that will be injected into the test case instance.
    * @throws InitializationError if the test class is malformed.
    */
   public LectureRunner(Class<?> klass,
-                       ExerciseContainer container) throws InitializationError {
+                       ExerciseContext context) throws InitializationError {
 
     super(klass);
-    this.container = container;
+    this.context = this.context;
   }
 
   @Override
@@ -46,7 +47,7 @@ public class LectureRunner extends BlockJUnit4ClassRunner {
     Object testInstance = super.createTest();
     if(testInstance instanceof AbstractTest) {
       AbstractTest test = (AbstractTest) testInstance;
-      test.setExerciseContainer(container);
+      test.setExerciseContainer(context);
     }
     return  testInstance;
   }

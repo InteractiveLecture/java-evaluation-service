@@ -35,7 +35,7 @@ public class SourceContainerResource extends ResourceSupport {
   private long exerciseId;
   
 
-  /**
+  /*
    * Reads all attributes from entity that should get serialized.
    */
   public SourceContainerResource(SourceContainer entity) {
@@ -48,15 +48,23 @@ public class SourceContainerResource extends ResourceSupport {
     
   }
 
-  
-  public void setCode(String code) {
-    this.code = code;
+
+  public Map<String, String> getSources() {
+    return sources;
   }
 
-  public String getCode() {
-    return this.code;
+  public void setSources(Map<String, String> sources) {
+    this.sources = sources;
   }
-  
+
+  public long getExerciseId() {
+    return exerciseId;
+  }
+
+  public void setExerciseId(long exerciseId) {
+    this.exerciseId = exerciseId;
+  }
+
   public void setClassname(String classname) {
     this.classname = classname;
   }

@@ -21,7 +21,7 @@ package org.lecture.compiler.service.container;
  */
 
 
-import org.lecture.compiler.service.api.ExerciseContainer;
+import org.lecture.compiler.service.api.ExerciseContext;
 import org.lecture.model.SourceContainer;
 
 import java.lang.reflect.Constructor;
@@ -34,7 +34,7 @@ import java.util.Map;
  *
  * @author rene
  */
-public class ExerciseContainerImpl implements ExerciseContainer
+public class ExerciseContextImpl implements ExerciseContext
 {
     private Map<String,Class<?>> excerciseClasses;
     private Map<String,Class<?>> testClasses;

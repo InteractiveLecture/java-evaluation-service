@@ -33,7 +33,7 @@ public class CompilationReport {
   public CompilationReport(){}
 
 
-  /**
+  /*
    * a convenience constructor.
    */
   public  CompilationReport(LocalDateTime date,List<CompilationDiagnostic> errors,List<CompilationDiagnostic> warnings) {

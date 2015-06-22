@@ -38,12 +38,13 @@ public abstract class BaseController {
   @Autowired
   EntityLinks entityLinks;
   /**
-  * A conviniencemethod for creating new Entities.
-  *
-  * @param newEntity The entity that should be created
-  * @param <T>       Type of the entity that should get created
-  * @return The formal Response for the childcontroller.
-  */
+   * A conviniencemethod for creating new Entities.
+   *
+   * @param newEntity The entity that should be created
+   * @param <T>       Type of the entity that should get created
+   * @param headers   Additional headers with the pattern k,v... .
+   * @return The formal Response for the childcontroller.
+   */
   public <T extends BaseEntity> ResponseEntity<?> createEntity(T newEntity,String... headers) {
     ResponseEntity.BodyBuilder responseEntityBuilder = ResponseEntity
         .created(entityLinks.linkForSingleResource(newEntity).toUri());
