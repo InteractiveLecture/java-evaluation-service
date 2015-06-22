@@ -1,5 +1,3 @@
-package org.lecture.service;
-
 /*
  * Copyright (c) 2015 Rene Richter
  * This program is free software; you can redistribute it and/or modify
@@ -15,23 +13,20 @@ package org.lecture.service;
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301  USA
  */
 
-/**
- * Created by rene on 19.06.15.
- */
+import org.junit.Test;
+import org.lecture.compiler.testframework.AbstractTest;
 
-import org.lecture.patch.diff_match_patch;
-import org.springframework.stereotype.Service;
+public class HugoTest extends AbstractTest {
 
-import java.util.LinkedList;
-@Service
-public class PatchServiceImpl implements PatchService {
-
-  @Override
-  public String patch(String source, String patch) {
-    diff_match_patch dmp = new diff_match_patch();
-    LinkedList<diff_match_patch.Patch> patches =
-        (LinkedList<diff_match_patch.Patch>)dmp.patch_fromText(patch);
-    return (String)dmp.patch_apply(patches,source)[0];
+  @Test
+  public void testBlubb() {
+    Object o = super.createObject("Hugo");
+    super.executeMethod(o,"sayHi");
   }
 
+  @Test
+  public void testBla() {
+    Object o = super.createObject("Hugo");
+    super.executeMethod(o,"doBla");
+  }
 }

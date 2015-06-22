@@ -37,7 +37,8 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
     "org.lecture.controller",
     "org.lecture.assembler",
     "org.lecture.resource",
-    "org.lecture.integration"})
+    "org.lecture.integration",
+    "org.lecture.service"})
 
 @EnableHypermediaSupport(type = {EnableHypermediaSupport.HypermediaType.HAL})
 @EnableSpringDataWebSupport

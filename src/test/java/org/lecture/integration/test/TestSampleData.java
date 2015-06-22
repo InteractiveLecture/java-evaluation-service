@@ -33,6 +33,7 @@ public class TestSampleData {
     for (int i = 0; i < 10; i++) {
       TestCaseContainer b = new TestCaseContainer();
       b.setId(String.valueOf(i));
+      b.setExerciseId(i);
       mongoOperations.save(b);
     }
   }

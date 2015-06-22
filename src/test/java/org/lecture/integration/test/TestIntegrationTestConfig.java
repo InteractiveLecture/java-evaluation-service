@@ -17,6 +17,8 @@ package org.lecture.integration.test;
 
 import com.github.fakemongo.Fongo;
 import com.mongodb.Mongo;
+import org.lecture.restclient.AclRestClient;
+import org.mockito.Mockito;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -28,6 +30,9 @@ import org.springframework.hateoas.config.EnableHypermediaSupport;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+
+import java.security.Principal;
+
 /**
  * Configuration class for org.lecture integration test.
  * @author Rene Richter
@@ -37,7 +42,8 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
     "org.lecture.controller",
     "org.lecture.assembler",
     "org.lecture.resource",
-    "org.lecture.integration"})
+    "org.lecture.integration",
+    "org.lecture.service"})
 
 @EnableHypermediaSupport(type = {EnableHypermediaSupport.HypermediaType.HAL})
 @EnableSpringDataWebSupport
@@ -56,5 +62,20 @@ public class TestIntegrationTestConfig extends WebMvcConfigurerAdapter {
   @Bean
   public MongoTemplate mongoTemplate() {
     return new MongoTemplate(mongo(),"TestCaseContainer");
+  }
+
+  @Bean
+  public AclRestClient aclRestClient() {
+    return Mockito.mock(AclRestClient.class);
+  }
+
+  @Bean
+  public Principal principal() {
+    return new Principal() {
+      @Override
+      public String getName() {
+        return "doent@hs-trier.de";
+      }
+    };
   }
 }

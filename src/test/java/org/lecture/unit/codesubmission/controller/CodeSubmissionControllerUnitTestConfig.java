@@ -18,6 +18,8 @@ package org.lecture.unit.codesubmission.controller;
 import org.lecture.assembler.SourceContainerAssembler;
 import org.lecture.repository.SourceContainerRepository;
 import org.lecture.controller.UserSourceContainerController;
+import org.lecture.service.CompilerService;
+import org.lecture.service.TestService;
 import org.mockito.Mockito;
 import org.springframework.cloud.client.loadbalancer.LoadBalancerClient;
 import org.springframework.context.annotation.Bean;
@@ -59,5 +61,15 @@ public class CodeSubmissionControllerUnitTestConfig {
     return Mockito.mock(PagedResourcesAssembler.class);
   }
 
+  @Bean
+  public CompilerService compilerService() {
+    return Mockito.mock(CompilerService.class);
+  }
+
+
+  @Bean
+  public TestService testService() {
+    return Mockito.mock(TestService.class);
+  }
 
 }

@@ -28,6 +28,7 @@ import org.lecture.model.TestReport;
 import org.lecture.model.TestResult;
 import org.lecture.repository.TestCaseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -37,6 +38,7 @@ import java.util.stream.Collectors;
  *
  * @author Rene Richter
  */
+@Service
 public class TestServiceImpl implements TestService {
 
   @Autowired

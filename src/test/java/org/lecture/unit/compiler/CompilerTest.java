@@ -27,8 +27,6 @@ import static org.junit.Assert.assertTrue;
 public class CompilerTest 
 {
 
-
-    
     StringCompiler sc;
     String code;
 

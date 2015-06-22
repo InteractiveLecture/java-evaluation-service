@@ -18,6 +18,7 @@ package org.lecture.unit.test.controller;
 import org.lecture.assembler.TestCaseAssembler;
 import org.lecture.repository.TestCaseRepository;
 import org.lecture.controller.TestCaseController;
+import org.lecture.service.CompilerService;
 import org.mockito.Mockito;
 import org.springframework.cloud.client.loadbalancer.LoadBalancerClient;
 import org.springframework.context.annotation.Bean;
@@ -57,6 +58,11 @@ public class TestControllerUnitTestConfig {
   @Bean
   public PagedResourcesAssembler pagedResourcesAssembler() {
     return Mockito.mock(PagedResourcesAssembler.class);
+  }
+
+  @Bean
+  public CompilerService compilerService() {
+    return Mockito.mock(CompilerService.class);
   }
 
 

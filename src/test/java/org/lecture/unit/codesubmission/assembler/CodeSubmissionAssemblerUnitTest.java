@@ -15,16 +15,17 @@ package org.lecture.unit.codesubmission.assembler;
 * Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301  USA
 */
 
-import static org.junit.Assert.assertEquals;
-
-import org.lecture.assembler.SourceContainerAssembler;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.lecture.assembler.SourceContainerAssembler;
+import org.lecture.model.SourceContainer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.ResourceSupport;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
+
+import static org.junit.Assert.assertEquals;
 
 /**
  * Unit test for SourceContainer assemblers.
@@ -42,7 +43,7 @@ public class CodeSubmissionAssemblerUnitTest {
 
   @Test
   public void testToResource() throws Exception {
-    UserSourceContainer instance = new UserSourceContainer(timeStamp);
+    SourceContainer instance = new SourceContainer();
     instance.setId(String.valueOf(1));
     ResourceSupport resourceSupport = testInstance.toResource(instance);
     assertEquals("self",resourceSupport.getId().getRel());

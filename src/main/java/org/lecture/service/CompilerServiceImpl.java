@@ -29,6 +29,7 @@ import org.lecture.repository.TestCaseRepository;
 import org.lecture.restclient.AclRestClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
+import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -40,6 +41,7 @@ import java.util.stream.Collectors;
 /**
  * @author Rene Richter
  */
+@Service
 public class CompilerServiceImpl implements CompilerService {
 
   @Autowired

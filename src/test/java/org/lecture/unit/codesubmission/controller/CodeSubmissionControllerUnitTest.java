@@ -15,35 +15,25 @@ package org.lecture.unit.codesubmission.controller;
 * Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301  USA
 */
 
-import static org.junit.Assert.assertEquals;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.reset;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoMoreInteractions;
-import static org.mockito.Mockito.when;
-
-import org.lecture.assembler.SourceContainerAssembler;
-import org.lecture.controller.UserSourceContainerController;
-import org.lecture.repository.SourceContainerRepository;
-import org.lecture.resource.SourceContainerResource;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.lecture.assembler.SourceContainerAssembler;
+import org.lecture.controller.UserSourceContainerController;
+import org.lecture.model.SourceContainer;
+import org.lecture.repository.SourceContainerRepository;
+import org.lecture.resource.SourceContainerResource;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PagedResourcesAssembler;
-import org.springframework.hateoas.PagedResources;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import java.util.ArrayList;
-import java.util.List;
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.reset;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 /**
 * Unit test for SourceContainer controllers.
@@ -75,33 +65,10 @@ public class CodeSubmissionControllerUnitTest {
   }
 
 
-  @Test
-  public void getAllShouldReturnAPageOfCodeSubmission() throws Exception {
-
-    List<UserSourceContainer> sampleData = new ArrayList<>();
-    for (int i = 0; i < 10; i++) {
-      UserSourceContainer instance = new UserSourceContainer(timeStamp);
-      instance.setId(String.valueOf(i));
-      sampleData.add(instance);
-    }
-    Page<UserSourceContainer> page = new PageImpl<>(sampleData);
-    when(codesubmissionRepository.findAll(any(Pageable.class))).thenReturn(page);
-    when(pagedResourcesAssembler.toResource(page,codesubmissionAssembler))
-      .thenReturn(new PagedResources(sampleData,null));
-
-    Pageable pageable = new PageRequest(2,2);
-    PagedResources result = testInstance.getAll(pageable,pagedResourcesAssembler);
-    assertEquals(10,result.getContent().size());
-    verify(codesubmissionRepository, times(1)).findAll(any(Pageable.class));
-    verify(pagedResourcesAssembler,times(1)).toResource(eq(page),eq(codesubmissionAssembler));
-    verifyNoMoreInteractions(codesubmissionRepository);
-    verifyNoMoreInteractions(codesubmissionAssembler);
-    verifyNoMoreInteractions(pagedResourcesAssembler);
-  }
 
   @Test
   public void getOneShouldReturnResponseContainingTheDataOfOneCodeSubmissionAsJson() throws Exception {
-    UserSourceContainer instance = new UserSourceContainer(timeStamp);
+    SourceContainer instance = new SourceContainer();
     instance.setId(String.valueOf(1));
     SourceContainerResource testResource = new SourceContainerResource(instance);
     when(codesubmissionRepository.findOne(String.valueOf(1))).thenReturn(instance);

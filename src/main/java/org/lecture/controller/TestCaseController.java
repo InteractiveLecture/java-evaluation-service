@@ -61,7 +61,7 @@ public class TestCaseController extends BaseController {
    * @return a Resource representing the testcase container.
    */
   @RequestMapping(method = RequestMethod.GET)
-  public ResponseEntity<TestCaseResource> getAll(
+  public ResponseEntity<TestCaseResource> getByExerciseId(
       @RequestParam("exerciseId")long exerciseId) {
 
     TestCaseContainer result =
@@ -96,7 +96,7 @@ public class TestCaseController extends BaseController {
    * @return a response.
    */
   @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-  public ResponseEntity<TestCaseResource> getOne(@PathVariable String id) {
+  public ResponseEntity<TestCaseResource> getOneTest(@PathVariable String id) {
 
     TestCaseResource result
         = testAssembler.toResource(testRepository.findOne(id));
