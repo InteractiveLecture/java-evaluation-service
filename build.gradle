@@ -16,9 +16,11 @@
 buildscript {
   repositories {
     mavenCentral()
+    jcenter()
   }
   dependencies {
     classpath("org.springframework.boot:spring-boot-gradle-plugin:1.2.3.RELEASE")
+    classpath 'com.bmuschko:gradle-nexus-plugin:2.3.1'
   }
 }
 
@@ -45,6 +47,8 @@ apply plugin: 'java'
 apply plugin: 'idea'
 apply plugin: 'spring-boot'
 apply plugin: "checkstyle"
+apply plugin: 'com.bmuschko.nexus'
+
 
 checkstyle{
   checkstyle {
@@ -101,4 +105,39 @@ dependencies {
 
 task wrapper(type: Wrapper) {
 gradleVersion = '2.3'
+}
+
+
+modifyPom {
+  project {
+    name 'Java Evaluation Service'
+    description 'Java Evaluation service for the open lecture project.'
+    inceptionYear '2015'
+
+    licenses {
+      license {
+        name 'General Public Licence version 3.0'
+        distribution 'repo'
+      }
+    }
+
+    developers {
+      developer {
+        id 'Richterrettich'
+        name 'Rene Richter'
+        email 'Richterrettich@gmail.com'
+      }
+    }
+  }
+}
+
+extraArchive {
+  sources = true
+  tests = true
+  javadoc = true
+}
+
+nexus {
+  repositoryUrl = 'https://nexus.rene-richter.de/content/repositories/java-evaluation-service-release/'
+  snapshotRepositoryUrl = 'https://nexus.rene-richter.de/content/repositories/java-evaluation-service-snapshot/'
 }
