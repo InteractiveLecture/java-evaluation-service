@@ -15,6 +15,7 @@ package org.lecture.integration.codesubmission;
 * Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301  USA
 */
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -37,6 +38,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static util.TestUtil.toJson;
 
+import java.security.Principal;
+
 
 /**
  * A integration test for CodeSubmissions
@@ -54,19 +57,32 @@ public class CodeSubmissionIntegrationTest {
   @Autowired
   private WebApplicationContext webApplicationContext;
 
+  @Autowired
+  private Principal principal;
+
+  @Autowired
+  private CodeSubmissionSampleData codeSubmissionSampleData;
+
   /**
    * sets up the test.
    */
   @Before
   public void setUp() {
+    codeSubmissionSampleData.seed();
     mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
   }
+
+  @After
+  public void tereDown() {
+    codeSubmissionSampleData.destroy();
+  }
+
 
 
   @Test
   public void testGetCodeSubmissions() throws Exception {
 
-    mockMvc.perform(get("/codesubmissions"))
+    mockMvc.perform(get("/codesubmissions?exerciseId=1").principal(principal))
         .andExpect(status().isOk())
         .andExpect(content().contentType(MediaTypes.HAL_JSON));
   }
@@ -74,7 +90,7 @@ public class CodeSubmissionIntegrationTest {
   @Test
   public void testGetAll()
       throws Exception {
-    mockMvc.perform(get("/codesubmissions/1"))
+    mockMvc.perform(get("/codesubmissions/1").principal(principal))
         .andExpect(status().isOk())
         .andExpect(content().contentType(MediaTypes.HAL_JSON))
         .andExpect(
@@ -83,7 +99,7 @@ public class CodeSubmissionIntegrationTest {
 
   @Test
   public void testCreateCodeSubmission() throws Exception {
-    mockMvc.perform(post("/codesubmissions")
+    mockMvc.perform(post("/codesubmissions").principal(principal)
         .contentType(TestUtil.APPLICATION_JSON_UTF8)
         .content(toJson(new SourceContainer())))
         .andExpect(status().isCreated());

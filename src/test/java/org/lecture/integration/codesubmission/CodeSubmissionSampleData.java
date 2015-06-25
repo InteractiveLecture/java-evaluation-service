@@ -33,6 +33,8 @@ public class CodeSubmissionSampleData {
     for (int i = 0; i < 10; i++) {
       SourceContainer b = new SourceContainer();
       b.setId(String.valueOf(i));
+      b.setExerciseId(i);
+      b.setUsername("user@hs-trier.de");
       mongoOperations.save(b);
     }
   }

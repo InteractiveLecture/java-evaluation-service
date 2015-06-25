@@ -28,6 +28,9 @@ import org.springframework.hateoas.config.EnableHypermediaSupport;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+
+import java.security.Principal;
+
 /**
  * Configuration class for org.lecture integration test.
  * @author Rene Richter
@@ -57,5 +60,15 @@ public class CodeSubmissionIntegrationTestConfig extends WebMvcConfigurerAdapter
   @Bean
   public MongoTemplate mongoTemplate() {
     return new MongoTemplate(mongo(),"SourceContainer");
+  }
+
+  @Bean
+  public Principal principal() {
+    return new Principal() {
+      @Override
+      public String getName() {
+        return "user@hs-trier.de";
+      }
+    };
   }
 }

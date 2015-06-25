@@ -70,7 +70,7 @@ public class UserSourceContainerController extends BaseController {
 
     String username = principal.getName();
     SourceContainer result =
-        this.codesubmissionRepository.findOneByUsernameAndExerciseId(username,exerciseId);
+        this.codesubmissionRepository.findByUsernameAndExerciseId(username, exerciseId);
 
     return ResponseEntity.ok()
         .header("Accept-Patch", "text/mdmp")
