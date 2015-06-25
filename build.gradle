@@ -43,11 +43,18 @@ repositories {
 }
 
 
+
+
+
+
+apply plugin: 'maven'
 apply plugin: 'java'
 apply plugin: 'idea'
 apply plugin: 'spring-boot'
 apply plugin: "checkstyle"
 apply plugin: 'com.bmuschko.nexus'
+
+
 
 
 checkstyle{
@@ -61,6 +68,10 @@ task checkstyle(type: Checkstyle) {
   source './'
   include '**/*.java'
   classpath = files()
+}
+
+configurations {
+  deployerJars
 }
 
 
@@ -99,6 +110,7 @@ dependencies {
 
   compile("junit:junit")
 
+  deployerJars "org.apache.maven.wagon:wagon-http:2.2"
 
 
 }
@@ -107,12 +119,64 @@ task wrapper(type: Wrapper) {
 gradleVersion = '2.3'
 }
 
+uploadArchives{
+  repositories.mavenDeployer {
+    pom.artifactId = "java-evaluation-service"
+    pom.groupId = "org.lecture"
+    pom.version = "1.0.0.SNAPSHOT"
+    configuration = configurations.deployerJars
+    pom.project {
+        name 'Java Evaluation Service'
+        description 'Java Evaluation service for the open lecture project.'
+        inceptionYear '2015'
+        artifactId = "java-evaluation-service"
+        groupId = "org.lecture"
+        version = "1.0.0.SNAPSHOT"
+
+        parent {
+          groupId 'org.springframework.boot'
+          artifactId 'spring-boot-starter-parent'
+          version "1.2.3.RELEASE"
+        }
+
+
+
+        licenses {
+          license {
+            name 'General Public Licence version 3.0'
+            distribution 'repo'
+          }
+        }
+
+        developers {
+          developer {
+            id 'Richterrettich'
+            name 'Rene Richter'
+            email 'Richterrettich@gmail.com'
+          }
+        }
+    }
+  }
+}
+
+
 
 modifyPom {
   project {
     name 'Java Evaluation Service'
     description 'Java Evaluation service for the open lecture project.'
     inceptionYear '2015'
+    artifactId = "java-evaluation-service"
+    groupId = "org.lecture"
+    version = "1.0.0.SNAPSHOT"
+
+    parent {
+      groupId 'org.springframework.boot'
+      artifactId 'spring-boot-starter-parent'
+      version "1.2.3.RELEASE"
+    }
+
+
 
     licenses {
       license {
@@ -138,6 +202,7 @@ extraArchive {
 }
 
 nexus {
-  repositoryUrl = 'https://nexus.rene-richter.de/content/repositories/java-evaluation-service-release/'
-  snapshotRepositoryUrl = 'https://nexus.rene-richter.de/content/repositories/java-evaluation-service-snapshot/'
+  sign = true
+  repositoryUrl = 'https://nexus.rene-richter.de/content/repositories/releases/'
+  snapshotRepositoryUrl = 'https://nexus.rene-richter.de/content/repositories/snapshots/'
 }
