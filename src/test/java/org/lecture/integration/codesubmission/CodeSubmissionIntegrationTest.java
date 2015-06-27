@@ -19,6 +19,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.lecture.integration.IntegrationTestConfig;
+import org.lecture.integration.TestPrincipal;
 import org.lecture.model.SourceContainer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.MediaTypes;
@@ -46,7 +48,7 @@ import java.security.Principal;
  * @author Rene Richter
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {CodeSubmissionIntegrationTestConfig.class})
+@ContextConfiguration(classes = {IntegrationTestConfig.class})
 @WebAppConfiguration
 //TODO add custom sample-data in codesubmissionSampleData.java
 public class CodeSubmissionIntegrationTest {
@@ -57,8 +59,7 @@ public class CodeSubmissionIntegrationTest {
   @Autowired
   private WebApplicationContext webApplicationContext;
 
-  @Autowired
-  private Principal principal;
+  private Principal principal = new TestPrincipal("user@hs-trier.de");
 
   @Autowired
   private CodeSubmissionSampleData codeSubmissionSampleData;

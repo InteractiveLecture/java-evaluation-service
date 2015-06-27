@@ -1,4 +1,4 @@
-package org.lecture.integration.test;
+package org.lecture.integration;
 
 /*
 * Copyright (c) 2015 .
@@ -51,7 +51,7 @@ import java.security.Principal;
 @EnableAutoConfiguration
 @EnableMongoRepositories(basePackages = "org.lecture.repository")
 @EnableTransactionManagement
-public class TestIntegrationTestConfig extends WebMvcConfigurerAdapter {
+public class IntegrationTestConfig extends WebMvcConfigurerAdapter {
 
   @Bean
   public Mongo mongo() {
@@ -69,13 +69,5 @@ public class TestIntegrationTestConfig extends WebMvcConfigurerAdapter {
     return Mockito.mock(AclRestClient.class);
   }
 
-  @Bean
-  public Principal principal() {
-    return new Principal() {
-      @Override
-      public String getName() {
-        return "doent@hs-trier.de";
-      }
-    };
-  }
+
 }

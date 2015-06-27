@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.lecture.compiler.service.container;
+package org.lecture;
 
 /*
  * Copyright (c) 2015 Rene Richter
@@ -38,9 +38,6 @@ public class ExerciseContextImpl implements ExerciseContext
 {
     private Map<String,Class<?>> excerciseClasses;
     private Map<String,Class<?>> testClasses;
-    private Map<Integer,SourceContainer> exerciseSource = new HashMap<>();
-    private Map<Integer,SourceContainer> testSource = new HashMap<>();
-    
    
     
     @Override

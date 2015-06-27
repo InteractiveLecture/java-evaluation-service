@@ -19,6 +19,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.lecture.integration.IntegrationTestConfig;
+import org.lecture.integration.TestPrincipal;
 import org.lecture.model.TestCaseContainer;
 import org.lecture.repository.TestCaseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,7 +54,7 @@ import static util.TestUtil.toJson;
  * @author Rene Richter
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {TestIntegrationTestConfig.class})
+@ContextConfiguration(classes = {IntegrationTestConfig.class})
 @WebAppConfiguration
 //TODO add custom sample-data in testSampleData.java
 public class TestIntegrationTest {
@@ -66,8 +68,7 @@ public class TestIntegrationTest {
   @Autowired
   private WebApplicationContext webApplicationContext;
 
-  @Autowired
-  Principal principal;
+  Principal principal = new TestPrincipal("dozent@hs-trier.de");
 
   @Autowired
   TestSampleData testSampleData;

@@ -1,12 +1,7 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-package org.lecture.compiler.service.api;
+package org.lecture.integration;
 
 /*
- * Copyright (c) 2015 Rene Richter
+ * Copyright (c) 2015 Rene Richter.
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 3 of the License, or
@@ -20,18 +15,26 @@ package org.lecture.compiler.service.api;
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301  USA
  */
 
-import java.util.Map;
+import java.security.Principal;
 
 /**
  *
- * @author rene
+ * @author Rene Richter
  */
-public interface ExerciseContext
-{
-  Object createObject(String className, Object... params);
-  Object executeMethod(Object object, String methodName, Object... parameters);
-  Map<String, Class<?>> getTestClasses();
-  Map<String, Class<?>> getUserClasses();
-  void setTestClasses(Map<String,Class<?>> classes);
-  void setExerciseClasses(Map<String,Class<?>> exerciseClasses);
+public class TestPrincipal implements Principal {
+
+  private String name;
+
+
+  public TestPrincipal(String name) {
+    setName(name);
+  }
+
+  public void setName(String name) {
+    this.name = name;
+  }
+  @Override
+  public String getName() {
+    return name;
+  }
 }
