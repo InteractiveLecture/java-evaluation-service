@@ -24,6 +24,7 @@ import org.springframework.data.mongodb.repository.MongoRepository;
  *
  * @author Rene Richter
  */
+
 public interface TestCaseRepository
     extends MongoRepository<TestCaseContainer, String> {
 

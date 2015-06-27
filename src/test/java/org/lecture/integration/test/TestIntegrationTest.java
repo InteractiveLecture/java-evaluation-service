@@ -26,6 +26,7 @@ import org.lecture.repository.TestCaseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.MediaTypes;
 import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
@@ -57,6 +58,7 @@ import static util.TestUtil.toJson;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {IntegrationTestConfig.class})
 @WebAppConfiguration
+@ActiveProfiles("")
 //TODO add custom sample-data in testSampleData.java
 public class TestIntegrationTest {
 
