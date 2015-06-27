@@ -15,11 +15,11 @@ package org.lecture.service;
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301  USA
  */
 
+import compiler.compiler.CompilationResult;
+import compiler.compiler.StringCompiler;
 import org.junit.runner.Runner;
 import org.junit.runners.BlockJUnit4ClassRunner;
 import org.junit.runners.model.InitializationError;
-import org.lecture.compiler.compiler.CompilationResult;
-import org.lecture.compiler.compiler.StringCompiler;
 import org.lecture.model.CompilationDiagnostic;
 import org.lecture.model.CompilationReport;
 import org.lecture.model.SourceContainer;

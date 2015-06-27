@@ -40,8 +40,10 @@ repositories {
   mavenCentral()
 
   maven {
-    url 'https://nexus.rene-richter.de/content/repositories/snapshots/'
+    url 'http://artifacts.rene-richter.de//content/repositories/releases'
   }
+
+
 
   maven {
     url 'http://repo.spring.io/libs-snapshot-continuous-local'
@@ -99,8 +101,12 @@ dependencies {
 
   compile files("${System.properties['java.home']}/../lib/tools.jar")
 
-  compile 'org.lecture:compiler-service-api:1.0.SNAPSHOT'
-  compile group: 'org.lecture', name: 'string-compiler', version: '1.0.SNAPSHOT'
+  compile 'org.lecture:compiler-service-api:1.0.0.RELEASE'
+  compile 'org.lecture:string-compiler-test-framework:1.0.0.RELEASE'
+
+  compile group: 'org.lecture',
+          name: 'string-compiler',
+          version: '1.0.0.RELEASE'
 
 
   testCompile 'com.github.fakemongo:fongo:1.6.2'

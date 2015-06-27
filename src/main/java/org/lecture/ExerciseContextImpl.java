@@ -21,13 +21,11 @@ package org.lecture;
  */
 
 
-import org.lecture.compiler.service.api.ExerciseContext;
-import org.lecture.model.SourceContainer;
+import org.lecture.compiler.api.ExerciseContext;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.Map;
 
 /**

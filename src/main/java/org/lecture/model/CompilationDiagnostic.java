@@ -15,7 +15,8 @@ package org.lecture.model;
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301  USA
  */
 
-import org.lecture.compiler.compiler.StringJavaFileObject;
+
+import compiler.compiler.StringJavaFileObject;
 
 import javax.tools.Diagnostic;
 

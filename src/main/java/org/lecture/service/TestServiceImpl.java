@@ -15,12 +15,12 @@ package org.lecture.service;
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301  USA
  */
 
+import compiler.compiler.StringCompiler;
 import org.junit.runner.JUnitCore;
 import org.junit.runner.Runner;
 import org.junit.runners.model.InitializationError;
-import org.lecture.compiler.compiler.StringCompiler;
-import org.lecture.compiler.service.api.ExerciseContext;
 import org.lecture.ExerciseContextImpl;
+import org.lecture.compiler.api.ExerciseContext;
 import org.lecture.compiler.testframework.LectureRunner;
 import org.lecture.model.SourceContainer;
 import org.lecture.model.TestCaseContainer;
