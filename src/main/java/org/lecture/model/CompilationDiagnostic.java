@@ -22,6 +22,7 @@ import javax.tools.Diagnostic;
 
 /**
  * Wrapper for Diagnostic objects.
+ *
  * @author Rene Richter
  */
 public class CompilationDiagnostic {
@@ -36,10 +37,16 @@ public class CompilationDiagnostic {
   private long position;
   private boolean noPosition;
 
-  public CompilationDiagnostic(){}
+  public CompilationDiagnostic() {
+  }
 
+  /**
+   * Creates a new CompilationDiagnostic from a raw Diagnostic object.
+   * @param diagnostic the compilation diagnostic.
+   * @see Diagnostic
+   */
   public CompilationDiagnostic(Diagnostic diagnostic) {
-    this.classname = ((StringJavaFileObject)diagnostic.getSource()).className;
+    this.classname = ((StringJavaFileObject) diagnostic.getSource()).className;
     this.code = diagnostic.getCode();
     this.colNumber = diagnostic.getColumnNumber();
     this.endPosition = diagnostic.getEndPosition();
@@ -48,7 +55,6 @@ public class CompilationDiagnostic {
     this.position = diagnostic.getPosition();
     this.noPosition = diagnostic.getPosition() >= 0;
   }
-
 
 
   public String getClassname() {

@@ -16,8 +16,8 @@ package org.lecture.unit.codesubmission.controller;
 */
 
 import org.lecture.assembler.SourceContainerAssembler;
-import org.lecture.repository.SourceContainerRepository;
 import org.lecture.controller.UserSourceContainerController;
+import org.lecture.repository.SourceContainerRepository;
 import org.lecture.service.CompilerService;
 import org.lecture.service.TestService;
 import org.mockito.Mockito;
@@ -28,9 +28,10 @@ import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.config.EnableHypermediaSupport;
 
 /**
-* Configuration for SourceContainer controller unit tests.
-* @author Rene Richter
-*/
+ * Configuration for SourceContainer controller unit tests.
+ *
+ * @author Rene Richter
+ */
 @Configuration
 @EnableHypermediaSupport(type = {EnableHypermediaSupport.HypermediaType.HAL})
 public class CodeSubmissionControllerUnitTestConfig {
@@ -43,7 +44,7 @@ public class CodeSubmissionControllerUnitTestConfig {
 
   @Bean
   public LoadBalancerClient loadBalancerClient() {
-    return  Mockito.mock(LoadBalancerClient.class);
+    return Mockito.mock(LoadBalancerClient.class);
   }
 
   @Bean

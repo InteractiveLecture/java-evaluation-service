@@ -32,6 +32,8 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import util.TestUtil;
 
+import java.security.Principal;
+
 import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -40,11 +42,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static util.TestUtil.toJson;
 
-import java.security.Principal;
-
 
 /**
  * A integration test for CodeSubmissions
+ *
  * @author Rene Richter
  */
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -77,7 +78,6 @@ public class CodeSubmissionIntegrationTest {
   public void tereDown() {
     codeSubmissionSampleData.destroy();
   }
-
 
 
   @Test

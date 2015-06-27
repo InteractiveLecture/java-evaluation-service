@@ -24,6 +24,7 @@ import org.lecture.model.CompilationDiagnostic;
 import org.lecture.model.CompilationReport;
 import org.lecture.model.SourceContainer;
 import org.lecture.model.TestCaseContainer;
+import org.lecture.patchservice.PatchService;
 import org.lecture.repository.SourceContainerRepository;
 import org.lecture.repository.TestCaseRepository;
 import org.lecture.restclient.AclRestClient;
@@ -39,6 +40,7 @@ import java.util.stream.Collectors;
 
 
 /**
+ * Implementation of the CompilerService interface.
  * @author Rene Richter
  */
 @Service
@@ -59,7 +61,7 @@ public class CompilerServiceImpl implements CompilerService {
   @Override
   public CompilationReport patchAndCompileUserSource(String id, String[] patches) {
     SourceContainer submission = codeSubmissionRepository.findOne(id);
-    CompilationResult compilationResult = patchAndCompile(patches,submission);
+    CompilationResult compilationResult = patchAndCompile(patches, submission);
     CompilationReport report = createCompilationReport(compilationResult);
     submission.setCompilationReport(report);
     saveAsync(submission);
@@ -69,18 +71,19 @@ public class CompilerServiceImpl implements CompilerService {
   @Override
   public CompilationReport patchAndCompileTestSource(String id, String[] patches) {
     TestCaseContainer testContainer = testCaseRepository.findOne(id);
-    CompilationResult compilationResult = patchAndCompile(patches,testContainer);
+    CompilationResult compilationResult = patchAndCompile(patches, testContainer);
     testContainer.setTestClasses(compilationResult.getCompiledClasses());
     checkTestValidity(testContainer);
     saveAsync(testContainer);
     return testContainer.getCompilationReport();
   }
 
-  private <T extends SourceContainer> CompilationResult patchAndCompile(String[] patches,T entity) {
+  private <T extends SourceContainer> CompilationResult patchAndCompile(String[] patches,
+                                                                        T entity) {
     for (String patch : patches) {
       String[] parsedPatch = parsePatch(patch);
       String oldSource = entity.getSources().get(parsedPatch[0]);
-      String newSource = patchService.patch(oldSource,parsedPatch[1]);
+      String newSource = patchService.patch(oldSource, parsedPatch[1]);
       entity.addSource(parsedPatch[0], newSource);
     }
     StringCompiler compiler = new StringCompiler();
@@ -122,17 +125,16 @@ public class CompilerServiceImpl implements CompilerService {
   }
 
   private void checkTestValidity(TestCaseContainer container) {
-    container.getTestClasses().forEach((k, v) -> {
-      try {
-        Runner runner = new BlockJUnit4ClassRunner(v);
-      } catch (InitializationError initializationError) {
-        CompilationDiagnostic malformedError = new CompilationDiagnostic();
-        malformedError.setClassname(k);
-        malformedError.setMessage("Not a valid JUnit test.");
-        container.getCompilationReport().addError(malformedError);
-      }
-    });
-
+    container.getTestClasses().forEach((className, classObject) -> {
+        try {
+          Runner runner = new BlockJUnit4ClassRunner(classObject);
+        } catch (InitializationError initializationError) {
+          CompilationDiagnostic malformedError = new CompilationDiagnostic();
+          malformedError.setClassname(className);
+          malformedError.setMessage("Not a valid JUnit test.");
+          container.getCompilationReport().addError(malformedError);
+        }
+      });
   }
 
   @Async
@@ -144,11 +146,6 @@ public class CompilerServiceImpl implements CompilerService {
   private void saveAsync(TestCaseContainer testCase) {
     testCaseRepository.save(testCase);
   }
-
-
-
-
-
 
 
 }

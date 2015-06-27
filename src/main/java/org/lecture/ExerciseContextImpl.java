@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package org.lecture;
 
 /*
@@ -29,78 +24,59 @@ import java.util.Arrays;
 import java.util.Map;
 
 /**
- *
  * @author rene
  */
-public class ExerciseContextImpl implements ExerciseContext
-{
-    private Map<String,Class<?>> excerciseClasses;
-    private Map<String,Class<?>> testClasses;
-   
-    
-    @Override
-    public void setTestClasses(Map<String,Class<?>> classes)
-    {
-        this.testClasses = classes;
-    }
-    
-    @Override
-    public void setExerciseClasses(Map<String,Class<?>> exerciseClasses)
-    {
-        this.excerciseClasses = exerciseClasses;
-    }
-    
+public class ExerciseContextImpl implements ExerciseContext {
+  private Map<String, Class<?>> excerciseClasses;
+  private Map<String, Class<?>> testClasses;
 
-    
-    
-    @Override
-    public Object createObject(String className,Object... params)
-    {
-        try 
-        {
-            Constructor c = this.excerciseClasses.get(className).getConstructor(getParameterTypes(params));
-            return c.newInstance(params);
-        } catch (NoSuchMethodException | SecurityException
-            | InstantiationException | IllegalAccessException
-            | IllegalArgumentException | InvocationTargetException ex) {
+  @Override
+  public void setExerciseClasses(Map<String, Class<?>> exerciseClasses) {
+    this.excerciseClasses = exerciseClasses;
+  }
 
-           throw new RuntimeException(ex);
-        }
-    }
+  @Override
+  public Object createObject(String className, Object... params) {
+    try {
+      Constructor c = this.excerciseClasses.get(className).getConstructor(getParameterTypes(params));
+      return c.newInstance(params);
+    } catch (NoSuchMethodException | SecurityException
+        | InstantiationException | IllegalAccessException
+        | IllegalArgumentException | InvocationTargetException ex) {
 
-    @Override
-    public Map<String, Class<?>> getUserClasses() 
-    {
-        return excerciseClasses;
+      throw new RuntimeException(ex);
     }
+  }
 
-    @Override
-    public Map<String, Class<?>> getTestClasses() 
-    {
-        return testClasses;
-    }
-    
-    
-    @Override
-    public Object executeMethod(Object object,String methodName, Object...parameters)
-    {
-        try 
-        {
-            return object.getClass()
-                    .getMethod(methodName,(Class<?>[])getParameterTypes(parameters))
-                    .invoke(object, parameters);
-        } 
-        catch (NoSuchMethodException | SecurityException | IllegalAccessException
-            | IllegalArgumentException | InvocationTargetException e) {
-            throw new RuntimeException(e);
-        }
-    }
-    
+  @Override
+  public Map<String, Class<?>> getUserClasses() {
+    return excerciseClasses;
+  }
 
-    
-    private Class<?>[] getParameterTypes(Object[] parameters)
-    {
-        if(parameters.length== 0) return new Class<?>[0];
-        return Arrays.stream(parameters).map(param-> param.getClass()).toArray(Class<?>[]::new);
+  @Override
+  public Map<String, Class<?>> getTestClasses() {
+    return testClasses;
+  }
+
+  @Override
+  public void setTestClasses(Map<String, Class<?>> classes) {
+    this.testClasses = classes;
+  }
+
+  @Override
+  public Object executeMethod(Object object, String methodName, Object... parameters) {
+    try {
+      return object.getClass()
+          .getMethod(methodName, (Class<?>[]) getParameterTypes(parameters))
+          .invoke(object, parameters);
+    } catch (NoSuchMethodException | SecurityException | IllegalAccessException
+        | IllegalArgumentException | InvocationTargetException e) {
+      throw new RuntimeException(e);
     }
+  }
+
+  private Class<?>[] getParameterTypes(Object[] parameters) {
+    if (parameters.length == 0) return new Class<?>[0];
+    return Arrays.stream(parameters).map(Object::getClass).toArray(Class<?>[]::new);
+  }
 }

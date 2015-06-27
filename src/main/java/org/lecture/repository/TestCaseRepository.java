@@ -16,17 +16,16 @@ package org.lecture.repository;
 */
 
 import org.lecture.model.TestCaseContainer;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
 
 /**
-* A repository for tests
-* @author Rene Richter
-*/
+ * A repository for tests
+ *
+ * @author Rene Richter
+ */
 public interface TestCaseRepository
-    extends MongoRepository<TestCaseContainer,String> {
+    extends MongoRepository<TestCaseContainer, String> {
 
   TestCaseContainer findByExerciseId(long exerciseId);
 

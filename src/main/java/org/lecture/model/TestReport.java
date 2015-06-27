@@ -27,7 +27,8 @@ public class TestReport {
   private List<TestResult> testResults;
   private boolean allPassed;
 
-  public TestReport(){}
+  public TestReport() {
+  }
 
   public TestReport(List<TestResult> testResults) {
     this.testResults = testResults;

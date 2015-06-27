@@ -36,9 +36,10 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 /**
-* Unit test for TestCaseContainer controllers.
-* @author Rene Richter
-*/
+ * Unit test for TestCaseContainer controllers.
+ *
+ * @author Rene Richter
+ */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {TestControllerUnitTestConfig.class})
 public class TestControllerUnitTest {
@@ -61,7 +62,7 @@ public class TestControllerUnitTest {
    */
   @Before
   public void setUp() {
-    reset(testRepository,testAssembler,pagedResourcesAssembler);
+    reset(testRepository, testAssembler, pagedResourcesAssembler);
   }
 
 
@@ -73,7 +74,7 @@ public class TestControllerUnitTest {
     when(testRepository.findOne("1")).thenReturn(instance);
     when(testAssembler.toResource(instance)).thenReturn(testResource);
     ResponseEntity response = testInstance.getOneTest("1");
-    assertEquals(200,response.getStatusCode().value());
+    assertEquals(200, response.getStatusCode().value());
     verify(testRepository, times(1)).findOne("1");
     verify(testAssembler, times(1)).toResource(instance);
   }

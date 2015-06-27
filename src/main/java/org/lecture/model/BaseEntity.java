@@ -16,8 +16,10 @@ package org.lecture.model;
 */
 
 import org.springframework.hateoas.Identifiable;
+
 /**
  * A mongodb-base entity.
+ *
  * @author Rene Richter
  */
 public class BaseEntity implements Identifiable<String> {
@@ -25,10 +27,10 @@ public class BaseEntity implements Identifiable<String> {
   private String id;
 
   public String getId() {
-      return id;
+    return id;
   }
 
   public void setId(String id) {
-      this.id = id;
+    this.id = id;
   }
 }

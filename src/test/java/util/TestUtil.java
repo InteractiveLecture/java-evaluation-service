@@ -26,6 +26,7 @@ import java.nio.charset.Charset;
 
 /**
  * Utility class for testing.
+ *
  * @author Rene Richter
  */
 public class TestUtil {
@@ -36,12 +37,12 @@ public class TestUtil {
           Charset.forName("utf8"));
 
   /**
-  * Converts an object to json (as bytes).
-  *
-  * @param object the object to convert
-  * @return JSON as bytes.
-  * @throws JsonProcessingException   thrown by jackson objectmapper
-  */
+   * Converts an object to json (as bytes).
+   *
+   * @param object the object to convert
+   * @return JSON as bytes.
+   * @throws JsonProcessingException thrown by jackson objectmapper
+   */
   public static byte[] toJson(BaseEntity object) throws JsonProcessingException {
     ObjectMapper mapper = new ObjectMapper();
     return mapper.writeValueAsBytes(object);
@@ -49,10 +50,11 @@ public class TestUtil {
 
 
   /**
-  * Mocks a ServiceInstance.
-  * @param serviceName the name of the service.
-  * @return the mock.
-  */
+   * Mocks a ServiceInstance.
+   *
+   * @param serviceName the name of the service.
+   * @return the mock.
+   */
   public static ServiceInstance mockServiceInstance(String serviceName) {
     ServiceInstance result = new ServiceInstance() {
       @Override
@@ -80,6 +82,6 @@ public class TestUtil {
         return URI.create("http://localhost/" + serviceName);
       }
     };
-    return  result;
+    return result;
   }
 }

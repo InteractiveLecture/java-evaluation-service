@@ -23,16 +23,17 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.hateoas.config.EnableHypermediaSupport;
 
 /**
-* Configuration class for SourceContainer unit tests.
-* @author Rene Richter
-*/
+ * Configuration class for SourceContainer unit tests.
+ *
+ * @author Rene Richter
+ */
 @Configuration
 @EnableHypermediaSupport(type = {EnableHypermediaSupport.HypermediaType.HAL})
 public class CodeSubmissionAssemblerUnitTestConfig {
 
   @Bean
   public LoadBalancerClient loadBalancerClient() {
-    return  Mockito.mock(LoadBalancerClient.class);
+    return Mockito.mock(LoadBalancerClient.class);
   }
 
   @Bean

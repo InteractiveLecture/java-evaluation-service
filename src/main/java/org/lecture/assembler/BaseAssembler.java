@@ -28,6 +28,7 @@ import java.lang.reflect.InvocationTargetException;
 
 /**
  * A common base class for assembler.
+ *
  * @author Rene Richter
  */
 @Component
@@ -35,22 +36,22 @@ public abstract class BaseAssembler<T extends BaseEntity, D extends ResourceSupp
     extends IdentifiableResourceAssemblerSupport<T, D> {
 
   protected Class<D> resourceTypeClass;
+  @Autowired
+  LoadBalancerClient loadBalancerClient;
+
 
   public BaseAssembler(Class<?> controllerClass, Class<D> resourceType) {
     super(controllerClass, resourceType);
     this.resourceTypeClass = resourceType;
   }
 
-
-  @Autowired
-  LoadBalancerClient loadBalancerClient;
-
   /**
    * Adds a link for the given service to the given resource.
-   * @param resource the resource you want to add the link to.
+   *
+   * @param resource    the resource you want to add the link to.
    * @param serviceName the name of the service.
-   * @param subUri the path the resource is located.
-   * @param ref the ref of the link.
+   * @param subUri      the path the resource is located.
+   * @param ref         the ref of the link.
    */
   public void linkToService(ResourceSupport resource,
                             String serviceName,
@@ -58,22 +59,23 @@ public abstract class BaseAssembler<T extends BaseEntity, D extends ResourceSupp
                             String ref) {
     ServiceInstance instance = loadBalancerClient.choose(serviceName);
     if (instance != null) {
-      resource.add(new Link(instance.getUri().toString() + "/" + subUri,ref));
+      resource.add(new Link(instance.getUri().toString() + "/" + subUri, ref));
     }
   }
 
   /**
    * Adds a link for the given service to the given resource.
-   * @param resource the resource you want to add the link to.
+   *
+   * @param resource    the resource you want to add the link to.
    * @param serviceName the name of the service.
-   * @param ref the ref of the link.
+   * @param ref         the ref of the link.
    */
   public void linkToService(ResourceSupport resource,
                             String serviceName,
                             String ref) {
     ServiceInstance instance = loadBalancerClient.choose(serviceName);
     if (instance != null) {
-      resource.add(new Link(instance.getUri().toString(),ref));
+      resource.add(new Link(instance.getUri().toString(), ref));
     }
   }
 

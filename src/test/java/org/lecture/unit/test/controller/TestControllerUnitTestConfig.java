@@ -16,8 +16,8 @@ package org.lecture.unit.test.controller;
 */
 
 import org.lecture.assembler.TestCaseAssembler;
-import org.lecture.repository.TestCaseRepository;
 import org.lecture.controller.TestCaseController;
+import org.lecture.repository.TestCaseRepository;
 import org.lecture.service.CompilerService;
 import org.mockito.Mockito;
 import org.springframework.cloud.client.loadbalancer.LoadBalancerClient;
@@ -27,9 +27,10 @@ import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.config.EnableHypermediaSupport;
 
 /**
-* Configuration for TestCaseContainer controller unit tests.
-* @author Rene Richter
-*/
+ * Configuration for TestCaseContainer controller unit tests.
+ *
+ * @author Rene Richter
+ */
 @Configuration
 @EnableHypermediaSupport(type = {EnableHypermediaSupport.HypermediaType.HAL})
 public class TestControllerUnitTestConfig {
@@ -42,7 +43,7 @@ public class TestControllerUnitTestConfig {
 
   @Bean
   public LoadBalancerClient loadBalancerClient() {
-    return  Mockito.mock(LoadBalancerClient.class);
+    return Mockito.mock(LoadBalancerClient.class);
   }
 
   @Bean

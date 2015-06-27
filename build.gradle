@@ -31,7 +31,7 @@ apply plugin: 'maven'
 apply plugin: 'java'
 apply plugin: 'idea'
 apply plugin: 'spring-boot'
-apply plugin: "checkstyle"
+//apply plugin: "checkstyle"
 apply plugin: 'com.bmuschko.nexus'
 
 
@@ -61,8 +61,16 @@ repositories {
 }
 
 
+compileJava {
+  options.encoding = "UTF-8"
+}
 
-checkstyle{
+javadoc {
+  options.encoding = "UTF-8"
+}
+
+
+/*checkstyle{
   checkstyle {
     toolVersion = "6.6"
   }
@@ -71,9 +79,9 @@ checkstyle{
 task checkstyle(type: Checkstyle) {
   configFile file("config/checkstyle/checkstyle.xml")
   source './'
-  include '**/*.java'
+  include '**.java'
   classpath = files()
-}
+}*/
 
 configurations {
   deployerJars
@@ -103,6 +111,8 @@ dependencies {
 
   compile 'org.lecture:compiler-service-api:1.0.0.RELEASE'
   compile 'org.lecture:string-compiler-test-framework:1.0.0.RELEASE'
+  compile 'org.lecture:patch-lib:1.0.0-RELEASE'
+
 
   compile group: 'org.lecture',
           name: 'string-compiler',

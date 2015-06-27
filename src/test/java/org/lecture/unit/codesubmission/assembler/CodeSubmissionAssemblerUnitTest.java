@@ -29,6 +29,7 @@ import static org.junit.Assert.assertEquals;
 
 /**
  * Unit test for SourceContainer assemblers.
+ *
  * @author Rene Richter
  */
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -46,6 +47,6 @@ public class CodeSubmissionAssemblerUnitTest {
     SourceContainer instance = new SourceContainer();
     instance.setId(String.valueOf(1));
     ResourceSupport resourceSupport = testInstance.toResource(instance);
-    assertEquals("self",resourceSupport.getId().getRel());
+    assertEquals("self", resourceSupport.getId().getRel());
   }
 }

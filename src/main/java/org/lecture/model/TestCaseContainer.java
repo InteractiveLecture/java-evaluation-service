@@ -21,13 +21,14 @@ import java.util.Map;
 
 /**
  * Entity that represents Tests.
+ *
  * @author Rene Richter
  */
 @Document
 public class TestCaseContainer extends SourceContainer {
 
 
-  private Map<String,Class<?>> testClasses;
+  private Map<String, Class<?>> testClasses;
   private boolean active;
 
   public boolean isActive() {

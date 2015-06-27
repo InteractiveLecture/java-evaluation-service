@@ -51,6 +51,7 @@ import static util.TestUtil.toJson;
 
 /**
  * A integration test for Tests
+ *
  * @author Rene Richter
  */
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -59,19 +60,14 @@ import static util.TestUtil.toJson;
 //TODO add custom sample-data in testSampleData.java
 public class TestIntegrationTest {
 
-  private MockMvc mockMvc;
-
   @Autowired
   TestCaseRepository testCaseRepository;
-
-
-  @Autowired
-  private WebApplicationContext webApplicationContext;
-
   Principal principal = new TestPrincipal("dozent@hs-trier.de");
-
   @Autowired
   TestSampleData testSampleData;
+  private MockMvc mockMvc;
+  @Autowired
+  private WebApplicationContext webApplicationContext;
 
   /**
    * sets up the test.
@@ -124,7 +120,7 @@ public class TestIntegrationTest {
                 getClass().getResource("HugoTest.java").toURI())));
 
 
-    container.addSource("HugoTest", classContent );
+    container.addSource("HugoTest", classContent);
 
   }
 }

@@ -20,6 +20,7 @@ import java.util.List;
 
 /**
  * Entity that represents CompilationReports.
+ *
  * @author Rene Richter
  */
 public class CompilationReport {
@@ -28,20 +29,25 @@ public class CompilationReport {
   private List<CompilationDiagnostic> errors;
   private List<CompilationDiagnostic> warnings;
 
-  
 
-  public CompilationReport(){}
+  public CompilationReport() {
+  }
 
 
-  /*
-   * a convenience constructor.
+  /**
+   * A convenience constructor.
+   * @param date The date.
+   * @param errors the errors.
+   * @param warnings the warnings.
    */
-  public  CompilationReport(LocalDateTime date,List<CompilationDiagnostic> errors,List<CompilationDiagnostic> warnings) {
+  public CompilationReport(LocalDateTime date,
+                           List<CompilationDiagnostic> errors,
+                           List<CompilationDiagnostic> warnings) {
 
     this.date = date;
     this.errors = errors;
     this.warnings = warnings;
-    
+
   }
 
   public void addError(CompilationDiagnostic error) {

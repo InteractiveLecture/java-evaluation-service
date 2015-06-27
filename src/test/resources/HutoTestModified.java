@@ -21,12 +21,12 @@ public class HugoTest extends AbstractTest {
   @Test
   public void testBlubb() {
     Object o = super.createObject("Hugo");
-    super.executeMethod(o,"sayHi");
+    super.executeMethod(o, "sayHi");
   }
 
   @Test
   public void testBla() {
     Object o = super.createObject("Hugo");
-    super.executeMethod(o,"doBla");
+    super.executeMethod(o, "doBla");
   }
 }

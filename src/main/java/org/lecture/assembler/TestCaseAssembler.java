@@ -15,10 +15,8 @@ package org.lecture.assembler;
 * Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301  USA
 */
 
-import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
-
-import org.lecture.model.TestCaseContainer;
 import org.lecture.controller.TestCaseController;
+import org.lecture.model.TestCaseContainer;
 import org.lecture.resource.TestCaseResource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.EntityLinks;
@@ -27,10 +25,15 @@ import org.springframework.stereotype.Component;
 
 /**
  * Assembler to create TestCaseContainer resources.
+ *
  * @author Rene Richter
  */
 @Component
 public class TestCaseAssembler extends BaseAssembler<TestCaseContainer, TestCaseResource> {
+
+  @Autowired
+  EntityLinks entityLinks;
+
 
   /**
    * Creates a new {@link ResourceAssemblerSupport}
@@ -39,11 +42,6 @@ public class TestCaseAssembler extends BaseAssembler<TestCaseContainer, TestCase
   public TestCaseAssembler() {
     super(TestCaseController.class, TestCaseResource.class);
   }
-
-
-  @Autowired
-  EntityLinks entityLinks;
-
 
   @Override
   public TestCaseResource toResource(TestCaseContainer entity) {

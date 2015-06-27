@@ -18,7 +18,6 @@ package org.lecture.integration;
 import java.security.Principal;
 
 /**
- *
  * @author Rene Richter
  */
 public class TestPrincipal implements Principal {
@@ -30,11 +29,12 @@ public class TestPrincipal implements Principal {
     setName(name);
   }
 
-  public void setName(String name) {
-    this.name = name;
-  }
   @Override
   public String getName() {
     return name;
+  }
+
+  public void setName(String name) {
+    this.name = name;
   }
 }

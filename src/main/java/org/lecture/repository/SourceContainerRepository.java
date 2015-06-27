@@ -20,11 +20,12 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 
 
 /**
-* A repository for codesubmissions
-* @author Rene Richter
-*/
-public interface SourceContainerRepository extends MongoRepository<SourceContainer,String> {
+ * A repository for codesubmissions
+ *
+ * @author Rene Richter
+ */
+public interface SourceContainerRepository extends MongoRepository<SourceContainer, String> {
 
-  public SourceContainer findByUsernameAndExerciseId(String username,long exerciseId);
+  public SourceContainer findByUsernameAndExerciseId(String username, long exerciseId);
 
 }

@@ -26,18 +26,18 @@ public class SourceContainer extends BaseEntity {
 
   private String username;
   // k=classname, v=source
-  private Map<String,String> sources;
+  private Map<String, String> sources;
   private long exerciseId;
 
   private LocalDateTime submissionDate;
 
   private CompilationReport compilationReport;
 
-  public void addSource(String classname,String source) {
-    if(sources == null) {
+  public void addSource(String classname, String source) {
+    if (sources == null) {
       sources = new HashMap<>();
     }
-    this.sources.put(classname,source);
+    this.sources.put(classname, source);
   }
 
   public String getUsername() {

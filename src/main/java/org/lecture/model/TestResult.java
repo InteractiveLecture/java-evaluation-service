@@ -29,7 +29,8 @@ public class TestResult {
   private boolean successful;
 
 
-  public TestResult() {}
+  public TestResult() {
+  }
 
   public TestResult(Result result) {
     this.failures = result.getFailures();

@@ -15,6 +15,7 @@ package org.lecture.config;
 * Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301  USA
 */
 
+import org.lecture.patchservice.PatchService;
 import org.springframework.boot.orm.jpa.EntityScan;
 import org.springframework.cloud.netflix.feign.EnableFeignClients;
 import org.springframework.context.annotation.Bean;
@@ -24,11 +25,12 @@ import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 import org.springframework.data.web.config.EnableSpringDataWebSupport;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+
 /**
-* Application config-class.
-*
-* @author  Rene Richter
-*/
+ * Application config-class.
+ *
+ * @author Rene Richter
+ */
 
 @Configuration
 @EnableWebMvc
@@ -41,5 +43,10 @@ public class AppConfig {
   @Bean
   public static PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer() {
     return new PropertySourcesPlaceholderConfigurer();
+  }
+
+  @Bean
+  public PatchService patchService() {
+    return new PatchService();
   }
 }

@@ -36,9 +36,10 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 /**
-* Unit test for SourceContainer controllers.
-* @author Rene Richter
-*/
+ * Unit test for SourceContainer controllers.
+ *
+ * @author Rene Richter
+ */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {CodeSubmissionControllerUnitTestConfig.class})
 public class CodeSubmissionControllerUnitTest {
@@ -61,9 +62,8 @@ public class CodeSubmissionControllerUnitTest {
    */
   @Before
   public void setUp() {
-    reset(codesubmissionRepository,codesubmissionAssembler,pagedResourcesAssembler);
+    reset(codesubmissionRepository, codesubmissionAssembler, pagedResourcesAssembler);
   }
-
 
 
   @Test
@@ -74,7 +74,7 @@ public class CodeSubmissionControllerUnitTest {
     when(codesubmissionRepository.findOne(String.valueOf(1))).thenReturn(instance);
     when(codesubmissionAssembler.toResource(instance)).thenReturn(testResource);
     ResponseEntity response = testInstance.getOne(String.valueOf(1));
-    assertEquals(200,response.getStatusCode().value());
+    assertEquals(200, response.getStatusCode().value());
     verify(codesubmissionRepository, times(1)).findOne(String.valueOf(1));
     verify(codesubmissionAssembler, times(1)).toResource(instance);
   }

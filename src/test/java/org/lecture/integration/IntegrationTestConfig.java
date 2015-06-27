@@ -17,6 +17,7 @@ package org.lecture.integration;
 
 import com.github.fakemongo.Fongo;
 import com.mongodb.Mongo;
+import org.lecture.patchservice.PatchService;
 import org.lecture.restclient.AclRestClient;
 import org.mockito.Mockito;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -31,10 +32,9 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
-import java.security.Principal;
-
 /**
  * Configuration class for org.lecture integration test.
+ *
  * @author Rene Richter
  */
 @Configuration
@@ -57,16 +57,21 @@ public class IntegrationTestConfig extends WebMvcConfigurerAdapter {
   public Mongo mongo() {
     Fongo fongo = new Fongo("test");
     return fongo.getMongo();
-   }
-    
+  }
+
   @Bean
   public MongoTemplate mongoTemplate() {
-    return new MongoTemplate(mongo(),"TestCaseContainer");
+    return new MongoTemplate(mongo(), "TestCaseContainer");
   }
 
   @Bean
   public AclRestClient aclRestClient() {
     return Mockito.mock(AclRestClient.class);
+  }
+
+  @Bean
+  public PatchService patchService() {
+    return new PatchService();
   }
 
 

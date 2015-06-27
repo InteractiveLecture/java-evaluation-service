@@ -22,30 +22,31 @@ import java.util.Map;
 
 /**
  * A SourceContainer-resource.
+ *
  * @author Rene Richter
  */
 public class SourceContainerResource extends ResourceSupport {
-  
-  private Map<String,String> sources;
-  
+
+  private Map<String, String> sources;
+
   private String classname;
-  
+
   private String username;
-  
+
   private long exerciseId;
-  
+
 
   /*
    * Reads all attributes from entity that should get serialized.
    */
   public SourceContainerResource(SourceContainer entity) {
-    
+
     this.sources = entity.getSources();
 
     this.username = entity.getUsername();
-    
+
     this.exerciseId = entity.getExerciseId();
-    
+
   }
 
 
@@ -65,28 +66,28 @@ public class SourceContainerResource extends ResourceSupport {
     this.exerciseId = exerciseId;
   }
 
-  public void setClassname(String classname) {
-    this.classname = classname;
-  }
-
   public String getClassname() {
     return this.classname;
   }
-  
-  public void setUsername(String username) {
-    this.username = username;
+
+  public void setClassname(String classname) {
+    this.classname = classname;
   }
 
   public String getUsername() {
     return this.username;
   }
-  
-  public void setExerciseid(long exerciseId) {
-    this.exerciseId = exerciseId;
+
+  public void setUsername(String username) {
+    this.username = username;
   }
 
   public long getExerciseid() {
     return this.exerciseId;
   }
-  
+
+  public void setExerciseid(long exerciseId) {
+    this.exerciseId = exerciseId;
+  }
+
 }

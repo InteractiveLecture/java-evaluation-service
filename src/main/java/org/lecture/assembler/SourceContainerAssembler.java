@@ -15,8 +15,6 @@ package org.lecture.assembler;
 * Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301  USA
 */
 
-import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
-
 import org.lecture.controller.UserSourceContainerController;
 import org.lecture.model.SourceContainer;
 import org.lecture.resource.SourceContainerResource;
@@ -27,10 +25,15 @@ import org.springframework.stereotype.Component;
 
 /**
  * Assembler to create SourceContainer resources.
+ *
  * @author Rene Richter
  */
 @Component
 public class SourceContainerAssembler extends BaseAssembler<SourceContainer, SourceContainerResource> {
+
+  @Autowired
+  EntityLinks entityLinks;
+
 
   /**
    * Creates a new {@link ResourceAssemblerSupport}
@@ -39,11 +42,6 @@ public class SourceContainerAssembler extends BaseAssembler<SourceContainer, Sou
   public SourceContainerAssembler() {
     super(UserSourceContainerController.class, SourceContainerResource.class);
   }
-
-
-  @Autowired
-  EntityLinks entityLinks;
-
 
   @Override
   public SourceContainerResource toResource(SourceContainer entity) {

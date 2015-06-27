@@ -23,26 +23,25 @@ import java.util.Map;
 
 /**
  * A TestCaseContainer-resource.
+ *
  * @author Rene Richter
  */
 public class TestCaseResource extends ResourceSupport {
-  
+
+  Map<String, String> sources;
   private long exerciseId;
-
-  Map<String,String> sources;
-
   private boolean active;
 
   private String username;
 
   private CompilationReport compilationReport;
-  
+
 
   /*
    * Reads all attributes from entity that should get serialized.
    */
   public TestCaseResource(TestCaseContainer entity) {
-    
+
     this.exerciseId = entity.getExerciseId();
 
     this.sources = entity.getSources();

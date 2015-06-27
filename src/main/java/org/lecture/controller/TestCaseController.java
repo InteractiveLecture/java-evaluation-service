@@ -37,6 +37,7 @@ import java.security.Principal;
 
 /**
  * A controller for TestCaseContainer Routes.
+ *
  * @author Rene Richter
  */
 @RestController
@@ -57,12 +58,12 @@ public class TestCaseController extends BaseController {
   /**
    * Returns a single testcase container by exercise id.
    *
-   * @param exerciseId  The id of the exercise the testcase container belongs to.
+   * @param exerciseId The id of the exercise the testcase container belongs to.
    * @return a Resource representing the testcase container.
    */
   @RequestMapping(method = RequestMethod.GET)
   public ResponseEntity<TestCaseResource> getByExerciseId(
-      @RequestParam("exerciseId")long exerciseId) {
+      @RequestParam("exerciseId") long exerciseId) {
 
     TestCaseContainer result =
         this.testRepository.findByExerciseId(exerciseId);
@@ -75,8 +76,9 @@ public class TestCaseController extends BaseController {
   /**
    * Creates a new TestCaseContainer. This method should get called before the
    * code submission gets send.
-   * @param entity the test from the post-request. This test is deserialized by
-   *              jackson.
+   *
+   * @param entity    the test from the post-request. This test is deserialized by
+   *                  jackson.
    * @param principal The current user injected by spring.
    * @return A respoonse containing a compilation-report.
    */
@@ -86,7 +88,7 @@ public class TestCaseController extends BaseController {
 
     entity.setUsername(principal.getName());
     entity = testRepository.save(entity);
-    return super.createEntity(entity,"Accept-Patch", "application/mdmp");
+    return super.createEntity(entity, "Accept-Patch", "application/mdmp");
   }
 
   /**
@@ -116,7 +118,7 @@ public class TestCaseController extends BaseController {
   public ResponseEntity<CompilationReport> update(
       @PathVariable String id, @RequestBody String rawPatch) {
 
-    String [] patchParts = rawPatch.split("\\+\\+\\+\n");
+    String[] patchParts = rawPatch.split("\\+\\+\\+\n");
     CompilationReport report =
         compilerService.patchAndCompileTestSource(id, patchParts);
 
@@ -132,7 +134,7 @@ public class TestCaseController extends BaseController {
   }
 
   @RequestMapping(value = "/{id}/active", method = RequestMethod.PUT)
-  public ResponseEntity<?> setActive(String id,@RequestBody boolean active) {
+  public ResponseEntity<?> setActive(String id, @RequestBody boolean active) {
 
     TestCaseContainer container = this.testRepository.findOne(id);
     container.setActive(active);
