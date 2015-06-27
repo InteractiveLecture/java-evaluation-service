@@ -20,6 +20,7 @@ import com.mongodb.Mongo;
 import org.lecture.patchservice.PatchService;
 import org.lecture.restclient.AclRestClient;
 import org.mockito.Mockito;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -53,17 +54,6 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 @EnableMongoRepositories(basePackages = "org.lecture.repository")
 @EnableTransactionManagement
 public class IntegrationTestConfig extends WebMvcConfigurerAdapter {
-
-  @Bean
-  public Mongo mongo() {
-    Fongo fongo = new Fongo("test");
-    return fongo.getMongo();
-  }
-
-  @Bean
-  public MongoTemplate mongoTemplate() {
-    return new MongoTemplate(mongo(), "TestCaseContainer");
-  }
 
   @Bean
   public AclRestClient aclRestClient() {

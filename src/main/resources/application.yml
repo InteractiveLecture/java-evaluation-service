@@ -19,11 +19,11 @@ spring:
       returnBodyOnupdate: false #change if a body should be returned on updating an entity
   
 
-    mongodb:
-        #host: mongodb # the db host
-        #port: 27017 # the connection port (defaults to 27107)
-        #uri: mongodb://mongodb/java-evaluation-service-test # connection URL
-        #database: test
+    mongo:
+        host: localhost # the db host
+        port: 27017 # the connection port (defaults to 27107)
+        uri: localhost://mongodb/java-evaluation-service-test # connection URL
+        database: development
         #authentication-database:
         #grid-fs-database:
         #username: test

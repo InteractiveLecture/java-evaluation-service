@@ -23,7 +23,9 @@ import org.lecture.integration.IntegrationTestConfig;
 import org.lecture.integration.TestPrincipal;
 import org.lecture.model.SourceContainer;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.ConfigFileApplicationContextInitializer;
 import org.springframework.hateoas.MediaTypes;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
@@ -49,7 +51,8 @@ import static util.TestUtil.toJson;
  * @author Rene Richter
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {IntegrationTestConfig.class})
+@ContextConfiguration(classes = {IntegrationTestConfig.class},
+    initializers = ConfigFileApplicationContextInitializer.class)
 @WebAppConfiguration
 //TODO add custom sample-data in codesubmissionSampleData.java
 public class CodeSubmissionIntegrationTest {
