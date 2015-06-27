@@ -50,7 +50,7 @@ spring:
     mongodb:
       host: mongo # the db host
       port: 27017 # the connection port (defaults to 27107)
-      uri: mongo://mongodb/java-evaluation-service-test # connection URL
+      uri: mongo://mongo/java-evaluation-service-test # connection URL
       database: test
       #authentication-database:
       #grid-fs-database:
