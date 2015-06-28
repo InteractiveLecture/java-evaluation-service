@@ -187,3 +187,4 @@ nexus {
   repositoryUrl = 'https://nexus.rene-richter.de/content/repositories/releases/'
   snapshotRepositoryUrl = 'https://nexus.rene-richter.de/content/repositories/snapshots/'
 }
+
