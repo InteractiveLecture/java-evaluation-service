@@ -140,46 +140,6 @@ task wrapper(type: Wrapper) {
 gradleVersion = '2.3'
 }
 
-uploadArchives{
-  repositories.mavenDeployer {
-    pom.artifactId = "java-evaluation-service"
-    pom.groupId = "org.lecture"
-    pom.version = "1.0.0.SNAPSHOT"
-    configuration = configurations.deployerJars
-    pom.project {
-        name 'Java Evaluation Service'
-        description 'Java Evaluation service for the open lecture project.'
-        inceptionYear '2015'
-        artifactId = "java-evaluation-service"
-        groupId = "org.lecture"
-        version = "1.0.0"
-
-        parent {
-          groupId 'org.springframework.boot'
-          artifactId 'spring-boot-starter-parent'
-          version "1.2.3.RELEASE"
-        }
-
-
-
-        licenses {
-          license {
-            name 'General Public Licence version 3.0'
-            distribution 'repo'
-          }
-        }
-
-        developers {
-          developer {
-            id 'Richterrettich'
-            name 'Rene Richter'
-            email 'Richterrettich@gmail.com'
-          }
-        }
-    }
-  }
-}
-
 
 
 modifyPom {
