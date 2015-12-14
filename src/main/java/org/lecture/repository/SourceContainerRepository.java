@@ -26,6 +26,6 @@ import org.springframework.data.mongodb.repository.MongoRepository;
  */
 public interface SourceContainerRepository extends MongoRepository<SourceContainer, String> {
 
-  public SourceContainer findByUsernameAndExerciseId(String username, long exerciseId);
+  SourceContainer findByUserIdAndTaskId(String userId, String taskId);
 
 }

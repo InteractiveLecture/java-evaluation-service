@@ -15,6 +15,8 @@ package org.lecture.config;
 * Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301  USA
 */
 
+import org.lecture.controller.UserSourceContainerController;
+import org.lecture.controller.UserSourceHandler;
 import org.lecture.patchservice.PatchService;
 import org.springframework.boot.orm.jpa.EntityScan;
 import org.springframework.cloud.netflix.feign.EnableFeignClients;
@@ -25,6 +27,9 @@ import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 import org.springframework.data.web.config.EnableSpringDataWebSupport;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.socket.config.annotation.EnableWebSocket;
+import org.springframework.web.socket.config.annotation.WebSocketConfigurer;
+import org.springframework.web.socket.config.annotation.WebSocketHandlerRegistry;
 
 /**
  * Application config-class.
@@ -39,7 +44,8 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 @EntityScan(basePackages = "org.lecture.repository")
 @EnableSpringDataWebSupport
 @EnableFeignClients
-public class AppConfig {
+@EnableWebSocket
+public class AppConfig  implements WebSocketConfigurer {
   @Bean
   public static PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer() {
     return new PropertySourcesPlaceholderConfigurer();
@@ -48,5 +54,16 @@ public class AppConfig {
   @Bean
   public PatchService patchService() {
     return new PatchService();
+  }
+
+
+  @Bean
+  public UserSourceHandler userSourceHandler() {
+    return new UserSourceHandler();
+  }
+
+  @Override
+  public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
+    registry.addHandler(userSourceHandler());
   }
 }

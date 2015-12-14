@@ -112,6 +112,8 @@ dependencies {
   compile 'org.lecture:compiler-service-api:1.0.0.RELEASE'
   compile 'org.lecture:string-compiler-test-framework:1.0.0.RELEASE'
   compile 'org.lecture:patch-lib:1.0.0-RELEASE'
+  compile("org.springframework.boot:spring-boot-starter-websocket")
+
 
 
   compile group: 'org.lecture',

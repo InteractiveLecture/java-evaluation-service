@@ -28,7 +28,7 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 public interface TestCaseRepository
     extends MongoRepository<TestCaseContainer, String> {
 
-  TestCaseContainer findByExerciseId(long exerciseId);
+  TestCaseContainer findByTaskId(String taskId);
 
 
 }

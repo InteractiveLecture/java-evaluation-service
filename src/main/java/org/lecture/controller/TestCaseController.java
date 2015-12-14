@@ -16,7 +16,6 @@ package org.lecture.controller;
 */
 
 
-import org.lecture.assembler.TestCaseAssembler;
 import org.lecture.model.CompilationReport;
 import org.lecture.model.TestCaseContainer;
 import org.lecture.repository.TestCaseRepository;
@@ -46,9 +45,6 @@ import java.security.Principal;
 public class TestCaseController extends BaseController {
 
   @Autowired
-  TestCaseAssembler testAssembler;
-
-  @Autowired
   TestCaseRepository testRepository;
 
   @Autowired
@@ -58,19 +54,19 @@ public class TestCaseController extends BaseController {
   /**
    * Returns a single testcase container by exercise id.
    *
-   * @param exerciseId The id of the exercise the testcase container belongs to.
+   * @param taskId The id of the task the testcase container belongs to.
    * @return a Resource representing the testcase container.
    */
   @RequestMapping(method = RequestMethod.GET)
   public ResponseEntity<TestCaseResource> getByExerciseId(
-      @RequestParam("exerciseId") long exerciseId) {
+      @RequestParam("taskId") String taskId) {
 
     TestCaseContainer result =
-        this.testRepository.findByExerciseId(exerciseId);
+        this.testRepository.findByTaskId(taskId);
 
     return ResponseEntity.ok()
         .header("Accept-Patch", "text/mdmp")
-        .body(testAssembler.toResource(result));
+        .body(new TestCaseResource(result));
   }
 
   /**
@@ -86,7 +82,7 @@ public class TestCaseController extends BaseController {
   public ResponseEntity<?> create(
       @RequestBody TestCaseContainer entity, Principal principal) {
 
-    entity.setUsername(principal.getName());
+    entity.setUserId(principal.getName());
     entity = testRepository.save(entity);
     return super.createEntity(entity, "Accept-Patch", "application/mdmp");
   }
@@ -101,7 +97,7 @@ public class TestCaseController extends BaseController {
   public ResponseEntity<TestCaseResource> getOneTest(@PathVariable String id) {
 
     TestCaseResource result
-        = testAssembler.toResource(testRepository.findOne(id));
+        = new TestCaseResource(testRepository.findOne(id));
     return ResponseEntity.ok()
         .header("Accept-Patch", "application/mdmp")
         .body(result);
@@ -118,7 +114,7 @@ public class TestCaseController extends BaseController {
   public ResponseEntity<CompilationReport> update(
       @PathVariable String id, @RequestBody String rawPatch) {
 
-    String[] patchParts = rawPatch.split("\\+\\+\\+\n");
+    String[] patchParts = rawPatch.split("\n\\+\\+\\+\n");
     CompilationReport report =
         compilerService.patchAndCompileTestSource(id, patchParts);
 

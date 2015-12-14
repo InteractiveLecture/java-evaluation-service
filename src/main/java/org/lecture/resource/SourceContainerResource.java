@@ -33,7 +33,7 @@ public class SourceContainerResource extends ResourceSupport {
 
   private String username;
 
-  private long exerciseId;
+  private String taskId;
 
 
   /*
@@ -43,12 +43,11 @@ public class SourceContainerResource extends ResourceSupport {
 
     this.sources = entity.getSources();
 
-    this.username = entity.getUsername();
+    this.username = entity.getUserId();
 
-    this.exerciseId = entity.getExerciseId();
+    this.taskId = entity.getTaskId();
 
   }
-
 
   public Map<String, String> getSources() {
     return sources;
@@ -58,12 +57,12 @@ public class SourceContainerResource extends ResourceSupport {
     this.sources = sources;
   }
 
-  public long getExerciseId() {
-    return exerciseId;
+  public String getTaskId() {
+    return taskId;
   }
 
-  public void setExerciseId(long exerciseId) {
-    this.exerciseId = exerciseId;
+  public void setTaskId(String taskId) {
+    this.taskId = taskId;
   }
 
   public String getClassname() {
@@ -80,14 +79,6 @@ public class SourceContainerResource extends ResourceSupport {
 
   public void setUsername(String username) {
     this.username = username;
-  }
-
-  public long getExerciseid() {
-    return this.exerciseId;
-  }
-
-  public void setExerciseid(long exerciseId) {
-    this.exerciseId = exerciseId;
   }
 
 }

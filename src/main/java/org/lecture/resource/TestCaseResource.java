@@ -29,7 +29,7 @@ import java.util.Map;
 public class TestCaseResource extends ResourceSupport {
 
   Map<String, String> sources;
-  private long exerciseId;
+  private String taskId;
   private boolean active;
 
   private String username;
@@ -42,24 +42,24 @@ public class TestCaseResource extends ResourceSupport {
    */
   public TestCaseResource(TestCaseContainer entity) {
 
-    this.exerciseId = entity.getExerciseId();
+    this.taskId = entity.getTaskId();
 
     this.sources = entity.getSources();
 
     this.active = entity.isActive();
 
-    this.username = entity.getUsername();
+    this.username = entity.getUserId();
 
     this.compilationReport = entity.getCompilationReport();
 
   }
 
-  public long getExerciseId() {
-    return exerciseId;
+  public String getTaskId() {
+    return taskId;
   }
 
-  public void setExerciseId(long exerciseId) {
-    this.exerciseId = exerciseId;
+  public void setTaskId(String taskId) {
+    this.taskId = taskId;
   }
 
 

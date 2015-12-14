@@ -48,7 +48,7 @@ public class TestServiceImpl implements TestService {
   @Override
   public TestReport runTests(SourceContainer sourceContainer) {
     TestCaseContainer testCaseContainer =
-        testCaseRepository.findByExerciseId(sourceContainer.getExerciseId());
+        testCaseRepository.findByTaskId(sourceContainer.getTaskId());
 
     ExerciseContext exerciseContext = new ExerciseContextImpl();
 

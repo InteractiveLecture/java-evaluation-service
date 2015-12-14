@@ -16,6 +16,7 @@ package org.lecture.service;
  */
 
 import org.lecture.model.CompilationReport;
+import org.lecture.model.SourceContainer;
 import org.springframework.stereotype.Service;
 
 /**
@@ -23,6 +24,11 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public interface CompilerService {
+
+  void removeFromCache(String id);
+
+  void addToCache(SourceContainer container);
+
   CompilationReport patchAndCompileUserSource(String id, String[] patches);
 
   CompilationReport patchAndCompileTestSource(String id, String[] patches);

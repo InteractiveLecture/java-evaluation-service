@@ -24,14 +24,23 @@ import java.util.Map;
  */
 public class SourceContainer extends BaseEntity {
 
-  private String username;
+  private String userId;
   // k=classname, v=source
   private Map<String, String> sources;
-  private long exerciseId;
+  private String taskId;
 
   private LocalDateTime submissionDate;
 
   private CompilationReport compilationReport;
+
+  public SourceContainer(String userId, String taskId) {
+    this.userId = userId;
+    this.taskId = taskId;
+    this.sources = new HashMap<>();
+    this.submissionDate = LocalDateTime.now();
+  }
+
+  public SourceContainer(){}
 
   public void addSource(String classname, String source) {
     if (sources == null) {
@@ -40,12 +49,12 @@ public class SourceContainer extends BaseEntity {
     this.sources.put(classname, source);
   }
 
-  public String getUsername() {
-    return username;
+  public String getUserId() {
+    return userId;
   }
 
-  public void setUsername(String username) {
-    this.username = username;
+  public void setUserId(String userId) {
+    this.userId = userId;
   }
 
   public Map<String, String> getSources() {
@@ -56,12 +65,12 @@ public class SourceContainer extends BaseEntity {
     this.sources = sources;
   }
 
-  public long getExerciseId() {
-    return exerciseId;
+  public String getTaskId() {
+    return taskId;
   }
 
-  public void setExerciseId(long exerciseId) {
-    this.exerciseId = exerciseId;
+  public void setTaskId(String taskId) {
+    this.taskId = taskId;
   }
 
   public LocalDateTime getSubmissionDate() {

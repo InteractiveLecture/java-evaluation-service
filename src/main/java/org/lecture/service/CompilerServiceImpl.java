@@ -27,7 +27,6 @@ import org.lecture.model.TestCaseContainer;
 import org.lecture.patchservice.PatchService;
 import org.lecture.repository.SourceContainerRepository;
 import org.lecture.repository.TestCaseRepository;
-import org.lecture.restclient.AclRestClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
@@ -36,6 +35,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.StringReader;
 import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 
@@ -46,6 +47,8 @@ import java.util.stream.Collectors;
 @Service
 public class CompilerServiceImpl implements CompilerService {
 
+  private Map<String,SourceContainer> cache = new HashMap<>();
+
   @Autowired
   private SourceContainerRepository codeSubmissionRepository;
 
@@ -55,17 +58,23 @@ public class CompilerServiceImpl implements CompilerService {
   @Autowired
   private PatchService patchService;
 
-  @Autowired
-  private AclRestClient aclClient;
 
   @Override
   public CompilationReport patchAndCompileUserSource(String id, String[] patches) {
-    SourceContainer submission = codeSubmissionRepository.findOne(id);
+    SourceContainer submission = cache.get(id);
     CompilationResult compilationResult = patchAndCompile(patches, submission);
     CompilationReport report = createCompilationReport(compilationResult);
     submission.setCompilationReport(report);
     saveAsync(submission);
     return submission.getCompilationReport();
+  }
+
+  public void addToCache(SourceContainer container) {
+    this.cache.put(container.getId(),container);
+  }
+
+  public void removeFromCache(String id) {
+    this.cache.remove(id);
   }
 
   @Override
