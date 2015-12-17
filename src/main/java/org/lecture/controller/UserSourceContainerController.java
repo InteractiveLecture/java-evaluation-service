@@ -18,6 +18,7 @@ package org.lecture.controller;
 import org.lecture.model.SourceContainer;
 import org.lecture.model.TestReport;
 import org.lecture.repository.SourceContainerRepository;
+import org.lecture.resource.TestReportResource;
 import org.lecture.service.CompilerService;
 import org.lecture.service.TestService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,10 +48,9 @@ public class UserSourceContainerController extends BaseController {
   TestService testService;
 
   @RequestMapping(value = "/{id}/test-report", method = RequestMethod.GET)
-  public ResponseEntity<TestReport> getTestReport(@PathVariable String id) {
+  public ResponseEntity<TestReportResource> getTestReport(@PathVariable String id) {
     SourceContainer container = codesubmissionRepository.findOne(id);
-    return ResponseEntity.ok().body(testService.runTests(container));
+    return ResponseEntity.ok().body(new TestReportResource(testService.runTests(container)));
   }
-
 
 }
