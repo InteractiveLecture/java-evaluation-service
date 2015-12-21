@@ -92,7 +92,7 @@ public class CompilerServiceImpl implements CompilerService {
     for (String patch : patches) {
       String[] parsedPatch = parsePatch(patch);
       String oldSource = entity.getSources().get(parsedPatch[0]);
-      String newSource = patchService.patch(oldSource, parsedPatch[1]);
+      String newSource = patchService.applyPatch(oldSource, parsedPatch[1]);
       entity.addSource(parsedPatch[0], newSource);
     }
     StringCompiler compiler = new StringCompiler();

@@ -20,7 +20,6 @@ buildscript {
   }
   dependencies {
     classpath("org.springframework.boot:spring-boot-gradle-plugin:1.2.3.RELEASE")
-    classpath 'com.bmuschko:gradle-nexus-plugin:2.3.1'
   }
 }
 
@@ -32,7 +31,6 @@ apply plugin: 'java'
 apply plugin: 'idea'
 apply plugin: 'spring-boot'
 //apply plugin: "checkstyle"
-apply plugin: 'com.bmuschko.nexus'
 
 
 repositories {
@@ -40,12 +38,10 @@ repositories {
   mavenCentral()
 
   maven {
-    url 'http://artifacts.rene-richter.de//content/repositories/releases'
+    url 'http://dl.bintray.com/interactivelecture/java'
   }
 
-
-
-  maven {
+ /* maven {
     url 'http://repo.spring.io/libs-snapshot-continuous-local'
   }
   maven {
@@ -54,7 +50,7 @@ repositories {
 
   maven {
     url 'http://repo.spring.io/libs-snapshot'
-  }
+  }*/
 
 
 
@@ -97,6 +93,10 @@ dependencies {
   compile("org.springframework.boot:spring-boot-starter-tomcat")
   compile("org.springframework.boot:spring-boot-starter-data-rest")
   compile("org.springframework.boot:spring-boot-starter-data-mongodb")
+  compile("org.interactivelecture.java:exercise-test-api:1.0.0")
+  compile("org.interactivelecture.java:string-compiler:1.0.0")
+  compile 'org.interactivelecture.java:patch-lib:1.0.0'
+  compile("org.interactivelecture.java:exercise-test-framework:1.0.0")
 
 
   compile("org.springframework.amqp:spring-rabbit")
@@ -109,16 +109,11 @@ dependencies {
 
   compile files("${System.properties['java.home']}/../lib/tools.jar")
 
-  compile 'org.lecture:compiler-service-api:1.0.0.RELEASE'
-  compile 'org.lecture:string-compiler-test-framework:1.0.0.RELEASE'
-  compile 'org.lecture:patch-lib:1.0.0-RELEASE'
+
   compile("org.springframework.boot:spring-boot-starter-websocket")
 
 
-
-  compile group: 'org.lecture',
-          name: 'string-compiler',
-          version: '1.0.0.RELEASE'
+  compile 'com.github.cloudfoundry-community:nats-client:0.6.4'
 
 
   testCompile 'com.github.fakemongo:fongo:1.6.2'
@@ -133,7 +128,7 @@ dependencies {
 
   compile("junit:junit")
 
-  deployerJars "org.apache.maven.wagon:wagon-http:2.2"
+  //deployerJars "org.apache.maven.wagon:wagon-http:2.2"
 
 
 }
@@ -141,52 +136,3 @@ dependencies {
 task wrapper(type: Wrapper) {
 gradleVersion = '2.3'
 }
-
-
-
-modifyPom {
-  project {
-    name 'Java Evaluation Service'
-    description 'Java Evaluation service for the open lecture project.'
-    inceptionYear '2015'
-    artifactId = "java-evaluation-service"
-    groupId = "org.lecture"
-    version = "1.0.0.SNAPSHOT"
-
-    parent {
-      groupId 'org.springframework.boot'
-      artifactId 'spring-boot-starter-parent'
-      version "1.2.3.RELEASE"
-    }
-
-
-
-    licenses {
-      license {
-        name 'General Public Licence version 3.0'
-        distribution 'repo'
-      }
-    }
-
-    developers {
-      developer {
-        id 'Richterrettich'
-        name 'Rene Richter'
-        email 'Richterrettich@gmail.com'
-      }
-    }
-  }
-}
-
-extraArchive {
-  sources = true
-  tests = true
-  javadoc = true
-}
-
-nexus {
-  sign = true
-  repositoryUrl = 'https://nexus.rene-richter.de/content/repositories/releases/'
-  snapshotRepositoryUrl = 'https://nexus.rene-richter.de/content/repositories/snapshots/'
-}
-

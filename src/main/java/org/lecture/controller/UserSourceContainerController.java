@@ -15,6 +15,7 @@ package org.lecture.controller;
 * Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301  USA
 */
 
+import nats.client.Nats;
 import org.lecture.model.SourceContainer;
 import org.lecture.model.TestReport;
 import org.lecture.repository.SourceContainerRepository;
@@ -45,11 +46,18 @@ public class UserSourceContainerController extends BaseController {
   SourceContainerRepository codesubmissionRepository;
 
   @Autowired
+  Nats nats;
+
+  @Autowired
   TestService testService;
 
   @RequestMapping(value = "/{id}/test-report", method = RequestMethod.GET)
   public ResponseEntity<TestReportResource> getTestReport(@PathVariable String id) {
     SourceContainer container = codesubmissionRepository.findOne(id);
+    TestReport report = testService.runTests(container);
+    if (report.isAllPassed()) {
+      nats.publish("finish-task","{\"userId\":\""+ container.getTaskId()+"\",\"taskId\":\""+container.getTaskId()+"\"}");
+    }
     return ResponseEntity.ok().body(new TestReportResource(testService.runTests(container)));
   }
 

@@ -44,7 +44,6 @@ public class TestServiceImpl implements TestService {
   @Autowired
   TestCaseRepository testCaseRepository;
 
-
   @Override
   public TestReport runTests(SourceContainer sourceContainer) {
     TestCaseContainer testCaseContainer =

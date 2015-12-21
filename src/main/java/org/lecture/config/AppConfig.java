@@ -15,9 +15,12 @@ package org.lecture.config;
 * Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301  USA
 */
 
+import nats.client.Nats;
+import nats.client.NatsConnector;
 import org.lecture.controller.UserSourceContainerController;
 import org.lecture.controller.UserSourceHandler;
 import org.lecture.patchservice.PatchService;
+import org.lecture.patchservice.dmp.DmpPatchService;
 import org.springframework.boot.orm.jpa.EntityScan;
 import org.springframework.cloud.netflix.feign.EnableFeignClients;
 import org.springframework.context.annotation.Bean;
@@ -53,7 +56,7 @@ public class AppConfig  implements WebSocketConfigurer {
 
   @Bean
   public PatchService patchService() {
-    return new PatchService();
+    return new DmpPatchService();
   }
 
 
@@ -64,6 +67,11 @@ public class AppConfig  implements WebSocketConfigurer {
 
   @Override
   public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
-    registry.addHandler(userSourceHandler());
+    registry.addHandler(userSourceHandler(),"/user-compiler");
+  }
+
+  @Bean
+  public Nats nats(){
+    return new NatsConnector().addHost("nats://nats:4222").connect();
   }
 }
