@@ -16,7 +16,10 @@ package org.lecture.controller;
 */
 
 
+import com.fasterxml.jackson.databind.MappingIterator;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.lecture.model.CompilationReport;
+import org.lecture.model.FilePatch;
 import org.lecture.model.TestCaseContainer;
 import org.lecture.repository.TestCaseRepository;
 import org.lecture.resource.TestCaseResource;
@@ -32,6 +35,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.security.Principal;
+import java.util.List;
 
 
 /**
@@ -112,11 +116,10 @@ public class TestCaseController extends BaseController {
 
   @RequestMapping(value = "/{id}", method = RequestMethod.PATCH)
   public ResponseEntity<CompilationReport> update(
-      @PathVariable String id, @RequestBody String rawPatch) {
+      @PathVariable String id, @RequestBody List<FilePatch> patches) {
 
-    String[] patchParts = rawPatch.split("\n\\+\\+\\+\n");
     CompilationReport report =
-        compilerService.patchAndCompileTestSource(id, patchParts);
+        compilerService.patchAndCompileTestSource(id, patches);
 
     return ResponseEntity.ok().body(report);
   }
