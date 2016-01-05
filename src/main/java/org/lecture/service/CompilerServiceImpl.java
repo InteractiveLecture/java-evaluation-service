@@ -20,22 +20,16 @@ import compiler.compiler.StringCompiler;
 import org.junit.runner.Runner;
 import org.junit.runners.BlockJUnit4ClassRunner;
 import org.junit.runners.model.InitializationError;
-import org.lecture.model.CompilationDiagnostic;
-import org.lecture.model.CompilationReport;
-import org.lecture.model.SourceContainer;
-import org.lecture.model.TestCaseContainer;
+import org.lecture.model.*;
 import org.lecture.patchservice.PatchService;
 import org.lecture.repository.SourceContainerRepository;
 import org.lecture.repository.TestCaseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.StringReader;
 import java.time.LocalDateTime;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -60,7 +54,7 @@ public class CompilerServiceImpl implements CompilerService {
 
 
   @Override
-  public CompilationReport patchAndCompileUserSource(String id, String[] patches) {
+  public CompilationReport patchAndCompileUserSource(String id, List<FilePatch> patches) {
     SourceContainer submission = cache.get(id);
     CompilationResult compilationResult = patchAndCompile(patches, submission);
     CompilationReport report = createCompilationReport(compilationResult);
@@ -78,7 +72,7 @@ public class CompilerServiceImpl implements CompilerService {
   }
 
   @Override
-  public CompilationReport patchAndCompileTestSource(String id, String[] patches) {
+  public CompilationReport patchAndCompileTestSource(String id, List<FilePatch> patches) {
     TestCaseContainer testContainer = testCaseRepository.findOne(id);
     CompilationResult compilationResult = patchAndCompile(patches, testContainer);
     testContainer.setTestClasses(compilationResult.getCompiledClasses());
@@ -87,18 +81,16 @@ public class CompilerServiceImpl implements CompilerService {
     return testContainer.getCompilationReport();
   }
 
-  private <T extends SourceContainer> CompilationResult patchAndCompile(String[] patches,
+  private <T extends SourceContainer> CompilationResult patchAndCompile(List<FilePatch> patches,
                                                                         T entity) {
-    for (String patch : patches) {
-      String[] parsedPatch = parsePatch(patch);
-      String oldSource = entity.getSources().get(parsedPatch[0]);
-      String newSource = patchService.applyPatch(oldSource, parsedPatch[1]);
-      entity.addSource(parsedPatch[0], newSource);
+    for (FilePatch patch : patches) {
+      String oldSource = entity.getSources().get(patch.getFileName());
+      String newSource = patchService.applyPatch(oldSource, patch.getContent());
+      entity.addSource(patch.getFileName(), newSource);
     }
     StringCompiler compiler = new StringCompiler();
     entity.getSources().forEach(compiler::addCompilationTask);
     return compiler.startCompilation();
-
   }
 
   private CompilationReport createCompilationReport(CompilationResult result) {
@@ -118,20 +110,6 @@ public class CompilerServiceImpl implements CompilerService {
 
   }
 
-  // 0 = classname, 1 = patch
-  private String[] parsePatch(String patch) {
-    BufferedReader br = new BufferedReader(new StringReader(patch));
-    String[] parsedPatch = new String[2];
-    try {
-      parsedPatch[0] = br.readLine();
-      parsedPatch[1] = br.lines().collect(Collectors.joining());
-    } catch (IOException e) {
-      throw new RuntimeException(
-          "Well... you are the first person who got an IOException from a "
-              + "StringReader. Congratulations!");
-    }
-    return parsedPatch;
-  }
 
   private void checkTestValidity(TestCaseContainer container) {
     container.getTestClasses().forEach((className, classObject) -> {

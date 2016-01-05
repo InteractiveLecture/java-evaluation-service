@@ -65,7 +65,7 @@ public class TestCaseController extends BaseController {
         this.testRepository.findByTaskId(taskId);
 
     return ResponseEntity.ok()
-        .header("Accept-Patch", "text/mdmp")
+        .header("Accept-FilePatch", "text/mdmp")
         .body(new TestCaseResource(result));
   }
 
@@ -84,7 +84,7 @@ public class TestCaseController extends BaseController {
 
     entity.setUserId(principal.getName());
     entity = testRepository.save(entity);
-    return super.createEntity(entity, "Accept-Patch", "application/mdmp");
+    return super.createEntity(entity, "Accept-FilePatch", "application/mdmp");
   }
 
   /**
@@ -99,7 +99,7 @@ public class TestCaseController extends BaseController {
     TestCaseResource result
         = new TestCaseResource(testRepository.findOne(id));
     return ResponseEntity.ok()
-        .header("Accept-Patch", "application/mdmp")
+        .header("Accept-FilePatch", "application/mdmp")
         .body(result);
   }
 

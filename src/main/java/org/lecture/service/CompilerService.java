@@ -16,8 +16,11 @@ package org.lecture.service;
  */
 
 import org.lecture.model.CompilationReport;
+import org.lecture.model.FilePatch;
 import org.lecture.model.SourceContainer;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * Created by rene on 21.06.15.
@@ -29,7 +32,7 @@ public interface CompilerService {
 
   void addToCache(SourceContainer container);
 
-  CompilationReport patchAndCompileUserSource(String id, String[] patches);
+  CompilationReport patchAndCompileUserSource(String id, List<FilePatch> patches);
 
-  CompilationReport patchAndCompileTestSource(String id, String[] patches);
+  CompilationReport patchAndCompileTestSource(String id, List<FilePatch> patches);
 }

@@ -1,6 +1,8 @@
 package org.lecture.controller;
 
+import com.fasterxml.jackson.databind.MappingIterator;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.lecture.model.FilePatch;
 import org.lecture.model.SourceContainer;
 import org.lecture.repository.SourceContainerRepository;
 import org.lecture.service.CompilerService;
@@ -10,6 +12,8 @@ import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
+
+import java.util.List;
 
 /**
  * Created by rene on 14.12.15.
@@ -41,9 +45,10 @@ public class UserSourceHandler extends TextWebSocketHandler {
 
   @Override
   protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
-    String[] patchParts = message.toString().split("\n\\+\\+\\+\n");
+    MappingIterator<FilePatch> iterator = new ObjectMapper().reader(FilePatch.class).readValues(message.toString());
+    List<FilePatch> patches = iterator.readAll();
     session.sendMessage(new TextMessage(
-        objectMapper.writeValueAsBytes(compilerService.patchAndCompileUserSource((String)session.getAttributes().get("Container-Id"), patchParts))));
+        objectMapper.writeValueAsBytes(compilerService.patchAndCompileUserSource((String)session.getAttributes().get("Container-Id"), patches))));
   }
 
   @Override
