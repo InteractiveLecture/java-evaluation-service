@@ -4,4 +4,4 @@ WORKDIR /lecture
 COPY build/distributions/java-evaluation-service.tar service.tar
 RUN tar -xf service.tar
 EXPOSE 8080
-ENTRYPOINT service/bin/id-service
+ENTRYPOINT service/bin/java-evaluation-service
