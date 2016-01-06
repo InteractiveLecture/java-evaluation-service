@@ -17,12 +17,10 @@ package org.lecture.config;
 
 import nats.client.Nats;
 import nats.client.NatsConnector;
-import org.lecture.controller.UserSourceContainerController;
 import org.lecture.controller.UserSourceHandler;
 import org.lecture.patchservice.PatchService;
 import org.lecture.patchservice.dmp.DmpPatchService;
 import org.springframework.boot.orm.jpa.EntityScan;
-import org.springframework.cloud.netflix.feign.EnableFeignClients;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -46,7 +44,6 @@ import org.springframework.web.socket.config.annotation.WebSocketHandlerRegistry
 @EnableMongoRepositories(basePackages = "org.lecture.repository")
 @EntityScan(basePackages = "org.lecture.repository")
 @EnableSpringDataWebSupport
-@EnableFeignClients
 @EnableWebSocket
 public class AppConfig  implements WebSocketConfigurer {
   @Bean

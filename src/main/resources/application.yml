@@ -2,10 +2,8 @@ spring:
   profiles: production
   data:
     mongodb:
-      host: localhost # the db host
+      host: mongo # the db host
       port: 27017 # the connection port (defaults to 27107)
-      uri: mongodb://localhost/production # connection URL
+      uri: mongodb://mongo/production # connection URL
       database: production
-      userId: production
-      password: production
       repositories.enabled: true # if spring data repository support is enabled

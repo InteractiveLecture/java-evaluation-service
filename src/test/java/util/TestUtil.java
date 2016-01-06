@@ -18,7 +18,6 @@ package util;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.lecture.model.BaseEntity;
-import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.http.MediaType;
 
 import java.net.URI;
@@ -48,40 +47,4 @@ public class TestUtil {
     return mapper.writeValueAsBytes(object);
   }
 
-
-  /**
-   * Mocks a ServiceInstance.
-   *
-   * @param serviceName the name of the service.
-   * @return the mock.
-   */
-  public static ServiceInstance mockServiceInstance(String serviceName) {
-    ServiceInstance result = new ServiceInstance() {
-      @Override
-      public String getServiceId() {
-        return serviceName;
-      }
-
-      @Override
-      public String getHost() {
-        return "localhost";
-      }
-
-      @Override
-      public int getPort() {
-        return 80;
-      }
-
-      @Override
-      public boolean isSecure() {
-        return false;
-      }
-
-      @Override
-      public URI getUri() {
-        return URI.create("http://localhost/" + serviceName);
-      }
-    };
-    return result;
-  }
 }

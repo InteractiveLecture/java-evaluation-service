@@ -98,27 +98,17 @@ dependencies {
   compile 'org.interactivelecture.java:patch-lib:1.0.0'
   compile("org.interactivelecture.java:exercise-test-framework:1.0.0")
 
-
-  compile("org.springframework.amqp:spring-rabbit")
-
-  compile 'org.springframework.cloud:spring-cloud-starter-eureka:1.0.1.RELEASE'
-
   compile 'org.springframework.hateoas:spring-hateoas'
 
   compile 'org.apache.commons:commons-lang3:3.4'
 
   compile files("${System.properties['java.home']}/../lib/tools.jar")
 
-
   compile("org.springframework.boot:spring-boot-starter-websocket")
-
 
   compile 'com.github.cloudfoundry-community:nats-client:0.6.4'
 
-
   testCompile 'com.github.fakemongo:fongo:1.6.2'
-
-
 
   testCompile "org.springframework:spring-test:4.1.6.RELEASE"
   testCompile "org.mockito:mockito-core:1.9.5"
