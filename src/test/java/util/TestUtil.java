@@ -20,7 +20,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.lecture.model.BaseEntity;
 import org.springframework.http.MediaType;
 
-import java.net.URI;
 import java.nio.charset.Charset;
 
 /**
