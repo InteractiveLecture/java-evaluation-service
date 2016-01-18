@@ -23,7 +23,6 @@ import org.lecture.resource.TestReportResource;
 import org.lecture.service.CompilerService;
 import org.lecture.service.TestService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.hateoas.ExposesResourceFor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -38,7 +37,6 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("/codesubmissions")
-@ExposesResourceFor(SourceContainer.class)
 public class UserSourceContainerController extends BaseController {
 
 
@@ -56,7 +54,7 @@ public class UserSourceContainerController extends BaseController {
     SourceContainer container = codesubmissionRepository.findOne(id);
     TestReport report = testService.runTests(container);
     if (report.isAllPassed()) {
-      nats.publish("finish-task","{\"userId\":\""+ container.getTaskId()+"\",\"taskId\":\""+container.getTaskId()+"\"}");
+      nats.publish("finish-task","{\"userId\":\""+ container.getUserId()+"\",\"taskId\":\""+container.getTaskId()+"\"}");
     }
     return ResponseEntity.ok().body(new TestReportResource(testService.runTests(container)));
   }

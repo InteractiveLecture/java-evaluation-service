@@ -16,7 +16,6 @@ package org.lecture.resource;
 */
 
 import org.lecture.model.SourceContainer;
-import org.springframework.hateoas.ResourceSupport;
 
 import java.util.Map;
 
@@ -25,7 +24,7 @@ import java.util.Map;
  *
  * @author Rene Richter
  */
-public class SourceContainerResource extends ResourceSupport {
+public class SourceContainerResource {
 
   private Map<String, String> sources;
 
@@ -34,6 +33,8 @@ public class SourceContainerResource extends ResourceSupport {
   private String username;
 
   private String taskId;
+
+  private String id;
 
 
   /*
@@ -47,6 +48,16 @@ public class SourceContainerResource extends ResourceSupport {
 
     this.taskId = entity.getTaskId();
 
+    this.id = entity.getId();
+
+  }
+
+  public String getId() {
+    return id;
+  }
+
+  public void setId(String id) {
+    this.id = id;
   }
 
   public Map<String, String> getSources() {

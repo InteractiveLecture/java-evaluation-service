@@ -23,7 +23,6 @@ import org.junit.runners.model.InitializationError;
 import org.lecture.model.*;
 import org.lecture.patchservice.PatchService;
 import org.lecture.repository.SourceContainerRepository;
-import org.lecture.repository.TestCaseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
@@ -46,8 +45,6 @@ public class CompilerServiceImpl implements CompilerService {
   @Autowired
   private SourceContainerRepository codeSubmissionRepository;
 
-  @Autowired
-  private TestCaseRepository testCaseRepository;
 
   @Autowired
   private PatchService patchService;
@@ -71,37 +68,62 @@ public class CompilerServiceImpl implements CompilerService {
     this.cache.remove(id);
   }
 
+  public CompilationResult compileSources(Map<String,String> sources) {
+    StringCompiler compiler = new StringCompiler();
+    sources.forEach(compiler::addCompilationTask);
+    return compiler.startCompilation();
+  }
+
   @Override
   public CompilationReport patchAndCompileTestSource(String id, List<FilePatch> patches) {
-    TestCaseContainer testContainer = testCaseRepository.findOne(id);
+    SourceContainer testContainer = codeSubmissionRepository.findOne(id);
     CompilationResult compilationResult = patchAndCompile(patches, testContainer);
+    if (compilationResult == null){
+      deleteAsync(id);
+      return null;
+    }
     testContainer.setTestClasses(compilationResult.getCompiledClasses());
+    testContainer.setCompilationReport(createCompilationReport(compilationResult));
     checkTestValidity(testContainer);
     saveAsync(testContainer);
     return testContainer.getCompilationReport();
   }
 
+  private void cleanEmptySources(SourceContainer container) {
+    container.setSources(container.getSources().entrySet().stream()
+        .filter(entry -> !entry.getValue().equals(""))
+        .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue)));
+  }
+
   private <T extends SourceContainer> CompilationResult patchAndCompile(List<FilePatch> patches,
                                                                         T entity) {
     for (FilePatch patch : patches) {
-      String oldSource = entity.getSources().get(patch.getFileName());
+      String oldSource = entity.getSources().get(patch.getFileName()) != null
+          ? entity.getSources().get(patch.getFileName())
+          : "";
       String newSource = patchService.applyPatch(oldSource, patch.getContent());
       entity.addSource(patch.getFileName(), newSource);
     }
-    StringCompiler compiler = new StringCompiler();
-    entity.getSources().forEach(compiler::addCompilationTask);
-    return compiler.startCompilation();
+    cleanEmptySources(entity);
+
+    //return if nothing left to compile
+    if (entity.getSources().isEmpty())
+      return null;
+    else
+      return this.compileSources(entity.getSources());
   }
 
   private CompilationReport createCompilationReport(CompilationResult result) {
 
     CompilationReport compilationReport = new CompilationReport();
     compilationReport.setDate(LocalDateTime.now());
-    compilationReport.setErrors(result.getErrors()
+    if (result.hasErrors())
+      compilationReport.setErrors(result.getErrors()
         .stream()
         .map(CompilationDiagnostic::new)
         .collect(Collectors.toList()));
-    compilationReport.setWarnings(result.getWarnings()
+    if (result.hasWarnings())
+      compilationReport.setWarnings(result.getWarnings()
         .stream()
         .map(CompilationDiagnostic::new)
         .collect(Collectors.toList()));
@@ -111,7 +133,7 @@ public class CompilerServiceImpl implements CompilerService {
   }
 
 
-  private void checkTestValidity(TestCaseContainer container) {
+  private void checkTestValidity(SourceContainer container) {
     container.getTestClasses().forEach((className, classObject) -> {
         try {
           Runner runner = new BlockJUnit4ClassRunner(classObject);
@@ -130,8 +152,9 @@ public class CompilerServiceImpl implements CompilerService {
   }
 
   @Async
-  private void saveAsync(TestCaseContainer testCase) {
-    testCaseRepository.save(testCase);
+  private void deleteAsync(String id) {
+    System.out.println("deleting: "+id);
+    codeSubmissionRepository.delete(id);
   }
 
 

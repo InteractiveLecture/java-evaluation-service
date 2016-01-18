@@ -15,7 +15,9 @@ package org.lecture.model;
 * Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301  USA
 */
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -31,6 +33,9 @@ public class CompilationReport {
 
 
   public CompilationReport() {
+    this.date = LocalDateTime.now();
+    this.errors = new ArrayList<>();
+    this.warnings = new ArrayList<>();
   }
 
 
@@ -76,5 +81,14 @@ public class CompilationReport {
 
   public void setWarnings(List<CompilationDiagnostic> warnings) {
     this.warnings = warnings;
+  }
+
+  @Override
+  public String toString() {
+    return "CompilationReport{" +
+        "date=" + date +
+        ", errors=" + errors +
+        ", warnings=" + warnings +
+        '}';
   }
 }

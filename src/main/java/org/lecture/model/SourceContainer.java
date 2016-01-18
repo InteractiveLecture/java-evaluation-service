@@ -15,6 +15,9 @@ package org.lecture.model;
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301  USA
  */
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.springframework.data.annotation.Transient;
+
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
@@ -29,18 +32,44 @@ public class SourceContainer extends BaseEntity {
   private Map<String, String> sources;
   private String taskId;
 
+  @JsonIgnore
+  @Transient
+  private Map<String, Class<?>> testClasses;
+
   private LocalDateTime submissionDate;
 
   private CompilationReport compilationReport;
+
+  private boolean tests;
 
   public SourceContainer(String userId, String taskId) {
     this.userId = userId;
     this.taskId = taskId;
     this.sources = new HashMap<>();
     this.submissionDate = LocalDateTime.now();
+    this.compilationReport = new CompilationReport();
   }
 
-  public SourceContainer(){}
+  public SourceContainer(){
+    this.sources = new HashMap<>();
+    this.compilationReport = new CompilationReport();
+  }
+
+  public boolean isTests() {
+    return tests;
+  }
+
+  public void setTests(boolean tests) {
+    this.tests = tests;
+  }
+
+  public Map<String, Class<?>> getTestClasses() {
+    return testClasses;
+  }
+
+  public void setTestClasses(Map<String, Class<?>> testClasses) {
+    this.testClasses = testClasses;
+  }
 
   public void addSource(String classname, String source) {
     if (sources == null) {

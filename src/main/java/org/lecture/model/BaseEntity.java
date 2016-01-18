@@ -15,14 +15,13 @@ package org.lecture.model;
 * Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301  USA
 */
 
-import org.springframework.hateoas.Identifiable;
 
 /**
  * A mongodb-base entity.
  *
  * @author Rene Richter
  */
-public class BaseEntity implements Identifiable<String> {
+public class BaseEntity {
 
   private String id;
 

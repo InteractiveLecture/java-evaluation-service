@@ -15,12 +15,14 @@ package org.lecture.service;
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301  USA
  */
 
+import compiler.compiler.CompilationResult;
 import org.lecture.model.CompilationReport;
 import org.lecture.model.FilePatch;
 import org.lecture.model.SourceContainer;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by rene on 21.06.15.
@@ -35,4 +37,6 @@ public interface CompilerService {
   CompilationReport patchAndCompileUserSource(String id, List<FilePatch> patches);
 
   CompilationReport patchAndCompileTestSource(String id, List<FilePatch> patches);
+
+  CompilationResult compileSources(Map<String,String> sources);
 }

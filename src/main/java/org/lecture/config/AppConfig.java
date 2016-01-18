@@ -20,14 +20,10 @@ import nats.client.NatsConnector;
 import org.lecture.controller.UserSourceHandler;
 import org.lecture.patchservice.PatchService;
 import org.lecture.patchservice.dmp.DmpPatchService;
-import org.springframework.boot.orm.jpa.EntityScan;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
-import org.springframework.data.web.config.EnableSpringDataWebSupport;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.socket.config.annotation.EnableWebSocket;
 import org.springframework.web.socket.config.annotation.WebSocketConfigurer;
 import org.springframework.web.socket.config.annotation.WebSocketHandlerRegistry;
@@ -39,17 +35,45 @@ import org.springframework.web.socket.config.annotation.WebSocketHandlerRegistry
  */
 
 @Configuration
-@EnableWebMvc
-@ComponentScan(basePackages = {"org.lecture"})
 @EnableMongoRepositories(basePackages = "org.lecture.repository")
-@EntityScan(basePackages = "org.lecture.repository")
-@EnableSpringDataWebSupport
 @EnableWebSocket
-public class AppConfig  implements WebSocketConfigurer {
+public class AppConfig  implements WebSocketConfigurer  {
   @Bean
   public static PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer() {
     return new PropertySourcesPlaceholderConfigurer();
   }
+
+  /*@Bean
+  public JwtAccessTokenConverter jwtAccessTokenConverter() {
+    return new JwtAccessTokenConverter();
+  }
+
+
+  @Configuration
+  @EnableResourceServer
+  protected static class ResourceServerConfiguration extends
+      ResourceServerConfigurerAdapter {
+
+    @Override
+    public void configure(ResourceServerSecurityConfigurer resources) {
+      // @formatter:off
+      resources
+          .resourceId("java-evaluation-resource");
+      // @formatter:on
+    }
+
+    @Override
+    public void configure(HttpSecurity http) throws Exception {
+      // @formatter:off
+      http
+          .csrf().disable()
+          .authorizeRequests()
+          .antMatchers("/*").authenticated()
+          .antMatchers("/tests").hasAnyAuthority("officer","assistant");
+      // @formatter:on
+    }
+
+  }*/
 
   @Bean
   public PatchService patchService() {

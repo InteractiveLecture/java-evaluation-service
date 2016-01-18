@@ -16,14 +16,9 @@ package org.lecture.controller;
 */
 
 import org.lecture.model.BaseEntity;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.rest.webmvc.ResourceNotFoundException;
-import org.springframework.hateoas.EntityLinks;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseStatus;
 
 /**
  * A basecontroller for shared functionality.
@@ -32,9 +27,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
  */
 @Component
 public abstract class BaseController {
-
-  @Autowired
-  EntityLinks entityLinks;
 
   /**
    * A conviniencemethod for creating new Entities.
@@ -45,20 +37,12 @@ public abstract class BaseController {
    * @return The formal Response for the childcontroller.
    */
   public <T extends BaseEntity> ResponseEntity<?> createEntity(T newEntity, String... headers) {
-    ResponseEntity.BodyBuilder responseEntityBuilder = ResponseEntity
-        .created(entityLinks.linkForSingleResource(newEntity).toUri());
+    ResponseEntity.BodyBuilder responseEntityBuilder = ResponseEntity.status(HttpStatus.CREATED).header("location",newEntity.getId());
     if (headers.length > 0) {
       for (int i = 0; i < headers.length; i = i + 2) {
         responseEntityBuilder.header(headers[i], headers[i + 1]);
       }
     }
     return responseEntityBuilder.build();
-  }
-
-
-  @ExceptionHandler(ResourceNotFoundException.class)
-  @ResponseStatus(HttpStatus.NOT_FOUND)
-  public String handleNotFound(ResourceNotFoundException ex) {
-    return ex.toString();
   }
 }

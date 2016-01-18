@@ -16,16 +16,13 @@ package org.lecture.controller;
 */
 
 
-import com.fasterxml.jackson.databind.MappingIterator;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.lecture.model.CompilationReport;
 import org.lecture.model.FilePatch;
-import org.lecture.model.TestCaseContainer;
-import org.lecture.repository.TestCaseRepository;
-import org.lecture.resource.TestCaseResource;
+import org.lecture.model.SourceContainer;
+import org.lecture.repository.SourceContainerRepository;
+import org.lecture.resource.SourceContainerResource;
 import org.lecture.service.CompilerService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.hateoas.ExposesResourceFor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -34,7 +31,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.security.Principal;
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 
@@ -45,11 +42,10 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/tests")
-@ExposesResourceFor(TestCaseContainer.class)
 public class TestCaseController extends BaseController {
 
   @Autowired
-  TestCaseRepository testRepository;
+  SourceContainerRepository testRepository;
 
   @Autowired
   CompilerService compilerService;
@@ -62,15 +58,15 @@ public class TestCaseController extends BaseController {
    * @return a Resource representing the testcase container.
    */
   @RequestMapping(method = RequestMethod.GET)
-  public ResponseEntity<TestCaseResource> getByExerciseId(
+  public ResponseEntity<SourceContainerResource> getByExerciseId(
       @RequestParam("taskId") String taskId) {
 
-    TestCaseContainer result =
-        this.testRepository.findByTaskId(taskId);
+    SourceContainer result =
+        this.testRepository.findByTaskIdAndTests(taskId,true);
 
     return ResponseEntity.ok()
-        .header("Accept-FilePatch", "text/mdmp")
-        .body(new TestCaseResource(result));
+        .header("Accept-FilePatch", "application/json;charset=UTF-8")
+        .body(new SourceContainerResource(result));
   }
 
   /**
@@ -79,16 +75,16 @@ public class TestCaseController extends BaseController {
    *
    * @param entity    the test from the post-request. This test is deserialized by
    *                  jackson.
-   * @param principal The current user injected by spring.
    * @return A respoonse containing a compilation-report.
    */
-  @RequestMapping(method = RequestMethod.POST)
+  @RequestMapping( method = RequestMethod.POST)
   public ResponseEntity<?> create(
-      @RequestBody TestCaseContainer entity, Principal principal) {
-
-    entity.setUserId(principal.getName());
+      @RequestBody SourceContainer entity, HttpServletRequest request) {
+    String userId = request.getHeader("User-Id");
+    entity.setUserId(userId);
+    entity.setTests(true);
     entity = testRepository.save(entity);
-    return super.createEntity(entity, "Accept-FilePatch", "application/mdmp");
+    return super.createEntity(entity, "Accept-FilePatch", "application/json;charset=UTF-8");
   }
 
   /**
@@ -98,12 +94,13 @@ public class TestCaseController extends BaseController {
    * @return a response.
    */
   @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-  public ResponseEntity<TestCaseResource> getOneTest(@PathVariable String id) {
+  public ResponseEntity<SourceContainerResource> getOneTest(@PathVariable String id) {
 
-    TestCaseResource result
-        = new TestCaseResource(testRepository.findOne(id));
+    SourceContainerResource result
+        = new SourceContainerResource(testRepository.findOne(id));
+
     return ResponseEntity.ok()
-        .header("Accept-FilePatch", "application/mdmp")
+        .header("Accept-FilePatch", "application/json;charset=UTF-8")
         .body(result);
   }
 
@@ -114,31 +111,16 @@ public class TestCaseController extends BaseController {
     return ResponseEntity.noContent().build();
   }
 
-  @RequestMapping(value = "/{id}", method = RequestMethod.PATCH)
-  public ResponseEntity<CompilationReport> update(
+  @RequestMapping(value = "/{id}", method = RequestMethod.PATCH,consumes="application/json;charset=UTF-8")
+  public ResponseEntity<?> update(
       @PathVariable String id, @RequestBody List<FilePatch> patches) {
 
     CompilationReport report =
         compilerService.patchAndCompileTestSource(id, patches);
-
+    if (report == null) {
+      return ResponseEntity.noContent().build();
+    }
     return ResponseEntity.ok().body(report);
-  }
-
-
-  @RequestMapping(value = "/{id}/active", method = RequestMethod.GET)
-  public ResponseEntity<Boolean> isActive(String id) {
-
-    TestCaseContainer container = this.testRepository.findOne(id);
-    return ResponseEntity.ok(container.isActive());
-  }
-
-  @RequestMapping(value = "/{id}/active", method = RequestMethod.PUT)
-  public ResponseEntity<?> setActive(String id, @RequestBody boolean active) {
-
-    TestCaseContainer container = this.testRepository.findOne(id);
-    container.setActive(active);
-    this.testRepository.save(container);
-    return ResponseEntity.noContent().build();
   }
 
 

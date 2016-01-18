@@ -128,4 +128,12 @@ public class CompilationDiagnostic {
   public void setNoPosition(boolean noPosition) {
     this.noPosition = noPosition;
   }
+
+  @Override
+  public String toString() {
+    return "CompilationDiagnostic{" +
+        "classname='" + classname + '\'' +
+        ", message='" + message + '\'' +
+        '}';
+  }
 }

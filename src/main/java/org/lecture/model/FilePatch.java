@@ -1,5 +1,7 @@
 package org.lecture.model;
 
+import java.util.List;
+
 /**
  * Created by rene on 05.01.16.
  */

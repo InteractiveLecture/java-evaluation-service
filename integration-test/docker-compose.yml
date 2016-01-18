@@ -1,0 +1,107 @@
+java:
+  image: openservice/java-evaluation-service
+  links:
+    - "discovery:discovery"
+    - "javadatabase:mongo"
+    - "nats:nats"
+  expose:
+    - "8080"
+  environment:
+    - "SERVICE_NAME=java-evaluation-service"
+    - "SERVICE_TAGS=interactive-lecture"
+
+javadatabase:
+  image: mongo
+  ports:
+    - "27017:27017"
+  environment:
+    - "SERVICE_IGNORE=1"
+    - "SERVICE_TAGS=interactive-lecture"
+
+
+gateway:
+  image: openservice/gateway-service
+  links:
+    - "discovery:discovery"
+  ports:
+    - "80:80"
+  command: "/bin/bash -c 'sleep 10 && my_init'"
+
+nats:
+  image: nats
+  expose: 
+    - "4222"
+
+natsremote:
+  image: openservice/nats-remote
+  expose:
+    - "8080"
+  environment:
+    - "SERVICE_NAME=nats-remote"
+    - "SERVICE_TAGS=interactive-lecture"
+  links:
+    - "nats:nats"
+
+discovery:
+  image: progrium/consul
+  expose:
+    - "8500"
+    - "8400"
+    - "53/udp"
+  hostname: "node1"
+  command: "-server -bootstrap"
+
+registrator:
+  image: gliderlabs/registrator
+  volumes:
+    - "/var/run/docker.sock:/tmp/docker.sock"
+  links:
+    - "discovery:discovery"
+  command: "-internal consul://discovery:8500"
+
+authentication:
+  image: openservice/authentication-service
+  links:
+    - "authdatabase:postgres"
+    - "discovery:discovery"
+    - "nats:nats"
+  expose:
+    - "8080"
+  environment:
+    - "SERVICE_NAME=authentication-service"
+    - "SERVICE_TAGS=interactive-lecture"
+
+  command: "--debug"
+
+authdatabase:
+  image: postgres
+  ports:
+    - "5432:5432"  
+  environment:
+    - "SERVICE_IGNORE=1"
+    - "POSTGRES_PASSWORD=users"
+    - "POSTGRES_USER=users"
+
+acl:
+  image: openservice/acl-service
+  links: 
+    - "acldatabase:postgres"
+    - "nats:nats"
+    - "discovery:discovery"
+  environment:
+    - "SERVICE_NAME=acl-service"
+    - "SERVICE_TAGS=interactive-lecture"
+  expose:
+    - "8080"
+  links:
+    - "acldatabase:postgres"
+    - "discovery:discovery"
+  command: "/main -dbhost=postgres"
+
+acldatabase:
+  image: openservice/acl-database
+  environment:
+    - "SERVICE_IGNORE=1"
+  ports:
+    - "5434:5432"  
+

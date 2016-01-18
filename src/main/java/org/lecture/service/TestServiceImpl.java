@@ -23,15 +23,20 @@ import org.lecture.ExerciseContextImpl;
 import org.lecture.compiler.api.ExerciseContext;
 import org.lecture.compiler.testframework.LectureRunner;
 import org.lecture.model.SourceContainer;
-import org.lecture.model.TestCaseContainer;
 import org.lecture.model.TestReport;
 import org.lecture.model.TestResult;
-import org.lecture.repository.TestCaseRepository;
+import org.lecture.repository.SourceContainerRepository;
+import org.lecture.resource.SourceContainerResource;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
+
+
+import static org.springframework.data.mongodb.core.query.Criteria.where;
+import static org.springframework.data.mongodb.core.query.Query.query;
 
 /**
  * Created by rene on 21.06.15.
@@ -41,17 +46,31 @@ import java.util.stream.Collectors;
 @Service
 public class TestServiceImpl implements TestService {
 
+
   @Autowired
-  TestCaseRepository testCaseRepository;
+  SourceContainerRepository sourceContainerRepository;
+
+  @Autowired
+  CompilerService compilerService;
+
+  @Autowired
+  MongoOperations mongoOperations;
 
   @Override
   public TestReport runTests(SourceContainer sourceContainer) {
-    TestCaseContainer testCaseContainer =
-        testCaseRepository.findByTaskId(sourceContainer.getTaskId());
+    System.out.println("taskId is: "+sourceContainer.getTaskId());
+
+
+
+    //SourceContainer testCaseContainer = mongoOperations.findOne(query(where("taskId").is(sourceContainer.getTaskId())).addCriteria(where("tests").is(true)),SourceContainer.class);
+    SourceContainer testCaseContainer =
+        sourceContainerRepository.findByTaskIdAndTests(sourceContainer.getTaskId(),true);
+
+    System.out.println("testCaseContainer is: "+testCaseContainer);
 
     ExerciseContext exerciseContext = new ExerciseContextImpl();
 
-    exerciseContext.setTestClasses(testCaseContainer.getTestClasses());
+    exerciseContext.setTestClasses(compilerService.compileSources(testCaseContainer.getSources()).getCompiledClasses());
 
     StringCompiler compiler = new StringCompiler();
     sourceContainer.getSources().forEach(compiler::addCompilationTask);

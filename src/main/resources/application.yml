@@ -1,5 +1,4 @@
 spring:
-  profiles: production
   data:
     mongodb:
       host: mongo # the db host
@@ -7,3 +6,15 @@ spring:
       uri: mongodb://mongo/production # connection URL
       database: production
       repositories.enabled: true # if spring data repository support is enabled
+
+#security:
+#  oauth2:
+#    resource:
+#      jwt:
+#        keyUri: "http://authentication-service/oauth/token_key"
+#TODO make oauth security work
+
+
+#logging:
+#  level:
+#    org.springframework.web: DEBUG

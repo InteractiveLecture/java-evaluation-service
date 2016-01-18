@@ -22,14 +22,15 @@ import org.lecture.compiler.api.ExerciseContext;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
  * @author rene
  */
 public class ExerciseContextImpl implements ExerciseContext {
-  private Map<String, Class<?>> excerciseClasses;
-  private Map<String, Class<?>> testClasses;
+  private Map<String, Class<?>> excerciseClasses = new HashMap<>();
+  private Map<String, Class<?>> testClasses = new HashMap<>();
 
   @Override
   public void setExerciseClasses(Map<String, Class<?>> exerciseClasses) {

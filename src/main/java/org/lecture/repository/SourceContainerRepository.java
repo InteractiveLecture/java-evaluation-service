@@ -18,7 +18,6 @@ package org.lecture.repository;
 import org.lecture.model.SourceContainer;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
-
 /**
  * A repository for codesubmissions
  *
@@ -27,5 +26,7 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 public interface SourceContainerRepository extends MongoRepository<SourceContainer, String> {
 
   SourceContainer findByUserIdAndTaskId(String userId, String taskId);
+
+  SourceContainer findByTaskIdAndTests(String taskId, boolean tests);
 
 }

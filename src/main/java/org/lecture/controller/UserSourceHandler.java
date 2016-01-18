@@ -1,7 +1,7 @@
 package org.lecture.controller;
 
-import com.fasterxml.jackson.databind.MappingIterator;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.lecture.model.CompilationReport;
 import org.lecture.model.FilePatch;
 import org.lecture.model.SourceContainer;
 import org.lecture.repository.SourceContainerRepository;
@@ -11,14 +11,13 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
-import org.springframework.web.socket.handler.TextWebSocketHandler;
-
+import org.springframework.web.socket.handler.AbstractWebSocketHandler;
 import java.util.List;
 
 /**
  * Created by rene on 14.12.15.
  */
-public class UserSourceHandler extends TextWebSocketHandler {
+public class UserSourceHandler extends AbstractWebSocketHandler {
 
   @Autowired
   SourceContainerRepository codesubmissionRepository;
@@ -45,10 +44,24 @@ public class UserSourceHandler extends TextWebSocketHandler {
 
   @Override
   protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
-    MappingIterator<FilePatch> iterator = new ObjectMapper().reader(FilePatch.class).readValues(message.toString());
-    List<FilePatch> patches = iterator.readAll();
+    ObjectMapper mapper = new ObjectMapper();
+    List<FilePatch> patches = null;
+    //.substring(1,message.getPayloadLength()-1).replaceAll("\\\\","")
+    try {
+      patches = mapper.readValue(message.getPayload(), mapper.getTypeFactory().constructCollectionType(List.class, FilePatch.class));
+    } catch (Exception e ){
+      e.printStackTrace();
+      throw e;
+    }
+    /*ObjectMapper mapper = new ObjectMapper();
+    TypeFactory typeFactory = mapper.getTypeFactory();
+    List<FilePatch> patches =
+        mapper.readValue(textString, typeFactory.constructCollectionType(List.class, FilePatch.class));*/
+    System.out.println("all parts read: "+ patches);
+    CompilationReport report = compilerService.patchAndCompileUserSource((String)session.getAttributes().get("Container-Id"), patches);
+    System.out.println("report is: "+report);
     session.sendMessage(new TextMessage(
-        objectMapper.writeValueAsBytes(compilerService.patchAndCompileUserSource((String)session.getAttributes().get("Container-Id"), patches))));
+        objectMapper.writeValueAsBytes(report)));
   }
 
   @Override
