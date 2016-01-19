@@ -98,7 +98,7 @@ dependencies {
   compile("org.interactivelecture.java:exercise-test-api:1.0.0")
   compile("org.interactivelecture.java:string-compiler:1.0.0")
   compile 'org.interactivelecture.java:patch-lib:1.0.0'
-  compile("org.interactivelecture.java:exercise-test-framework:1.0.0")
+  compile("org.interactivelecture.java:exercise-test-framework:1.0.1-RELEASE")
   compile('com.google.code.gson:gson:2.5')
  // compile("org.springframework.security.oauth:spring-security-oauth2:2.0.7.RELEASE")
  // compile 'org.springframework.security:spring-security-jwt:1.0.3.RELEASE'

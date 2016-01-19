@@ -15,9 +15,11 @@ package org.lecture.service;
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301  USA
  */
 
+import compiler.compiler.CompilationResult;
 import compiler.compiler.StringCompiler;
 import org.junit.runner.JUnitCore;
 import org.junit.runner.Runner;
+import org.junit.runner.notification.Failure;
 import org.junit.runners.model.InitializationError;
 import org.lecture.ExerciseContextImpl;
 import org.lecture.compiler.api.ExerciseContext;
@@ -70,14 +72,16 @@ public class TestServiceImpl implements TestService {
 
     ExerciseContext exerciseContext = new ExerciseContextImpl();
 
-    exerciseContext.setTestClasses(compilerService.compileSources(testCaseContainer.getSources()).getCompiledClasses());
+    CompilationResult result = compilerService.compileSources(testCaseContainer.getSources());
+
+    exerciseContext.setTestClasses(result.getCompiledClasses());
 
     StringCompiler compiler = new StringCompiler();
     sourceContainer.getSources().forEach(compiler::addCompilationTask);
     exerciseContext.setExerciseClasses(compiler.startCompilation().getCompiledClasses());
 
     JUnitCore jc = new JUnitCore();
-    List<Runner> runners = testCaseContainer.getTestClasses().values()
+    List<Runner> runners = exerciseContext.getTestClasses().values()
         .stream()
         .map(clazz -> instanciateRunner(clazz, exerciseContext))
         .collect(Collectors.toList());
@@ -86,6 +90,18 @@ public class TestServiceImpl implements TestService {
         .map(jc::run)
         .map(TestResult::new)
         .collect(Collectors.toList());
+
+    for (TestResult testResult : results) {
+      System.out.println(testResult.getFailures());
+      for (Failure failure : testResult.getFailures()) {
+        System.out.println("message: "+failure.getMessage());
+        System.out.println("testheader: "+failure.getTestHeader());
+        System.out.println("exception: "+failure.getException());
+        System.out.println("trace: "+failure.getTrace());
+      }
+    }
+
+    System.out.println(results);
 
     return new TestReport(results);
   }

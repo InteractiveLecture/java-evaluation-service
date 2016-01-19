@@ -5,7 +5,6 @@ import (
 	"net/http"
 	"net/url"
 	"testing"
-	"time"
 
 	"github.com/InteractiveLecture/testframework"
 	"github.com/gorilla/websocket"
@@ -47,6 +46,7 @@ func TestIntegration(t *testing.T) {
 	require.Equal(t, newSource, resultContainer["sources"].(map[string]interface{})["HalloWelt"])
 	newSource = `
 	import static org.junit.Assert.assertEquals;
+	import static org.junit.Assert.assertNotNull;
 
 	import org.lecture.compiler.testframework.*;
 
@@ -57,14 +57,16 @@ func TestIntegration(t *testing.T) {
 		@Test
 		public void itShouldWork() {
 			Object target = createObject("Blubb");
+			assertNotNull("it should be not null",target);
+			System.out.println("Hallo");
 			Object result = executeMethod(target,"sayBlubb");
 			assertEquals("it should be blubb","blubb", (String)result);
 		}
 	}`
 	compileErrors = patchTestSource(t, officerUsername, containerId, "HalloWelt", resultContainer["sources"].(map[string]interface{})["HalloWelt"].(string), newSource)
 	require.Empty(t, compileErrors)
-	compileErrors = patchTestSource(t, officerUsername, containerId, "HalloWelt", newSource, "")
-	require.Nil(t, compileErrors)
+	//compileErrors = patchTestSource(t, officerUsername, containerId, "HalloWelt", newSource, "")
+	//require.Nil(t, compileErrors)
 
 	u := url.URL{Scheme: "ws", Host: testframework.GetHost(), Path: "/java-evaluation-service/user-compiler"}
 	headers := make(http.Header)
@@ -99,9 +101,11 @@ func TestIntegration(t *testing.T) {
 	compileErrors = patchUserSource(t, c, "Blubb", oldUserSource, newUserSource)
 
 	require.Len(t, compileErrors, 0)
-	time.Sleep(1 * time.Second)
+	//	time.Sleep(1 * time.Second)
 	resp = testframework.GetAuthorized(t, officerUsername, "/java-evaluation-service/codesubmissions/"+containerId+"/test-report")
 	require.Equal(t, 200, resp.StatusCode)
+	report := testframework.ReadSingleJsonResult(t, resp)
+	require.True(t, report["allPassed"].(bool))
 }
 
 func patchTestSource(t *testing.T, username, containerId, fileName, oldSource, newSource string) []interface{} {
